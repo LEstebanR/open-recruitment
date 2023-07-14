@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import clsx from 'clsx'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { PiBuildingsBold } from 'react-icons/pi'
 
 const formClasses =
   'block w-full rounded-lg border border-gray-200 bg-white py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm'
@@ -45,6 +46,11 @@ interface PhoneFieldProps {
   autoComplete?: string
   required?: boolean
   name?: string
+}
+
+interface Company {
+  id: number
+  name: string
 }
 
 function Label({ id, children }: LabelProps) {
@@ -121,6 +127,26 @@ export function PhoneField({
           }}
         />
       </div>
+    </div>
+  )
+}
+
+export function SelectCompany({ companies }: { companies: Company[] }) {
+  return (
+    <div className="flex items-center">
+      <PiBuildingsBold className="h-6 w-6" />
+      <select
+        id="company"
+        name="company"
+        className="block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent"
+        defaultValue="0"
+      >
+        {companies.map((company) => (
+          <option key={company.id} value={company.id}>
+            {company.name}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }
