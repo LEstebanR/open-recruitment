@@ -12,7 +12,7 @@ interface LabelProps {
   children: ReactNode
 }
 
-interface TextFieldProps {
+interface TextFieldProps extends React.ComponentPropsWithoutRef<"input"> {
   id: string
   label?: string
   type?: string
@@ -21,12 +21,14 @@ interface TextFieldProps {
   autoComplete?: string
   required?: boolean
   name?: string
+  [propName: string]: any;
 }
 
 type option = {
   value: string
   label: string
 }
+
 interface SelectFieldProps {
   id: string
   label?: string
@@ -57,7 +59,7 @@ function Label({ id, children }: LabelProps) {
   return (
     <label
       htmlFor={id}
-      className="mb-2 block text-sm font-semibold text-gray-900"
+      className='mb-2 block text-sm font-semibold text-gray-900'
     >
       {children}
     </label>
@@ -65,12 +67,12 @@ function Label({ id, children }: LabelProps) {
 }
 
 export function TextField({
-  id,
-  label,
-  type = 'text',
-  className,
-  ...props
-}: TextFieldProps) {
+                            id,
+                            label,
+                            type = 'text',
+                            className,
+                            ...props
+                          }: TextFieldProps) {
   return (
     <div className={className}>
       {label && <Label id={id}>{label}</Label>}
@@ -80,11 +82,11 @@ export function TextField({
 }
 
 export function SelectField({
-  id,
-  label,
-  className,
-  ...props
-}: SelectFieldProps) {
+                              id,
+                              label,
+                              className,
+                              ...props
+                            }: SelectFieldProps) {
   return (
     <div className={className}>
       {label && <Label id={id}>{label}</Label>}
@@ -100,11 +102,11 @@ export function SelectField({
 }
 
 export function PhoneField({
-  id,
-  label,
-  className,
-  ...props
-}: PhoneFieldProps) {
+                             id,
+                             label,
+                             className,
+                             ...props
+                           }: PhoneFieldProps) {
   const containerStyles = {
     border: '1px solid #e2e8f0',
     borderRadius: '0.375rem',
@@ -115,8 +117,8 @@ export function PhoneField({
       {label && <Label id={id}>{label}</Label>}
       <div style={containerStyles}>
         <PhoneInput
-          placeholder="write your phone..."
-          country="us"
+          placeholder='write your phone...'
+          country='us'
           {...props}
           inputStyle={{
             width: '100%',
@@ -133,13 +135,13 @@ export function PhoneField({
 
 export function SelectCompany({ companies }: { companies: Company[] }) {
   return (
-    <div className="flex items-center">
-      <PiBuildingsBold className="h-6 w-6" />
+    <div className='flex items-center'>
+      <PiBuildingsBold className='h-6 w-6' />
       <select
-        id="company"
-        name="company"
-        className="block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent"
-        defaultValue="0"
+        id='company'
+        name='company'
+        className='block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent'
+        defaultValue='0'
       >
         {companies.map((company) => (
           <option key={company.id} value={company.id}>

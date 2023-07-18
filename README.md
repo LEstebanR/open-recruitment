@@ -42,7 +42,7 @@ npx prisma generate
   npx prisma migrate dev
 ```
 
-- open primsa studio
+- open prisma studio
 
 ```bash
   npx prisma studio
