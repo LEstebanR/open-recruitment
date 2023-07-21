@@ -2,7 +2,6 @@ export {
   CompanyObject,
   CompanyIdFieldObject,
   CompanyNameFieldObject,
-  CompanyEmailFieldObject,
   CompanyPhoneFieldObject,
   CompanyAddressFieldObject,
   CompanyCityFieldObject,
@@ -22,13 +21,15 @@ export {
   CompanyEventsFieldObject,
   CompanyCreatedAtFieldObject,
   CompanyUpdatedAtFieldObject,
-  CompanyDepartmentFieldObject,
-  CompanyDisqualifyReasonFieldObject,
-  CompanyTagSourceFieldObject,
-  CompanyAuditLogFieldObject,
-  CompanyOfferFieldObject,
-  CompanyTemplateFieldObject,
-  CompanyTaskFieldObject
+  CompanyDepartmentsFieldObject,
+  CompanyDisqualifyReasonsFieldObject,
+  CompanyTagSourcesFieldObject,
+  CompanyAuditLogsFieldObject,
+  CompanyOffersFieldObject,
+  CompanyTemplatesFieldObject,
+  CompanyTasksFieldObject,
+  CompanyOwnerFieldObject,
+  CompanyOwnerIdFieldObject
 } from './object.base';
 export {
   createManyCompanyMutation,

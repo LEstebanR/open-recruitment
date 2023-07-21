@@ -11,9 +11,13 @@ export default interface PrismaTypes {
         Where: Prisma.UserWhereInput;
         Create: {};
         Update: {};
-        RelationName: "accounts" | "sessions" | "Attachment" | "HiringRole";
-        ListRelations: "accounts" | "sessions" | "Attachment" | "HiringRole";
+        RelationName: "photo" | "accounts" | "sessions" | "hiringRole" | "companies";
+        ListRelations: "accounts" | "sessions" | "hiringRole" | "companies";
         Relations: {
+            photo: {
+                Shape: Attachment | null;
+                Name: "Attachment";
+            };
             accounts: {
                 Shape: Account[];
                 Name: "Account";
@@ -22,13 +26,13 @@ export default interface PrismaTypes {
                 Shape: Session[];
                 Name: "Session";
             };
-            Attachment: {
-                Shape: Attachment[];
-                Name: "Attachment";
-            };
-            HiringRole: {
+            hiringRole: {
                 Shape: HiringRole[];
                 Name: "HiringRole";
+            };
+            companies: {
+                Shape: Company[];
+                Name: "Company";
             };
         };
     };
@@ -94,10 +98,10 @@ export default interface PrismaTypes {
         Where: Prisma.AttachmentWhereInput;
         Create: {};
         Update: {};
-        RelationName: "user" | "candidate" | "uploader" | "offerFiles" | "talentPoolFiles";
+        RelationName: "userProfilePhoto" | "candidate" | "uploader" | "offerFiles" | "talentPoolFiles";
         ListRelations: "offerFiles" | "talentPoolFiles";
         Relations: {
-            user: {
+            userProfilePhoto: {
                 Shape: User | null;
                 Name: "User";
             };
@@ -231,8 +235,8 @@ export default interface PrismaTypes {
         Where: Prisma.CompanyWhereInput;
         Create: {};
         Update: {};
-        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "Department" | "DisqualifyReason" | "TagSource" | "AuditLog" | "Offer" | "Template" | "Task";
-        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "Department" | "DisqualifyReason" | "TagSource" | "AuditLog" | "Offer" | "Template" | "Task";
+        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner";
+        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks";
         Relations: {
             roles: {
                 Shape: Role[];
@@ -258,33 +262,37 @@ export default interface PrismaTypes {
                 Shape: Event[];
                 Name: "Event";
             };
-            Department: {
+            departments: {
                 Shape: Department[];
                 Name: "Department";
             };
-            DisqualifyReason: {
+            disqualifyReasons: {
                 Shape: DisqualifyReason[];
                 Name: "DisqualifyReason";
             };
-            TagSource: {
+            tagSources: {
                 Shape: TagSource[];
                 Name: "TagSource";
             };
-            AuditLog: {
+            auditLogs: {
                 Shape: AuditLog[];
                 Name: "AuditLog";
             };
-            Offer: {
+            offers: {
                 Shape: Offer[];
                 Name: "Offer";
             };
-            Template: {
+            templates: {
                 Shape: Template[];
                 Name: "Template";
             };
-            Task: {
+            tasks: {
                 Shape: Task[];
                 Name: "Task";
+            };
+            owner: {
+                Shape: User;
+                Name: "User";
             };
         };
     };

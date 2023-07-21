@@ -1,3 +1,3 @@
 export {
-  AccountObject
+  CompanyObject
 } from './object.base';

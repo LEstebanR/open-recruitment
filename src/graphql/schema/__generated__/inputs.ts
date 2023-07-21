@@ -60,7 +60,7 @@ export const AccountScalarFieldEnum = builder.enumType('AccountScalarFieldEnum',
 });
 
 export const AttachmentScalarFieldEnum = builder.enumType('AttachmentScalarFieldEnum', {
-  values: ["id","contentType","filename","path","uploaderId","createdAt","updatedAt","userId"] as const,
+  values: ["id","contentType","filename","path","uploaderId","createdAt","updatedAt"] as const,
 });
 
 export const AuditLogScalarFieldEnum = builder.enumType('AuditLogScalarFieldEnum', {
@@ -84,7 +84,7 @@ export const CompanyMetadataScalarFieldEnum = builder.enumType('CompanyMetadataS
 });
 
 export const CompanyScalarFieldEnum = builder.enumType('CompanyScalarFieldEnum', {
-  values: ["id","name","email","phone","address","city","state","country","companyInbox","subdomain","gdprEnable","gdprRetention","gdprPrivacyPolicyLink","gdprEmailFooter","createdAt","updatedAt"] as const,
+  values: ["id","name","phone","address","city","state","country","companyInbox","subdomain","gdprEnable","gdprRetention","gdprPrivacyPolicyLink","gdprEmailFooter","createdAt","updatedAt","ownerId"] as const,
 });
 
 export const DepartmentScalarFieldEnum = builder.enumType('DepartmentScalarFieldEnum', {
@@ -283,10 +283,11 @@ export const UserWhereInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":JsonNullableFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
+  photo: t.field({"required":false,"type":AttachmentWhereInput}),
   accounts: t.field({"required":false,"type":AccountListRelationFilter}),
   sessions: t.field({"required":false,"type":SessionListRelationFilter}),
-  Attachment: t.field({"required":false,"type":AttachmentListRelationFilter}),
-  HiringRole: t.field({"required":false,"type":HiringRoleListRelationFilter}),
+  hiringRole: t.field({"required":false,"type":HiringRoleListRelationFilter}),
+  companies: t.field({"required":false,"type":CompanyListRelationFilter}),
 });
 export const UserWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserWhereInput>>('UserWhereInput').implement({
   fields: UserWhereInputFields,
@@ -313,10 +314,11 @@ export const UserOrderByWithRelationInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  photo: t.field({"required":false,"type":AttachmentOrderByWithRelationInput}),
   accounts: t.field({"required":false,"type":AccountOrderByRelationAggregateInput}),
   sessions: t.field({"required":false,"type":SessionOrderByRelationAggregateInput}),
-  Attachment: t.field({"required":false,"type":AttachmentOrderByRelationAggregateInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleOrderByRelationAggregateInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleOrderByRelationAggregateInput}),
+  companies: t.field({"required":false,"type":CompanyOrderByRelationAggregateInput}),
 });
 export const UserOrderByWithRelationInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserOrderByWithRelationInput>>('UserOrderByWithRelationInput').implement({
   fields: UserOrderByWithRelationInputFields,
@@ -607,8 +609,7 @@ export const AttachmentWhereInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":IntFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
-  userId: t.field({"required":false,"type":StringNullableFilter}),
-  user: t.field({"required":false,"type":UserWhereInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserWhereInput}),
   candidate: t.field({"required":false,"type":CandidateWhereInput}),
   uploader: t.field({"required":false,"type":HiringRoleWhereInput}),
   offerFiles: t.field({"required":false,"type":OfferFileListRelationFilter}),
@@ -626,8 +627,7 @@ export const AttachmentOrderByWithRelationInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  userId: t.field({"required":false,"type":SortOrder}),
-  user: t.field({"required":false,"type":UserOrderByWithRelationInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserOrderByWithRelationInput}),
   candidate: t.field({"required":false,"type":CandidateOrderByWithRelationInput}),
   uploader: t.field({"required":false,"type":HiringRoleOrderByWithRelationInput}),
   offerFiles: t.field({"required":false,"type":OfferFileOrderByRelationAggregateInput}),
@@ -652,7 +652,6 @@ export const AttachmentOrderByWithAggregationInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  userId: t.field({"required":false,"type":SortOrder}),
   _count: t.field({"required":false,"type":AttachmentCountOrderByAggregateInput}),
   _avg: t.field({"required":false,"type":AttachmentAvgOrderByAggregateInput}),
   _max: t.field({"required":false,"type":AttachmentMaxOrderByAggregateInput}),
@@ -674,7 +673,6 @@ export const AttachmentScalarWhereWithAggregatesInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":IntWithAggregatesFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
-  userId: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
 });
 export const AttachmentScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentScalarWhereWithAggregatesInput>>('AttachmentScalarWhereWithAggregatesInput').implement({
   fields: AttachmentScalarWhereWithAggregatesInputFields,
@@ -858,33 +856,34 @@ export const CompanyWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[CompanyWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  email: t.field({"required":false,"type":StringFilter}),
-  phone: t.field({"required":false,"type":StringFilter}),
-  address: t.field({"required":false,"type":StringFilter}),
-  city: t.field({"required":false,"type":StringFilter}),
-  state: t.field({"required":false,"type":StringFilter}),
-  country: t.field({"required":false,"type":StringFilter}),
-  companyInbox: t.field({"required":false,"type":StringFilter}),
-  subdomain: t.field({"required":false,"type":StringFilter}),
-  gdprEnable: t.field({"required":false,"type":BoolFilter}),
-  gdprRetention: t.field({"required":false,"type":IntFilter}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFilter}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFilter}),
+  phone: t.field({"required":false,"type":StringNullableFilter}),
+  address: t.field({"required":false,"type":StringNullableFilter}),
+  city: t.field({"required":false,"type":StringNullableFilter}),
+  state: t.field({"required":false,"type":StringNullableFilter}),
+  country: t.field({"required":false,"type":StringNullableFilter}),
+  companyInbox: t.field({"required":false,"type":StringNullableFilter}),
+  subdomain: t.field({"required":false,"type":StringNullableFilter}),
+  gdprEnable: t.field({"required":false,"type":BoolNullableFilter}),
+  gdprRetention: t.field({"required":false,"type":IntNullableFilter}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringNullableFilter}),
+  gdprEmailFooter: t.field({"required":false,"type":StringNullableFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
+  ownerId: t.field({"required":false,"type":StringFilter}),
   roles: t.field({"required":false,"type":RoleListRelationFilter}),
   subscription: t.field({"required":false,"type":SubscriptionDataWhereInput}),
   meetingRooms: t.field({"required":false,"type":MeetingRoomListRelationFilter}),
   metadata: t.field({"required":false,"type":CompanyMetadataListRelationFilter}),
   eventSchedule: t.field({"required":false,"type":EventScheduleListRelationFilter}),
   events: t.field({"required":false,"type":EventListRelationFilter}),
-  Department: t.field({"required":false,"type":DepartmentListRelationFilter}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonListRelationFilter}),
-  TagSource: t.field({"required":false,"type":TagSourceListRelationFilter}),
-  AuditLog: t.field({"required":false,"type":AuditLogListRelationFilter}),
-  Offer: t.field({"required":false,"type":OfferListRelationFilter}),
-  Template: t.field({"required":false,"type":TemplateListRelationFilter}),
-  Task: t.field({"required":false,"type":TaskListRelationFilter}),
+  departments: t.field({"required":false,"type":DepartmentListRelationFilter}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonListRelationFilter}),
+  tagSources: t.field({"required":false,"type":TagSourceListRelationFilter}),
+  auditLogs: t.field({"required":false,"type":AuditLogListRelationFilter}),
+  offers: t.field({"required":false,"type":OfferListRelationFilter}),
+  templates: t.field({"required":false,"type":TemplateListRelationFilter}),
+  tasks: t.field({"required":false,"type":TaskListRelationFilter}),
+  owner: t.field({"required":false,"type":UserWhereInput}),
 });
 export const CompanyWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyWhereInput>>('CompanyWhereInput').implement({
   fields: CompanyWhereInputFields,
@@ -893,7 +892,6 @@ export const CompanyWhereInput = builder.inputRef<PrismaUpdateOperationsInputFil
 export const CompanyOrderByWithRelationInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   name: t.field({"required":false,"type":SortOrder}),
-  email: t.field({"required":false,"type":SortOrder}),
   phone: t.field({"required":false,"type":SortOrder}),
   address: t.field({"required":false,"type":SortOrder}),
   city: t.field({"required":false,"type":SortOrder}),
@@ -907,19 +905,21 @@ export const CompanyOrderByWithRelationInputFields = (t: any) => ({
   gdprEmailFooter: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  ownerId: t.field({"required":false,"type":SortOrder}),
   roles: t.field({"required":false,"type":RoleOrderByRelationAggregateInput}),
   subscription: t.field({"required":false,"type":SubscriptionDataOrderByWithRelationInput}),
   meetingRooms: t.field({"required":false,"type":MeetingRoomOrderByRelationAggregateInput}),
   metadata: t.field({"required":false,"type":CompanyMetadataOrderByRelationAggregateInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleOrderByRelationAggregateInput}),
   events: t.field({"required":false,"type":EventOrderByRelationAggregateInput}),
-  Department: t.field({"required":false,"type":DepartmentOrderByRelationAggregateInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonOrderByRelationAggregateInput}),
-  TagSource: t.field({"required":false,"type":TagSourceOrderByRelationAggregateInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogOrderByRelationAggregateInput}),
-  Offer: t.field({"required":false,"type":OfferOrderByRelationAggregateInput}),
-  Template: t.field({"required":false,"type":TemplateOrderByRelationAggregateInput}),
-  Task: t.field({"required":false,"type":TaskOrderByRelationAggregateInput}),
+  departments: t.field({"required":false,"type":DepartmentOrderByRelationAggregateInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonOrderByRelationAggregateInput}),
+  tagSources: t.field({"required":false,"type":TagSourceOrderByRelationAggregateInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogOrderByRelationAggregateInput}),
+  offers: t.field({"required":false,"type":OfferOrderByRelationAggregateInput}),
+  templates: t.field({"required":false,"type":TemplateOrderByRelationAggregateInput}),
+  tasks: t.field({"required":false,"type":TaskOrderByRelationAggregateInput}),
+  owner: t.field({"required":false,"type":UserOrderByWithRelationInput}),
 });
 export const CompanyOrderByWithRelationInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyOrderByWithRelationInput>>('CompanyOrderByWithRelationInput').implement({
   fields: CompanyOrderByWithRelationInputFields,
@@ -927,7 +927,6 @@ export const CompanyOrderByWithRelationInput = builder.inputRef<PrismaUpdateOper
 
 export const CompanyWhereUniqueInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  email: t.string({"required":false}),
 });
 export const CompanyWhereUniqueInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyWhereUniqueInput>>('CompanyWhereUniqueInput').implement({
   fields: CompanyWhereUniqueInputFields,
@@ -936,7 +935,6 @@ export const CompanyWhereUniqueInput = builder.inputRef<PrismaUpdateOperationsIn
 export const CompanyOrderByWithAggregationInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   name: t.field({"required":false,"type":SortOrder}),
-  email: t.field({"required":false,"type":SortOrder}),
   phone: t.field({"required":false,"type":SortOrder}),
   address: t.field({"required":false,"type":SortOrder}),
   city: t.field({"required":false,"type":SortOrder}),
@@ -950,6 +948,7 @@ export const CompanyOrderByWithAggregationInputFields = (t: any) => ({
   gdprEmailFooter: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  ownerId: t.field({"required":false,"type":SortOrder}),
   _count: t.field({"required":false,"type":CompanyCountOrderByAggregateInput}),
   _avg: t.field({"required":false,"type":CompanyAvgOrderByAggregateInput}),
   _max: t.field({"required":false,"type":CompanyMaxOrderByAggregateInput}),
@@ -966,20 +965,20 @@ export const CompanyScalarWhereWithAggregatesInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[CompanyScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  email: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  phone: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  address: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  city: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  state: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  country: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyInbox: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  subdomain: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  gdprEnable: t.field({"required":false,"type":BoolWithAggregatesFilter}),
-  gdprRetention: t.field({"required":false,"type":IntWithAggregatesFilter}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  gdprEmailFooter: t.field({"required":false,"type":StringWithAggregatesFilter}),
+  phone: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  address: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  city: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  state: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  country: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  companyInbox: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  subdomain: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  gdprEnable: t.field({"required":false,"type":BoolNullableWithAggregatesFilter}),
+  gdprRetention: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
+  gdprEmailFooter: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
+  ownerId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const CompanyScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyScalarWhereWithAggregatesInput>>('CompanyScalarWhereWithAggregatesInput').implement({
   fields: CompanyScalarWhereWithAggregatesInputFields,
@@ -3532,17 +3531,17 @@ export const UserCreateInputFields = (t: any) => ({
   timeformat24: t.boolean({"required":false}),
   timezone: t.string({"required":false}),
   weekStartDate: t.string({"required":false}),
-  photoId: t.int({"required":false}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.string({"required":false}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
-  Attachment: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUserInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  companies: t.field({"required":false,"type":CompanyCreateNestedManyWithoutOwnerInput}),
 });
 export const UserCreateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateInput>>('UserCreateInput').implement({
   fields: UserCreateInputFields,
@@ -3562,17 +3561,17 @@ export const UserUpdateInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
-  Attachment: t.field({"required":false,"type":AttachmentUpdateManyWithoutUserNestedInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  companies: t.field({"required":false,"type":CompanyUpdateManyWithoutOwnerNestedInput}),
 });
 export const UserUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateInput>>('UserUpdateInput').implement({
   fields: UserUpdateInputFields,
@@ -3618,7 +3617,6 @@ export const UserUpdateManyMutationInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -3782,7 +3780,7 @@ export const AttachmentCreateInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  user: t.field({"required":false,"type":UserCreateNestedOneWithoutAttachmentInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
   uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
@@ -3798,7 +3796,7 @@ export const AttachmentUpdateInputFields = (t: any) => ({
   path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  user: t.field({"required":false,"type":UserUpdateOneWithoutAttachmentNestedInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
   uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
@@ -3816,7 +3814,6 @@ export const AttachmentCreateManyInputFields = (t: any) => ({
   uploaderId: t.int({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  userId: t.string({"required":false}),
 });
 export const AttachmentCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateManyInput>>('AttachmentCreateManyInput').implement({
   fields: AttachmentCreateManyInputFields,
@@ -3956,18 +3953,17 @@ export const RoleUpdateManyMutationInput = builder.inputRef<PrismaUpdateOperatio
 
 export const CompanyCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -3976,13 +3972,14 @@ export const CompanyCreateInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateInput>>('CompanyCreateInput').implement({
   fields: CompanyCreateInputFields,
@@ -3990,18 +3987,17 @@ export const CompanyCreateInput = builder.inputRef<PrismaUpdateOperationsInputFi
 
 export const CompanyUpdateInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -4010,13 +4006,14 @@ export const CompanyUpdateInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateInput>>('CompanyUpdateInput').implement({
   fields: CompanyUpdateInputFields,
@@ -4025,20 +4022,20 @@ export const CompanyUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFi
 export const CompanyCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  ownerId: t.string({"required":true}),
 });
 export const CompanyCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateManyInput>>('CompanyCreateManyInput').implement({
   fields: CompanyCreateManyInputFields,
@@ -4046,18 +4043,17 @@ export const CompanyCreateManyInput = builder.inputRef<PrismaUpdateOperationsInp
 
 export const CompanyUpdateManyMutationInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
 });
@@ -4147,9 +4143,8 @@ export const CompanyMetadataUpdateManyMutationInput = builder.inputRef<PrismaUpd
 
 export const DepartmentCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDepartmentInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDepartmentsInput}),
   offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutDeparmentInput}),
-
 });
 export const DepartmentCreateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentCreateInput>>('DepartmentCreateInput').implement({
   fields: DepartmentCreateInputFields,
@@ -4157,7 +4152,7 @@ export const DepartmentCreateInput = builder.inputRef<PrismaUpdateOperationsInpu
 
 export const DepartmentUpdateInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDepartmentNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDepartmentsNestedInput}),
   offers: t.field({"required":false,"type":OfferUpdateManyWithoutDeparmentNestedInput}),
 });
 export const DepartmentUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentUpdateInput>>('DepartmentUpdateInput').implement({
@@ -4183,7 +4178,7 @@ export const DepartmentUpdateManyMutationInput = builder.inputRef<PrismaUpdateOp
 export const DisqualifyReasonCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
   action: t.field({"required":true,"type":Json}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDisqualifyReasonInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDisqualifyReasonsInput}),
   matches: t.field({"required":false,"type":MatchCreateNestedManyWithoutDisqualifyReasonInput}),
 });
 export const DisqualifyReasonCreateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonCreateInput>>('DisqualifyReasonCreateInput').implement({
@@ -4193,7 +4188,7 @@ export const DisqualifyReasonCreateInput = builder.inputRef<PrismaUpdateOperatio
 export const DisqualifyReasonUpdateInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   action: t.field({"required":false,"type":Json}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInput}),
   matches: t.field({"required":false,"type":MatchUpdateManyWithoutDisqualifyReasonNestedInput}),
 });
 export const DisqualifyReasonUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonUpdateInput>>('DisqualifyReasonUpdateInput').implement({
@@ -4221,7 +4216,7 @@ export const DisqualifyReasonUpdateManyMutationInput = builder.inputRef<PrismaUp
 export const TagSourceCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
   type: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourceInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
@@ -4233,7 +4228,7 @@ export const TagSourceCreateInput = builder.inputRef<PrismaUpdateOperationsInput
 export const TagSourceUpdateInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourceNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
@@ -4267,7 +4262,7 @@ export const AuditLogCreateInputFields = (t: any) => ({
   action: t.string({"required":true}),
   eventDetails: t.field({"required":true,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogsInput}),
   user: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAuditLogsInput}),
   offer: t.field({"required":false,"type":OfferCreateNestedOneWithoutAuditLogsInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutAuditLogsInput}),
@@ -4283,7 +4278,7 @@ export const AuditLogUpdateInputFields = (t: any) => ({
   action: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   eventDetails: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogsNestedInput}),
   user: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAuditLogsNestedInput}),
   offer: t.field({"required":false,"type":OfferUpdateOneWithoutAuditLogsNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutAuditLogsNestedInput}),
@@ -4669,7 +4664,7 @@ export const OfferCreateInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -4714,7 +4709,7 @@ export const OfferUpdateInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -5053,7 +5048,7 @@ export const TemplateCreateInputFields = (t: any) => ({
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutPipelineTemplateInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferCreateNestedOneWithoutAutoConfirmationEmailInput}),
@@ -5069,7 +5064,7 @@ export const TemplateUpdateInputFields = (t: any) => ({
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutPipelineTemplateNestedInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferUpdateOneWithoutAutoConfirmationEmailNestedInput}),
@@ -5563,7 +5558,7 @@ export const TaskCreateInputFields = (t: any) => ({
   status: t.string({"required":true}),
   dueDate: t.field({"required":true,"type":DateTime}),
   note: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTaskInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTasksInput}),
   taskMembers: t.field({"required":false,"type":TaskMemberCreateNestedManyWithoutTaskInput}),
   Candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutTasksInput}),
 });
@@ -5576,7 +5571,7 @@ export const TaskUpdateInputFields = (t: any) => ({
   status: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   dueDate: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   note: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTaskNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTasksNestedInput}),
   taskMembers: t.field({"required":false,"type":TaskMemberUpdateManyWithoutTaskNestedInput}),
   Candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutTasksNestedInput}),
 });
@@ -5793,6 +5788,14 @@ export const DateTimeFilter = builder.inputRef<PrismaUpdateOperationsInputFilter
   fields: DateTimeFilterFields,
 });
 
+export const AttachmentRelationFilterFields = (t: any) => ({
+  is: t.field({"required":false,"type":AttachmentWhereInput}),
+  isNot: t.field({"required":false,"type":AttachmentWhereInput}),
+});
+export const AttachmentRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentRelationFilter>>('AttachmentRelationFilter').implement({
+  fields: AttachmentRelationFilterFields,
+});
+
 export const AccountListRelationFilterFields = (t: any) => ({
   every: t.field({"required":false,"type":AccountWhereInput}),
   some: t.field({"required":false,"type":AccountWhereInput}),
@@ -5811,15 +5814,6 @@ export const SessionListRelationFilter = builder.inputRef<PrismaUpdateOperations
   fields: SessionListRelationFilterFields,
 });
 
-export const AttachmentListRelationFilterFields = (t: any) => ({
-  every: t.field({"required":false,"type":AttachmentWhereInput}),
-  some: t.field({"required":false,"type":AttachmentWhereInput}),
-  none: t.field({"required":false,"type":AttachmentWhereInput}),
-});
-export const AttachmentListRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentListRelationFilter>>('AttachmentListRelationFilter').implement({
-  fields: AttachmentListRelationFilterFields,
-});
-
 export const HiringRoleListRelationFilterFields = (t: any) => ({
   every: t.field({"required":false,"type":HiringRoleWhereInput}),
   some: t.field({"required":false,"type":HiringRoleWhereInput}),
@@ -5827,6 +5821,15 @@ export const HiringRoleListRelationFilterFields = (t: any) => ({
 });
 export const HiringRoleListRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleListRelationFilter>>('HiringRoleListRelationFilter').implement({
   fields: HiringRoleListRelationFilterFields,
+});
+
+export const CompanyListRelationFilterFields = (t: any) => ({
+  every: t.field({"required":false,"type":CompanyWhereInput}),
+  some: t.field({"required":false,"type":CompanyWhereInput}),
+  none: t.field({"required":false,"type":CompanyWhereInput}),
+});
+export const CompanyListRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyListRelationFilter>>('CompanyListRelationFilter').implement({
+  fields: CompanyListRelationFilterFields,
 });
 
 export const AccountOrderByRelationAggregateInputFields = (t: any) => ({
@@ -5843,18 +5846,18 @@ export const SessionOrderByRelationAggregateInput = builder.inputRef<PrismaUpdat
   fields: SessionOrderByRelationAggregateInputFields,
 });
 
-export const AttachmentOrderByRelationAggregateInputFields = (t: any) => ({
-  _count: t.field({"required":false,"type":SortOrder}),
-});
-export const AttachmentOrderByRelationAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentOrderByRelationAggregateInput>>('AttachmentOrderByRelationAggregateInput').implement({
-  fields: AttachmentOrderByRelationAggregateInputFields,
-});
-
 export const HiringRoleOrderByRelationAggregateInputFields = (t: any) => ({
   _count: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleOrderByRelationAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleOrderByRelationAggregateInput>>('HiringRoleOrderByRelationAggregateInput').implement({
   fields: HiringRoleOrderByRelationAggregateInputFields,
+});
+
+export const CompanyOrderByRelationAggregateInputFields = (t: any) => ({
+  _count: t.field({"required":false,"type":SortOrder}),
+});
+export const CompanyOrderByRelationAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyOrderByRelationAggregateInput>>('CompanyOrderByRelationAggregateInput').implement({
+  fields: CompanyOrderByRelationAggregateInputFields,
 });
 
 export const UserCountOrderByAggregateInputFields = (t: any) => ({
@@ -6290,7 +6293,6 @@ export const AttachmentCountOrderByAggregateInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  userId: t.field({"required":false,"type":SortOrder}),
 });
 export const AttachmentCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCountOrderByAggregateInput>>('AttachmentCountOrderByAggregateInput').implement({
   fields: AttachmentCountOrderByAggregateInputFields,
@@ -6312,7 +6314,6 @@ export const AttachmentMaxOrderByAggregateInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  userId: t.field({"required":false,"type":SortOrder}),
 });
 export const AttachmentMaxOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentMaxOrderByAggregateInput>>('AttachmentMaxOrderByAggregateInput').implement({
   fields: AttachmentMaxOrderByAggregateInputFields,
@@ -6326,7 +6327,6 @@ export const AttachmentMinOrderByAggregateInputFields = (t: any) => ({
   uploaderId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  userId: t.field({"required":false,"type":SortOrder}),
 });
 export const AttachmentMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentMinOrderByAggregateInput>>('AttachmentMinOrderByAggregateInput').implement({
   fields: AttachmentMinOrderByAggregateInputFields,
@@ -6365,6 +6365,15 @@ export const RoleRelationFilterFields = (t: any) => ({
 });
 export const RoleRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.RoleRelationFilter>>('RoleRelationFilter').implement({
   fields: RoleRelationFilterFields,
+});
+
+export const AttachmentListRelationFilterFields = (t: any) => ({
+  every: t.field({"required":false,"type":AttachmentWhereInput}),
+  some: t.field({"required":false,"type":AttachmentWhereInput}),
+  none: t.field({"required":false,"type":AttachmentWhereInput}),
+});
+export const AttachmentListRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentListRelationFilter>>('AttachmentListRelationFilter').implement({
+  fields: AttachmentListRelationFilterFields,
 });
 
 export const AuditLogListRelationFilterFields = (t: any) => ({
@@ -6454,6 +6463,13 @@ export const FollowListRelationFilterFields = (t: any) => ({
 });
 export const FollowListRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.FollowListRelationFilter>>('FollowListRelationFilter').implement({
   fields: FollowListRelationFilterFields,
+});
+
+export const AttachmentOrderByRelationAggregateInputFields = (t: any) => ({
+  _count: t.field({"required":false,"type":SortOrder}),
+});
+export const AttachmentOrderByRelationAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentOrderByRelationAggregateInput>>('AttachmentOrderByRelationAggregateInput').implement({
+  fields: AttachmentOrderByRelationAggregateInputFields,
 });
 
 export const AuditLogOrderByRelationAggregateInputFields = (t: any) => ({
@@ -6630,6 +6646,14 @@ export const RoleSumOrderByAggregateInputFields = (t: any) => ({
 });
 export const RoleSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.RoleSumOrderByAggregateInput>>('RoleSumOrderByAggregateInput').implement({
   fields: RoleSumOrderByAggregateInputFields,
+});
+
+export const BoolNullableFilterFields = (t: any) => ({
+  equals: t.boolean({"required":false}),
+  not: t.field({"required":false,"type":NestedBoolNullableFilter}),
+});
+export const BoolNullableFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.BoolNullableFilter>>('BoolNullableFilter').implement({
+  fields: BoolNullableFilterFields,
 });
 
 export const RoleListRelationFilterFields = (t: any) => ({
@@ -6819,7 +6843,6 @@ export const TaskOrderByRelationAggregateInput = builder.inputRef<PrismaUpdateOp
 export const CompanyCountOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   name: t.field({"required":false,"type":SortOrder}),
-  email: t.field({"required":false,"type":SortOrder}),
   phone: t.field({"required":false,"type":SortOrder}),
   address: t.field({"required":false,"type":SortOrder}),
   city: t.field({"required":false,"type":SortOrder}),
@@ -6833,6 +6856,7 @@ export const CompanyCountOrderByAggregateInputFields = (t: any) => ({
   gdprEmailFooter: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  ownerId: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCountOrderByAggregateInput>>('CompanyCountOrderByAggregateInput').implement({
   fields: CompanyCountOrderByAggregateInputFields,
@@ -6849,7 +6873,6 @@ export const CompanyAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOper
 export const CompanyMaxOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   name: t.field({"required":false,"type":SortOrder}),
-  email: t.field({"required":false,"type":SortOrder}),
   phone: t.field({"required":false,"type":SortOrder}),
   address: t.field({"required":false,"type":SortOrder}),
   city: t.field({"required":false,"type":SortOrder}),
@@ -6863,6 +6886,7 @@ export const CompanyMaxOrderByAggregateInputFields = (t: any) => ({
   gdprEmailFooter: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  ownerId: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyMaxOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyMaxOrderByAggregateInput>>('CompanyMaxOrderByAggregateInput').implement({
   fields: CompanyMaxOrderByAggregateInputFields,
@@ -6871,7 +6895,6 @@ export const CompanyMaxOrderByAggregateInput = builder.inputRef<PrismaUpdateOper
 export const CompanyMinOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   name: t.field({"required":false,"type":SortOrder}),
-  email: t.field({"required":false,"type":SortOrder}),
   phone: t.field({"required":false,"type":SortOrder}),
   address: t.field({"required":false,"type":SortOrder}),
   city: t.field({"required":false,"type":SortOrder}),
@@ -6885,6 +6908,7 @@ export const CompanyMinOrderByAggregateInputFields = (t: any) => ({
   gdprEmailFooter: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  ownerId: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyMinOrderByAggregateInput>>('CompanyMinOrderByAggregateInput').implement({
   fields: CompanyMinOrderByAggregateInputFields,
@@ -6896,6 +6920,17 @@ export const CompanySumOrderByAggregateInputFields = (t: any) => ({
 });
 export const CompanySumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanySumOrderByAggregateInput>>('CompanySumOrderByAggregateInput').implement({
   fields: CompanySumOrderByAggregateInputFields,
+});
+
+export const BoolNullableWithAggregatesFilterFields = (t: any) => ({
+  equals: t.boolean({"required":false}),
+  not: t.field({"required":false,"type":NestedBoolNullableWithAggregatesFilter}),
+  _count: t.field({"required":false,"type":NestedIntNullableFilter}),
+  _min: t.field({"required":false,"type":NestedBoolNullableFilter}),
+  _max: t.field({"required":false,"type":NestedBoolNullableFilter}),
+});
+export const BoolNullableWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.BoolNullableWithAggregatesFilter>>('BoolNullableWithAggregatesFilter').implement({
+  fields: BoolNullableWithAggregatesFilterFields,
 });
 
 export const SubscriptionDataCountOrderByAggregateInputFields = (t: any) => ({
@@ -7924,14 +7959,6 @@ export const EnumOfferPersonalItemsWithAggregatesFilterFields = (t: any) => ({
 });
 export const EnumOfferPersonalItemsWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumOfferPersonalItemsWithAggregatesFilter>>('EnumOfferPersonalItemsWithAggregatesFilter').implement({
   fields: EnumOfferPersonalItemsWithAggregatesFilterFields,
-});
-
-export const AttachmentRelationFilterFields = (t: any) => ({
-  is: t.field({"required":false,"type":AttachmentWhereInput}),
-  isNot: t.field({"required":false,"type":AttachmentWhereInput}),
-});
-export const AttachmentRelationFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentRelationFilter>>('AttachmentRelationFilter').implement({
-  fields: AttachmentRelationFilterFields,
 });
 
 export const OfferFileCountOrderByAggregateInputFields = (t: any) => ({
@@ -9184,6 +9211,15 @@ export const UserCreateemailProviderInput = builder.inputRef<PrismaUpdateOperati
   fields: UserCreateemailProviderInputFields,
 });
 
+export const AttachmentCreateNestedOneWithoutUserProfilePhotoInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":AttachmentCreateWithoutUserProfilePhotoInput}),
+  connectOrCreate: t.field({"required":false,"type":AttachmentCreateOrConnectWithoutUserProfilePhotoInput}),
+  connect: t.field({"required":false,"type":AttachmentWhereUniqueInput}),
+});
+export const AttachmentCreateNestedOneWithoutUserProfilePhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateNestedOneWithoutUserProfilePhotoInput>>('AttachmentCreateNestedOneWithoutUserProfilePhotoInput').implement({
+  fields: AttachmentCreateNestedOneWithoutUserProfilePhotoInputFields,
+});
+
 export const AccountCreateNestedManyWithoutUserInputFields = (t: any) => ({
   create: t.field({"required":false,"type":[AccountCreateWithoutUserInput]}),
   connectOrCreate: t.field({"required":false,"type":[AccountCreateOrConnectWithoutUserInput]}),
@@ -9204,16 +9240,6 @@ export const SessionCreateNestedManyWithoutUserInput = builder.inputRef<PrismaUp
   fields: SessionCreateNestedManyWithoutUserInputFields,
 });
 
-export const AttachmentCreateNestedManyWithoutUserInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":[AttachmentCreateWithoutUserInput]}),
-  connectOrCreate: t.field({"required":false,"type":[AttachmentCreateOrConnectWithoutUserInput]}),
-  createMany: t.field({"required":false,"type":AttachmentCreateManyUserInputEnvelope}),
-  connect: t.field({"required":false,"type":[AttachmentWhereUniqueInput]}),
-});
-export const AttachmentCreateNestedManyWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateNestedManyWithoutUserInput>>('AttachmentCreateNestedManyWithoutUserInput').implement({
-  fields: AttachmentCreateNestedManyWithoutUserInputFields,
-});
-
 export const HiringRoleCreateNestedManyWithoutUserInputFields = (t: any) => ({
   create: t.field({"required":false,"type":[HiringRoleCreateWithoutUserInput]}),
   connectOrCreate: t.field({"required":false,"type":[HiringRoleCreateOrConnectWithoutUserInput]}),
@@ -9222,6 +9248,16 @@ export const HiringRoleCreateNestedManyWithoutUserInputFields = (t: any) => ({
 });
 export const HiringRoleCreateNestedManyWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateNestedManyWithoutUserInput>>('HiringRoleCreateNestedManyWithoutUserInput').implement({
   fields: HiringRoleCreateNestedManyWithoutUserInputFields,
+});
+
+export const CompanyCreateNestedManyWithoutOwnerInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":[CompanyCreateWithoutOwnerInput]}),
+  connectOrCreate: t.field({"required":false,"type":[CompanyCreateOrConnectWithoutOwnerInput]}),
+  createMany: t.field({"required":false,"type":CompanyCreateManyOwnerInputEnvelope}),
+  connect: t.field({"required":false,"type":[CompanyWhereUniqueInput]}),
+});
+export const CompanyCreateNestedManyWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedManyWithoutOwnerInput>>('CompanyCreateNestedManyWithoutOwnerInput').implement({
+  fields: CompanyCreateNestedManyWithoutOwnerInputFields,
 });
 
 export const StringFieldUpdateOperationsInputFields = (t: any) => ({
@@ -9252,17 +9288,6 @@ export const BoolFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOpera
   fields: BoolFieldUpdateOperationsInputFields,
 });
 
-export const NullableIntFieldUpdateOperationsInputFields = (t: any) => ({
-  set: t.int({"required":false}),
-  increment: t.int({"required":false}),
-  decrement: t.int({"required":false}),
-  multiply: t.int({"required":false}),
-  divide: t.int({"required":false}),
-});
-export const NullableIntFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NullableIntFieldUpdateOperationsInput>>('NullableIntFieldUpdateOperationsInput').implement({
-  fields: NullableIntFieldUpdateOperationsInputFields,
-});
-
 export const UserUpdatefeatureDiscoveryInputFields = (t: any) => ({
   set: t.stringList({"required":false}),
   push: t.stringList({"required":false}),
@@ -9284,6 +9309,19 @@ export const DateTimeFieldUpdateOperationsInputFields = (t: any) => ({
 });
 export const DateTimeFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DateTimeFieldUpdateOperationsInput>>('DateTimeFieldUpdateOperationsInput').implement({
   fields: DateTimeFieldUpdateOperationsInputFields,
+});
+
+export const AttachmentUpdateOneWithoutUserProfilePhotoNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":AttachmentCreateWithoutUserProfilePhotoInput}),
+  connectOrCreate: t.field({"required":false,"type":AttachmentCreateOrConnectWithoutUserProfilePhotoInput}),
+  upsert: t.field({"required":false,"type":AttachmentUpsertWithoutUserProfilePhotoInput}),
+  disconnect: t.boolean({"required":false}),
+  delete: t.boolean({"required":false}),
+  connect: t.field({"required":false,"type":AttachmentWhereUniqueInput}),
+  update: t.field({"required":false,"type":AttachmentUpdateWithoutUserProfilePhotoInput}),
+});
+export const AttachmentUpdateOneWithoutUserProfilePhotoNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateOneWithoutUserProfilePhotoNestedInput>>('AttachmentUpdateOneWithoutUserProfilePhotoNestedInput').implement({
+  fields: AttachmentUpdateOneWithoutUserProfilePhotoNestedInputFields,
 });
 
 export const AccountUpdateManyWithoutUserNestedInputFields = (t: any) => ({
@@ -9320,23 +9358,6 @@ export const SessionUpdateManyWithoutUserNestedInput = builder.inputRef<PrismaUp
   fields: SessionUpdateManyWithoutUserNestedInputFields,
 });
 
-export const AttachmentUpdateManyWithoutUserNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":[AttachmentCreateWithoutUserInput]}),
-  connectOrCreate: t.field({"required":false,"type":[AttachmentCreateOrConnectWithoutUserInput]}),
-  upsert: t.field({"required":false,"type":[AttachmentUpsertWithWhereUniqueWithoutUserInput]}),
-  createMany: t.field({"required":false,"type":AttachmentCreateManyUserInputEnvelope}),
-  set: t.field({"required":false,"type":[AttachmentWhereUniqueInput]}),
-  disconnect: t.field({"required":false,"type":[AttachmentWhereUniqueInput]}),
-  delete: t.field({"required":false,"type":[AttachmentWhereUniqueInput]}),
-  connect: t.field({"required":false,"type":[AttachmentWhereUniqueInput]}),
-  update: t.field({"required":false,"type":[AttachmentUpdateWithWhereUniqueWithoutUserInput]}),
-  updateMany: t.field({"required":false,"type":[AttachmentUpdateManyWithWhereWithoutUserInput]}),
-  deleteMany: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
-});
-export const AttachmentUpdateManyWithoutUserNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateManyWithoutUserNestedInput>>('AttachmentUpdateManyWithoutUserNestedInput').implement({
-  fields: AttachmentUpdateManyWithoutUserNestedInputFields,
-});
-
 export const HiringRoleUpdateManyWithoutUserNestedInputFields = (t: any) => ({
   create: t.field({"required":false,"type":[HiringRoleCreateWithoutUserInput]}),
   connectOrCreate: t.field({"required":false,"type":[HiringRoleCreateOrConnectWithoutUserInput]}),
@@ -9352,6 +9373,34 @@ export const HiringRoleUpdateManyWithoutUserNestedInputFields = (t: any) => ({
 });
 export const HiringRoleUpdateManyWithoutUserNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleUpdateManyWithoutUserNestedInput>>('HiringRoleUpdateManyWithoutUserNestedInput').implement({
   fields: HiringRoleUpdateManyWithoutUserNestedInputFields,
+});
+
+export const CompanyUpdateManyWithoutOwnerNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":[CompanyCreateWithoutOwnerInput]}),
+  connectOrCreate: t.field({"required":false,"type":[CompanyCreateOrConnectWithoutOwnerInput]}),
+  upsert: t.field({"required":false,"type":[CompanyUpsertWithWhereUniqueWithoutOwnerInput]}),
+  createMany: t.field({"required":false,"type":CompanyCreateManyOwnerInputEnvelope}),
+  set: t.field({"required":false,"type":[CompanyWhereUniqueInput]}),
+  disconnect: t.field({"required":false,"type":[CompanyWhereUniqueInput]}),
+  delete: t.field({"required":false,"type":[CompanyWhereUniqueInput]}),
+  connect: t.field({"required":false,"type":[CompanyWhereUniqueInput]}),
+  update: t.field({"required":false,"type":[CompanyUpdateWithWhereUniqueWithoutOwnerInput]}),
+  updateMany: t.field({"required":false,"type":[CompanyUpdateManyWithWhereWithoutOwnerInput]}),
+  deleteMany: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
+});
+export const CompanyUpdateManyWithoutOwnerNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateManyWithoutOwnerNestedInput>>('CompanyUpdateManyWithoutOwnerNestedInput').implement({
+  fields: CompanyUpdateManyWithoutOwnerNestedInputFields,
+});
+
+export const NullableIntFieldUpdateOperationsInputFields = (t: any) => ({
+  set: t.int({"required":false}),
+  increment: t.int({"required":false}),
+  decrement: t.int({"required":false}),
+  multiply: t.int({"required":false}),
+  divide: t.int({"required":false}),
+});
+export const NullableIntFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NullableIntFieldUpdateOperationsInput>>('NullableIntFieldUpdateOperationsInput').implement({
+  fields: NullableIntFieldUpdateOperationsInputFields,
 });
 
 export const UserCreateNestedOneWithoutAccountsInputFields = (t: any) => ({
@@ -9394,13 +9443,13 @@ export const UserUpdateOneRequiredWithoutSessionsNestedInput = builder.inputRef<
   fields: UserUpdateOneRequiredWithoutSessionsNestedInputFields,
 });
 
-export const UserCreateNestedOneWithoutAttachmentInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":UserCreateWithoutAttachmentInput}),
-  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutAttachmentInput}),
+export const UserCreateNestedOneWithoutPhotoInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":UserCreateWithoutPhotoInput}),
+  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutPhotoInput}),
   connect: t.field({"required":false,"type":UserWhereUniqueInput}),
 });
-export const UserCreateNestedOneWithoutAttachmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateNestedOneWithoutAttachmentInput>>('UserCreateNestedOneWithoutAttachmentInput').implement({
-  fields: UserCreateNestedOneWithoutAttachmentInputFields,
+export const UserCreateNestedOneWithoutPhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateNestedOneWithoutPhotoInput>>('UserCreateNestedOneWithoutPhotoInput').implement({
+  fields: UserCreateNestedOneWithoutPhotoInputFields,
 });
 
 export const CandidateCreateNestedOneWithoutCvInputFields = (t: any) => ({
@@ -9441,17 +9490,17 @@ export const TalentPoolFileCreateNestedManyWithoutAttachmentInput = builder.inpu
   fields: TalentPoolFileCreateNestedManyWithoutAttachmentInputFields,
 });
 
-export const UserUpdateOneWithoutAttachmentNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":UserCreateWithoutAttachmentInput}),
-  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutAttachmentInput}),
-  upsert: t.field({"required":false,"type":UserUpsertWithoutAttachmentInput}),
+export const UserUpdateOneWithoutPhotoNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":UserCreateWithoutPhotoInput}),
+  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutPhotoInput}),
+  upsert: t.field({"required":false,"type":UserUpsertWithoutPhotoInput}),
   disconnect: t.boolean({"required":false}),
   delete: t.boolean({"required":false}),
   connect: t.field({"required":false,"type":UserWhereUniqueInput}),
-  update: t.field({"required":false,"type":UserUpdateWithoutAttachmentInput}),
+  update: t.field({"required":false,"type":UserUpdateWithoutPhotoInput}),
 });
-export const UserUpdateOneWithoutAttachmentNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateOneWithoutAttachmentNestedInput>>('UserUpdateOneWithoutAttachmentNestedInput').implement({
-  fields: UserUpdateOneWithoutAttachmentNestedInputFields,
+export const UserUpdateOneWithoutPhotoNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateOneWithoutPhotoNestedInput>>('UserUpdateOneWithoutPhotoNestedInput').implement({
+  fields: UserUpdateOneWithoutPhotoNestedInputFields,
 });
 
 export const CandidateUpdateOneWithoutCvNestedInputFields = (t: any) => ({
@@ -10137,6 +10186,22 @@ export const TaskCreateNestedManyWithoutCompanyInput = builder.inputRef<PrismaUp
   fields: TaskCreateNestedManyWithoutCompanyInputFields,
 });
 
+export const UserCreateNestedOneWithoutCompaniesInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":UserCreateWithoutCompaniesInput}),
+  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutCompaniesInput}),
+  connect: t.field({"required":false,"type":UserWhereUniqueInput}),
+});
+export const UserCreateNestedOneWithoutCompaniesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateNestedOneWithoutCompaniesInput>>('UserCreateNestedOneWithoutCompaniesInput').implement({
+  fields: UserCreateNestedOneWithoutCompaniesInputFields,
+});
+
+export const NullableBoolFieldUpdateOperationsInputFields = (t: any) => ({
+  set: t.boolean({"required":false}),
+});
+export const NullableBoolFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NullableBoolFieldUpdateOperationsInput>>('NullableBoolFieldUpdateOperationsInput').implement({
+  fields: NullableBoolFieldUpdateOperationsInputFields,
+});
+
 export const RoleUpdateManyWithoutCompanyNestedInputFields = (t: any) => ({
   create: t.field({"required":false,"type":[RoleCreateWithoutCompanyInput]}),
   connectOrCreate: t.field({"required":false,"type":[RoleCreateOrConnectWithoutCompanyInput]}),
@@ -10354,6 +10419,17 @@ export const TaskUpdateManyWithoutCompanyNestedInput = builder.inputRef<PrismaUp
   fields: TaskUpdateManyWithoutCompanyNestedInputFields,
 });
 
+export const UserUpdateOneRequiredWithoutCompaniesNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":UserCreateWithoutCompaniesInput}),
+  connectOrCreate: t.field({"required":false,"type":UserCreateOrConnectWithoutCompaniesInput}),
+  upsert: t.field({"required":false,"type":UserUpsertWithoutCompaniesInput}),
+  connect: t.field({"required":false,"type":UserWhereUniqueInput}),
+  update: t.field({"required":false,"type":UserUpdateWithoutCompaniesInput}),
+});
+export const UserUpdateOneRequiredWithoutCompaniesNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateOneRequiredWithoutCompaniesNestedInput>>('UserUpdateOneRequiredWithoutCompaniesNestedInput').implement({
+  fields: UserUpdateOneRequiredWithoutCompaniesNestedInputFields,
+});
+
 export const CompanyCreateNestedOneWithoutSubscriptionInputFields = (t: any) => ({
   create: t.field({"required":false,"type":CompanyCreateWithoutSubscriptionInput}),
   connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutSubscriptionInput}),
@@ -10394,13 +10470,13 @@ export const CompanyUpdateOneRequiredWithoutMetadataNestedInput = builder.inputR
   fields: CompanyUpdateOneRequiredWithoutMetadataNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutDepartmentInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutDepartmentInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDepartmentInput}),
+export const CompanyCreateNestedOneWithoutDepartmentsInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutDepartmentsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDepartmentsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutDepartmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutDepartmentInput>>('CompanyCreateNestedOneWithoutDepartmentInput').implement({
-  fields: CompanyCreateNestedOneWithoutDepartmentInputFields,
+export const CompanyCreateNestedOneWithoutDepartmentsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutDepartmentsInput>>('CompanyCreateNestedOneWithoutDepartmentsInput').implement({
+  fields: CompanyCreateNestedOneWithoutDepartmentsInputFields,
 });
 
 export const OfferCreateNestedManyWithoutDeparmentInputFields = (t: any) => ({
@@ -10413,15 +10489,15 @@ export const OfferCreateNestedManyWithoutDeparmentInput = builder.inputRef<Prism
   fields: OfferCreateNestedManyWithoutDeparmentInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutDepartmentNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutDepartmentInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDepartmentInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutDepartmentInput}),
+export const CompanyUpdateOneRequiredWithoutDepartmentsNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutDepartmentsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDepartmentsInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutDepartmentsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutDepartmentInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutDepartmentsInput}),
 });
-export const CompanyUpdateOneRequiredWithoutDepartmentNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutDepartmentNestedInput>>('CompanyUpdateOneRequiredWithoutDepartmentNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutDepartmentNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutDepartmentsNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutDepartmentsNestedInput>>('CompanyUpdateOneRequiredWithoutDepartmentsNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutDepartmentsNestedInputFields,
 });
 
 export const OfferUpdateManyWithoutDeparmentNestedInputFields = (t: any) => ({
@@ -10441,13 +10517,13 @@ export const OfferUpdateManyWithoutDeparmentNestedInput = builder.inputRef<Prism
   fields: OfferUpdateManyWithoutDeparmentNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutDisqualifyReasonInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutDisqualifyReasonInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDisqualifyReasonInput}),
+export const CompanyCreateNestedOneWithoutDisqualifyReasonsInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutDisqualifyReasonsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDisqualifyReasonsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutDisqualifyReasonInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutDisqualifyReasonInput>>('CompanyCreateNestedOneWithoutDisqualifyReasonInput').implement({
-  fields: CompanyCreateNestedOneWithoutDisqualifyReasonInputFields,
+export const CompanyCreateNestedOneWithoutDisqualifyReasonsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutDisqualifyReasonsInput>>('CompanyCreateNestedOneWithoutDisqualifyReasonsInput').implement({
+  fields: CompanyCreateNestedOneWithoutDisqualifyReasonsInputFields,
 });
 
 export const MatchCreateNestedManyWithoutDisqualifyReasonInputFields = (t: any) => ({
@@ -10460,15 +10536,15 @@ export const MatchCreateNestedManyWithoutDisqualifyReasonInput = builder.inputRe
   fields: MatchCreateNestedManyWithoutDisqualifyReasonInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutDisqualifyReasonInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDisqualifyReasonInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutDisqualifyReasonInput}),
+export const CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutDisqualifyReasonsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutDisqualifyReasonsInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutDisqualifyReasonsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutDisqualifyReasonInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutDisqualifyReasonsInput}),
 });
-export const CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInput>>('CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInput>>('CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInputFields,
 });
 
 export const MatchUpdateManyWithoutDisqualifyReasonNestedInputFields = (t: any) => ({
@@ -10488,13 +10564,13 @@ export const MatchUpdateManyWithoutDisqualifyReasonNestedInput = builder.inputRe
   fields: MatchUpdateManyWithoutDisqualifyReasonNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutTagSourceInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTagSourceInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTagSourceInput}),
+export const CompanyCreateNestedOneWithoutTagSourcesInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTagSourcesInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTagSourcesInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutTagSourceInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTagSourceInput>>('CompanyCreateNestedOneWithoutTagSourceInput').implement({
-  fields: CompanyCreateNestedOneWithoutTagSourceInputFields,
+export const CompanyCreateNestedOneWithoutTagSourcesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTagSourcesInput>>('CompanyCreateNestedOneWithoutTagSourcesInput').implement({
+  fields: CompanyCreateNestedOneWithoutTagSourcesInputFields,
 });
 
 export const OfferTagCreateNestedManyWithoutTagInputFields = (t: any) => ({
@@ -10526,15 +10602,15 @@ export const CandidateTagCreateNestedManyWithoutTagInput = builder.inputRef<Pris
   fields: CandidateTagCreateNestedManyWithoutTagInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutTagSourceNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTagSourceInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTagSourceInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTagSourceInput}),
+export const CompanyUpdateOneRequiredWithoutTagSourcesNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTagSourcesInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTagSourcesInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTagSourcesInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutTagSourceInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutTagSourcesInput}),
 });
-export const CompanyUpdateOneRequiredWithoutTagSourceNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTagSourceNestedInput>>('CompanyUpdateOneRequiredWithoutTagSourceNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutTagSourceNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutTagSourcesNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTagSourcesNestedInput>>('CompanyUpdateOneRequiredWithoutTagSourcesNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutTagSourcesNestedInputFields,
 });
 
 export const OfferTagUpdateManyWithoutTagNestedInputFields = (t: any) => ({
@@ -10584,13 +10660,13 @@ export const CandidateTagUpdateManyWithoutTagNestedInput = builder.inputRef<Pris
   fields: CandidateTagUpdateManyWithoutTagNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutAuditLogInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutAuditLogInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutAuditLogInput}),
+export const CompanyCreateNestedOneWithoutAuditLogsInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutAuditLogsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutAuditLogsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutAuditLogInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutAuditLogInput>>('CompanyCreateNestedOneWithoutAuditLogInput').implement({
-  fields: CompanyCreateNestedOneWithoutAuditLogInputFields,
+export const CompanyCreateNestedOneWithoutAuditLogsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutAuditLogsInput>>('CompanyCreateNestedOneWithoutAuditLogsInput').implement({
+  fields: CompanyCreateNestedOneWithoutAuditLogsInputFields,
 });
 
 export const HiringRoleCreateNestedOneWithoutAuditLogsInputFields = (t: any) => ({
@@ -10620,15 +10696,15 @@ export const CandidateCreateNestedOneWithoutAuditLogsInput = builder.inputRef<Pr
   fields: CandidateCreateNestedOneWithoutAuditLogsInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutAuditLogNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutAuditLogInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutAuditLogInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutAuditLogInput}),
+export const CompanyUpdateOneRequiredWithoutAuditLogsNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutAuditLogsInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutAuditLogsInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutAuditLogsInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutAuditLogInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutAuditLogsInput}),
 });
-export const CompanyUpdateOneRequiredWithoutAuditLogNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutAuditLogNestedInput>>('CompanyUpdateOneRequiredWithoutAuditLogNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutAuditLogNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutAuditLogsNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutAuditLogsNestedInput>>('CompanyUpdateOneRequiredWithoutAuditLogsNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutAuditLogsNestedInputFields,
 });
 
 export const HiringRoleUpdateOneWithoutAuditLogsNestedInputFields = (t: any) => ({
@@ -10998,13 +11074,13 @@ export const EvaluationUpdateOneRequiredWithoutEventEvaluationsNestedInput = bui
   fields: EvaluationUpdateOneRequiredWithoutEventEvaluationsNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutOfferInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutOfferInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutOfferInput}),
+export const CompanyCreateNestedOneWithoutOffersInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutOffersInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutOffersInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutOfferInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutOfferInput>>('CompanyCreateNestedOneWithoutOfferInput').implement({
-  fields: CompanyCreateNestedOneWithoutOfferInputFields,
+export const CompanyCreateNestedOneWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutOffersInput>>('CompanyCreateNestedOneWithoutOffersInput').implement({
+  fields: CompanyCreateNestedOneWithoutOffersInputFields,
 });
 
 export const DepartmentCreateNestedOneWithoutOffersInputFields = (t: any) => ({
@@ -11148,15 +11224,15 @@ export const EnumOfferPersonalItemsFieldUpdateOperationsInput = builder.inputRef
   fields: EnumOfferPersonalItemsFieldUpdateOperationsInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutOfferNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutOfferInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutOfferInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutOfferInput}),
+export const CompanyUpdateOneRequiredWithoutOffersNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutOffersInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutOffersInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutOffersInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutOfferInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutOffersInput}),
 });
-export const CompanyUpdateOneRequiredWithoutOfferNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutOfferNestedInput>>('CompanyUpdateOneRequiredWithoutOfferNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutOfferNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutOffersNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutOffersNestedInput>>('CompanyUpdateOneRequiredWithoutOffersNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutOffersNestedInputFields,
 });
 
 export const DepartmentUpdateOneWithoutOffersNestedInputFields = (t: any) => ({
@@ -11763,13 +11839,13 @@ export const CandidateUpdateOneRequiredWithoutTalentPoolsNestedInput = builder.i
   fields: CandidateUpdateOneRequiredWithoutTalentPoolsNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutTemplateInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTemplateInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTemplateInput}),
+export const CompanyCreateNestedOneWithoutTemplatesInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTemplatesInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTemplatesInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutTemplateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTemplateInput>>('CompanyCreateNestedOneWithoutTemplateInput').implement({
-  fields: CompanyCreateNestedOneWithoutTemplateInputFields,
+export const CompanyCreateNestedOneWithoutTemplatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTemplatesInput>>('CompanyCreateNestedOneWithoutTemplatesInput').implement({
+  fields: CompanyCreateNestedOneWithoutTemplatesInputFields,
 });
 
 export const OfferCreateNestedOneWithoutScreeningQuestionsTemplateInputFields = (t: any) => ({
@@ -11826,15 +11902,15 @@ export const EnumTemplateTypesFieldUpdateOperationsInput = builder.inputRef<Pris
   fields: EnumTemplateTypesFieldUpdateOperationsInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutTemplateNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTemplateInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTemplateInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTemplateInput}),
+export const CompanyUpdateOneRequiredWithoutTemplatesNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTemplatesInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTemplatesInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTemplatesInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutTemplateInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutTemplatesInput}),
 });
-export const CompanyUpdateOneRequiredWithoutTemplateNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTemplateNestedInput>>('CompanyUpdateOneRequiredWithoutTemplateNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutTemplateNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutTemplatesNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTemplatesNestedInput>>('CompanyUpdateOneRequiredWithoutTemplatesNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutTemplatesNestedInputFields,
 });
 
 export const OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInputFields = (t: any) => ({
@@ -12824,13 +12900,13 @@ export const CandidateUpdateOneRequiredWithoutSharedCandidateLinkNestedInput = b
   fields: CandidateUpdateOneRequiredWithoutSharedCandidateLinkNestedInputFields,
 });
 
-export const CompanyCreateNestedOneWithoutTaskInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTaskInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTaskInput}),
+export const CompanyCreateNestedOneWithoutTasksInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTasksInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTasksInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
 });
-export const CompanyCreateNestedOneWithoutTaskInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTaskInput>>('CompanyCreateNestedOneWithoutTaskInput').implement({
-  fields: CompanyCreateNestedOneWithoutTaskInputFields,
+export const CompanyCreateNestedOneWithoutTasksInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateNestedOneWithoutTasksInput>>('CompanyCreateNestedOneWithoutTasksInput').implement({
+  fields: CompanyCreateNestedOneWithoutTasksInputFields,
 });
 
 export const TaskMemberCreateNestedManyWithoutTaskInputFields = (t: any) => ({
@@ -12852,15 +12928,15 @@ export const CandidateCreateNestedOneWithoutTasksInput = builder.inputRef<Prisma
   fields: CandidateCreateNestedOneWithoutTasksInputFields,
 });
 
-export const CompanyUpdateOneRequiredWithoutTaskNestedInputFields = (t: any) => ({
-  create: t.field({"required":false,"type":CompanyCreateWithoutTaskInput}),
-  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTaskInput}),
-  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTaskInput}),
+export const CompanyUpdateOneRequiredWithoutTasksNestedInputFields = (t: any) => ({
+  create: t.field({"required":false,"type":CompanyCreateWithoutTasksInput}),
+  connectOrCreate: t.field({"required":false,"type":CompanyCreateOrConnectWithoutTasksInput}),
+  upsert: t.field({"required":false,"type":CompanyUpsertWithoutTasksInput}),
   connect: t.field({"required":false,"type":CompanyWhereUniqueInput}),
-  update: t.field({"required":false,"type":CompanyUpdateWithoutTaskInput}),
+  update: t.field({"required":false,"type":CompanyUpdateWithoutTasksInput}),
 });
-export const CompanyUpdateOneRequiredWithoutTaskNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTaskNestedInput>>('CompanyUpdateOneRequiredWithoutTaskNestedInput').implement({
-  fields: CompanyUpdateOneRequiredWithoutTaskNestedInputFields,
+export const CompanyUpdateOneRequiredWithoutTasksNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateOneRequiredWithoutTasksNestedInput>>('CompanyUpdateOneRequiredWithoutTasksNestedInput').implement({
+  fields: CompanyUpdateOneRequiredWithoutTasksNestedInputFields,
 });
 
 export const TaskMemberUpdateManyWithoutTaskNestedInputFields = (t: any) => ({
@@ -13287,6 +13363,25 @@ export const NestedFloatFilter = builder.inputRef<PrismaUpdateOperationsInputFil
   fields: NestedFloatFilterFields,
 });
 
+export const NestedBoolNullableFilterFields = (t: any) => ({
+  equals: t.boolean({"required":false}),
+  not: t.field({"required":false,"type":NestedBoolNullableFilter}),
+});
+export const NestedBoolNullableFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedBoolNullableFilter>>('NestedBoolNullableFilter').implement({
+  fields: NestedBoolNullableFilterFields,
+});
+
+export const NestedBoolNullableWithAggregatesFilterFields = (t: any) => ({
+  equals: t.boolean({"required":false}),
+  not: t.field({"required":false,"type":NestedBoolNullableWithAggregatesFilter}),
+  _count: t.field({"required":false,"type":NestedIntNullableFilter}),
+  _min: t.field({"required":false,"type":NestedBoolNullableFilter}),
+  _max: t.field({"required":false,"type":NestedBoolNullableFilter}),
+});
+export const NestedBoolNullableWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedBoolNullableWithAggregatesFilter>>('NestedBoolNullableWithAggregatesFilter').implement({
+  fields: NestedBoolNullableWithAggregatesFilterFields,
+});
+
 export const NestedJsonFilterFields = (t: any) => ({
   equals: t.field({"required":false,"type":Json}),
   path: t.stringList({"required":false}),
@@ -13375,6 +13470,29 @@ export const NestedEnumTemplateTypesWithAggregatesFilter = builder.inputRef<Pris
   fields: NestedEnumTemplateTypesWithAggregatesFilterFields,
 });
 
+export const AttachmentCreateWithoutUserProfilePhotoInputFields = (t: any) => ({
+  contentType: t.string({"required":true}),
+  filename: t.string({"required":true}),
+  path: t.string({"required":true}),
+  createdAt: t.field({"required":false,"type":DateTime}),
+  updatedAt: t.field({"required":false,"type":DateTime}),
+  candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
+  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
+  talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
+});
+export const AttachmentCreateWithoutUserProfilePhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateWithoutUserProfilePhotoInput>>('AttachmentCreateWithoutUserProfilePhotoInput').implement({
+  fields: AttachmentCreateWithoutUserProfilePhotoInputFields,
+});
+
+export const AttachmentCreateOrConnectWithoutUserProfilePhotoInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":AttachmentWhereUniqueInput}),
+  create: t.field({"required":true,"type":AttachmentCreateWithoutUserProfilePhotoInput}),
+});
+export const AttachmentCreateOrConnectWithoutUserProfilePhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateOrConnectWithoutUserProfilePhotoInput>>('AttachmentCreateOrConnectWithoutUserProfilePhotoInput').implement({
+  fields: AttachmentCreateOrConnectWithoutUserProfilePhotoInputFields,
+});
+
 export const AccountCreateWithoutUserInputFields = (t: any) => ({
   id: t.string({"required":false}),
   type: t.string({"required":true}),
@@ -13433,37 +13551,6 @@ export const SessionCreateManyUserInputEnvelope = builder.inputRef<PrismaUpdateO
   fields: SessionCreateManyUserInputEnvelopeFields,
 });
 
-export const AttachmentCreateWithoutUserInputFields = (t: any) => ({
-  contentType: t.string({"required":true}),
-  filename: t.string({"required":true}),
-  path: t.string({"required":true}),
-  createdAt: t.field({"required":false,"type":DateTime}),
-  updatedAt: t.field({"required":false,"type":DateTime}),
-  candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
-  offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
-  talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
-});
-export const AttachmentCreateWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateWithoutUserInput>>('AttachmentCreateWithoutUserInput').implement({
-  fields: AttachmentCreateWithoutUserInputFields,
-});
-
-export const AttachmentCreateOrConnectWithoutUserInputFields = (t: any) => ({
-  where: t.field({"required":true,"type":AttachmentWhereUniqueInput}),
-  create: t.field({"required":true,"type":AttachmentCreateWithoutUserInput}),
-});
-export const AttachmentCreateOrConnectWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateOrConnectWithoutUserInput>>('AttachmentCreateOrConnectWithoutUserInput').implement({
-  fields: AttachmentCreateOrConnectWithoutUserInputFields,
-});
-
-export const AttachmentCreateManyUserInputEnvelopeFields = (t: any) => ({
-  data: t.field({"required":true,"type":[AttachmentCreateManyUserInput]}),
-  skipDuplicates: t.boolean({"required":false}),
-});
-export const AttachmentCreateManyUserInputEnvelope = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateManyUserInputEnvelope>>('AttachmentCreateManyUserInputEnvelope').implement({
-  fields: AttachmentCreateManyUserInputEnvelopeFields,
-});
-
 export const HiringRoleCreateWithoutUserInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
@@ -13501,6 +13588,78 @@ export const HiringRoleCreateManyUserInputEnvelopeFields = (t: any) => ({
 });
 export const HiringRoleCreateManyUserInputEnvelope = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateManyUserInputEnvelope>>('HiringRoleCreateManyUserInputEnvelope').implement({
   fields: HiringRoleCreateManyUserInputEnvelopeFields,
+});
+
+export const CompanyCreateWithoutOwnerInputFields = (t: any) => ({
+  name: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
+  createdAt: t.field({"required":false,"type":DateTime}),
+  updatedAt: t.field({"required":false,"type":DateTime}),
+  roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
+  subscription: t.field({"required":false,"type":SubscriptionDataCreateNestedOneWithoutCompanyInput}),
+  meetingRooms: t.field({"required":false,"type":MeetingRoomCreateNestedManyWithoutCompanyInput}),
+  metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
+  eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
+  events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+});
+export const CompanyCreateWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutOwnerInput>>('CompanyCreateWithoutOwnerInput').implement({
+  fields: CompanyCreateWithoutOwnerInputFields,
+});
+
+export const CompanyCreateOrConnectWithoutOwnerInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutOwnerInput}),
+});
+export const CompanyCreateOrConnectWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutOwnerInput>>('CompanyCreateOrConnectWithoutOwnerInput').implement({
+  fields: CompanyCreateOrConnectWithoutOwnerInputFields,
+});
+
+export const CompanyCreateManyOwnerInputEnvelopeFields = (t: any) => ({
+  data: t.field({"required":true,"type":[CompanyCreateManyOwnerInput]}),
+  skipDuplicates: t.boolean({"required":false}),
+});
+export const CompanyCreateManyOwnerInputEnvelope = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateManyOwnerInputEnvelope>>('CompanyCreateManyOwnerInputEnvelope').implement({
+  fields: CompanyCreateManyOwnerInputEnvelopeFields,
+});
+
+export const AttachmentUpsertWithoutUserProfilePhotoInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":AttachmentUpdateWithoutUserProfilePhotoInput}),
+  create: t.field({"required":true,"type":AttachmentCreateWithoutUserProfilePhotoInput}),
+});
+export const AttachmentUpsertWithoutUserProfilePhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpsertWithoutUserProfilePhotoInput>>('AttachmentUpsertWithoutUserProfilePhotoInput').implement({
+  fields: AttachmentUpsertWithoutUserProfilePhotoInputFields,
+});
+
+export const AttachmentUpdateWithoutUserProfilePhotoInputFields = (t: any) => ({
+  contentType: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  filename: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
+  talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
+});
+export const AttachmentUpdateWithoutUserProfilePhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateWithoutUserProfilePhotoInput>>('AttachmentUpdateWithoutUserProfilePhotoInput').implement({
+  fields: AttachmentUpdateWithoutUserProfilePhotoInputFields,
 });
 
 export const AccountUpsertWithWhereUniqueWithoutUserInputFields = (t: any) => ({
@@ -13587,48 +13746,6 @@ export const SessionScalarWhereInput = builder.inputRef<PrismaUpdateOperationsIn
   fields: SessionScalarWhereInputFields,
 });
 
-export const AttachmentUpsertWithWhereUniqueWithoutUserInputFields = (t: any) => ({
-  where: t.field({"required":true,"type":AttachmentWhereUniqueInput}),
-  update: t.field({"required":true,"type":AttachmentUpdateWithoutUserInput}),
-  create: t.field({"required":true,"type":AttachmentCreateWithoutUserInput}),
-});
-export const AttachmentUpsertWithWhereUniqueWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpsertWithWhereUniqueWithoutUserInput>>('AttachmentUpsertWithWhereUniqueWithoutUserInput').implement({
-  fields: AttachmentUpsertWithWhereUniqueWithoutUserInputFields,
-});
-
-export const AttachmentUpdateWithWhereUniqueWithoutUserInputFields = (t: any) => ({
-  where: t.field({"required":true,"type":AttachmentWhereUniqueInput}),
-  data: t.field({"required":true,"type":AttachmentUpdateWithoutUserInput}),
-});
-export const AttachmentUpdateWithWhereUniqueWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateWithWhereUniqueWithoutUserInput>>('AttachmentUpdateWithWhereUniqueWithoutUserInput').implement({
-  fields: AttachmentUpdateWithWhereUniqueWithoutUserInputFields,
-});
-
-export const AttachmentUpdateManyWithWhereWithoutUserInputFields = (t: any) => ({
-  where: t.field({"required":true,"type":AttachmentScalarWhereInput}),
-  data: t.field({"required":true,"type":AttachmentUpdateManyMutationInput}),
-});
-export const AttachmentUpdateManyWithWhereWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateManyWithWhereWithoutUserInput>>('AttachmentUpdateManyWithWhereWithoutUserInput').implement({
-  fields: AttachmentUpdateManyWithWhereWithoutUserInputFields,
-});
-
-export const AttachmentScalarWhereInputFields = (t: any) => ({
-  AND: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
-  OR: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
-  NOT: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
-  id: t.field({"required":false,"type":IntFilter}),
-  contentType: t.field({"required":false,"type":StringFilter}),
-  filename: t.field({"required":false,"type":StringFilter}),
-  path: t.field({"required":false,"type":StringFilter}),
-  uploaderId: t.field({"required":false,"type":IntFilter}),
-  createdAt: t.field({"required":false,"type":DateTimeFilter}),
-  updatedAt: t.field({"required":false,"type":DateTimeFilter}),
-  userId: t.field({"required":false,"type":StringNullableFilter}),
-});
-export const AttachmentScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentScalarWhereInput>>('AttachmentScalarWhereInput').implement({
-  fields: AttachmentScalarWhereInputFields,
-});
-
 export const HiringRoleUpsertWithWhereUniqueWithoutUserInputFields = (t: any) => ({
   where: t.field({"required":true,"type":HiringRoleWhereUniqueInput}),
   update: t.field({"required":true,"type":HiringRoleUpdateWithoutUserInput}),
@@ -13670,6 +13787,56 @@ export const HiringRoleScalarWhereInput = builder.inputRef<PrismaUpdateOperation
   fields: HiringRoleScalarWhereInputFields,
 });
 
+export const CompanyUpsertWithWhereUniqueWithoutOwnerInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
+  update: t.field({"required":true,"type":CompanyUpdateWithoutOwnerInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutOwnerInput}),
+});
+export const CompanyUpsertWithWhereUniqueWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithWhereUniqueWithoutOwnerInput>>('CompanyUpsertWithWhereUniqueWithoutOwnerInput').implement({
+  fields: CompanyUpsertWithWhereUniqueWithoutOwnerInputFields,
+});
+
+export const CompanyUpdateWithWhereUniqueWithoutOwnerInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
+  data: t.field({"required":true,"type":CompanyUpdateWithoutOwnerInput}),
+});
+export const CompanyUpdateWithWhereUniqueWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithWhereUniqueWithoutOwnerInput>>('CompanyUpdateWithWhereUniqueWithoutOwnerInput').implement({
+  fields: CompanyUpdateWithWhereUniqueWithoutOwnerInputFields,
+});
+
+export const CompanyUpdateManyWithWhereWithoutOwnerInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":CompanyScalarWhereInput}),
+  data: t.field({"required":true,"type":CompanyUpdateManyMutationInput}),
+});
+export const CompanyUpdateManyWithWhereWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateManyWithWhereWithoutOwnerInput>>('CompanyUpdateManyWithWhereWithoutOwnerInput').implement({
+  fields: CompanyUpdateManyWithWhereWithoutOwnerInputFields,
+});
+
+export const CompanyScalarWhereInputFields = (t: any) => ({
+  AND: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
+  OR: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
+  NOT: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
+  id: t.field({"required":false,"type":IntFilter}),
+  name: t.field({"required":false,"type":StringFilter}),
+  phone: t.field({"required":false,"type":StringNullableFilter}),
+  address: t.field({"required":false,"type":StringNullableFilter}),
+  city: t.field({"required":false,"type":StringNullableFilter}),
+  state: t.field({"required":false,"type":StringNullableFilter}),
+  country: t.field({"required":false,"type":StringNullableFilter}),
+  companyInbox: t.field({"required":false,"type":StringNullableFilter}),
+  subdomain: t.field({"required":false,"type":StringNullableFilter}),
+  gdprEnable: t.field({"required":false,"type":BoolNullableFilter}),
+  gdprRetention: t.field({"required":false,"type":IntNullableFilter}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringNullableFilter}),
+  gdprEmailFooter: t.field({"required":false,"type":StringNullableFilter}),
+  createdAt: t.field({"required":false,"type":DateTimeFilter}),
+  updatedAt: t.field({"required":false,"type":DateTimeFilter}),
+  ownerId: t.field({"required":false,"type":StringFilter}),
+});
+export const CompanyScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyScalarWhereInput>>('CompanyScalarWhereInput').implement({
+  fields: CompanyScalarWhereInputFields,
+});
+
 export const UserCreateWithoutAccountsInputFields = (t: any) => ({
   id: t.string({"required":false}),
   name: t.string({"required":false}),
@@ -13684,16 +13851,16 @@ export const UserCreateWithoutAccountsInputFields = (t: any) => ({
   timeformat24: t.boolean({"required":false}),
   timezone: t.string({"required":false}),
   weekStartDate: t.string({"required":false}),
-  photoId: t.int({"required":false}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.string({"required":false}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
-  Attachment: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUserInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  companies: t.field({"required":false,"type":CompanyCreateNestedManyWithoutOwnerInput}),
 });
 export const UserCreateWithoutAccountsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutAccountsInput>>('UserCreateWithoutAccountsInput').implement({
   fields: UserCreateWithoutAccountsInputFields,
@@ -13729,16 +13896,16 @@ export const UserUpdateWithoutAccountsInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
-  Attachment: t.field({"required":false,"type":AttachmentUpdateManyWithoutUserNestedInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  companies: t.field({"required":false,"type":CompanyUpdateManyWithoutOwnerNestedInput}),
 });
 export const UserUpdateWithoutAccountsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutAccountsInput>>('UserUpdateWithoutAccountsInput').implement({
   fields: UserUpdateWithoutAccountsInputFields,
@@ -13758,16 +13925,16 @@ export const UserCreateWithoutSessionsInputFields = (t: any) => ({
   timeformat24: t.boolean({"required":false}),
   timezone: t.string({"required":false}),
   weekStartDate: t.string({"required":false}),
-  photoId: t.int({"required":false}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.string({"required":false}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
-  Attachment: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUserInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  companies: t.field({"required":false,"type":CompanyCreateNestedManyWithoutOwnerInput}),
 });
 export const UserCreateWithoutSessionsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutSessionsInput>>('UserCreateWithoutSessionsInput').implement({
   fields: UserCreateWithoutSessionsInputFields,
@@ -13803,22 +13970,22 @@ export const UserUpdateWithoutSessionsInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
-  Attachment: t.field({"required":false,"type":AttachmentUpdateManyWithoutUserNestedInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  companies: t.field({"required":false,"type":CompanyUpdateManyWithoutOwnerNestedInput}),
 });
 export const UserUpdateWithoutSessionsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutSessionsInput>>('UserUpdateWithoutSessionsInput').implement({
   fields: UserUpdateWithoutSessionsInputFields,
 });
 
-export const UserCreateWithoutAttachmentInputFields = (t: any) => ({
+export const UserCreateWithoutPhotoInputFields = (t: any) => ({
   id: t.string({"required":false}),
   name: t.string({"required":false}),
   email: t.string({"required":true}),
@@ -13832,7 +13999,6 @@ export const UserCreateWithoutAttachmentInputFields = (t: any) => ({
   timeformat24: t.boolean({"required":false}),
   timezone: t.string({"required":false}),
   weekStartDate: t.string({"required":false}),
-  photoId: t.int({"required":false}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.string({"required":false}),
@@ -13841,18 +14007,19 @@ export const UserCreateWithoutAttachmentInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTime}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+  companies: t.field({"required":false,"type":CompanyCreateNestedManyWithoutOwnerInput}),
 });
-export const UserCreateWithoutAttachmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutAttachmentInput>>('UserCreateWithoutAttachmentInput').implement({
-  fields: UserCreateWithoutAttachmentInputFields,
+export const UserCreateWithoutPhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutPhotoInput>>('UserCreateWithoutPhotoInput').implement({
+  fields: UserCreateWithoutPhotoInputFields,
 });
 
-export const UserCreateOrConnectWithoutAttachmentInputFields = (t: any) => ({
+export const UserCreateOrConnectWithoutPhotoInputFields = (t: any) => ({
   where: t.field({"required":true,"type":UserWhereUniqueInput}),
-  create: t.field({"required":true,"type":UserCreateWithoutAttachmentInput}),
+  create: t.field({"required":true,"type":UserCreateWithoutPhotoInput}),
 });
-export const UserCreateOrConnectWithoutAttachmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateOrConnectWithoutAttachmentInput>>('UserCreateOrConnectWithoutAttachmentInput').implement({
-  fields: UserCreateOrConnectWithoutAttachmentInputFields,
+export const UserCreateOrConnectWithoutPhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateOrConnectWithoutPhotoInput>>('UserCreateOrConnectWithoutPhotoInput').implement({
+  fields: UserCreateOrConnectWithoutPhotoInputFields,
 });
 
 export const CandidateCreateWithoutCvInputFields = (t: any) => ({
@@ -13973,15 +14140,15 @@ export const TalentPoolFileCreateManyAttachmentInputEnvelope = builder.inputRef<
   fields: TalentPoolFileCreateManyAttachmentInputEnvelopeFields,
 });
 
-export const UserUpsertWithoutAttachmentInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":UserUpdateWithoutAttachmentInput}),
-  create: t.field({"required":true,"type":UserCreateWithoutAttachmentInput}),
+export const UserUpsertWithoutPhotoInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":UserUpdateWithoutPhotoInput}),
+  create: t.field({"required":true,"type":UserCreateWithoutPhotoInput}),
 });
-export const UserUpsertWithoutAttachmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpsertWithoutAttachmentInput>>('UserUpsertWithoutAttachmentInput').implement({
-  fields: UserUpsertWithoutAttachmentInputFields,
+export const UserUpsertWithoutPhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpsertWithoutPhotoInput>>('UserUpsertWithoutPhotoInput').implement({
+  fields: UserUpsertWithoutPhotoInputFields,
 });
 
-export const UserUpdateWithoutAttachmentInputFields = (t: any) => ({
+export const UserUpdateWithoutPhotoInputFields = (t: any) => ({
   id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
@@ -13995,7 +14162,6 @@ export const UserUpdateWithoutAttachmentInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -14004,10 +14170,11 @@ export const UserUpdateWithoutAttachmentInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
-  HiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+  companies: t.field({"required":false,"type":CompanyUpdateManyWithoutOwnerNestedInput}),
 });
-export const UserUpdateWithoutAttachmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutAttachmentInput>>('UserUpdateWithoutAttachmentInput').implement({
-  fields: UserUpdateWithoutAttachmentInputFields,
+export const UserUpdateWithoutPhotoInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutPhotoInput>>('UserUpdateWithoutPhotoInput').implement({
+  fields: UserUpdateWithoutPhotoInputFields,
 });
 
 export const CandidateUpsertWithoutCvInputFields = (t: any) => ({
@@ -14170,16 +14337,16 @@ export const UserCreateWithoutHiringRoleInputFields = (t: any) => ({
   timeformat24: t.boolean({"required":false}),
   timezone: t.string({"required":false}),
   weekStartDate: t.string({"required":false}),
-  photoId: t.int({"required":false}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.string({"required":false}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
-  Attachment: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUserInput}),
+  companies: t.field({"required":false,"type":CompanyCreateNestedManyWithoutOwnerInput}),
 });
 export const UserCreateWithoutHiringRoleInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutHiringRoleInput>>('UserCreateWithoutHiringRoleInput').implement({
   fields: UserCreateWithoutHiringRoleInputFields,
@@ -14220,7 +14387,7 @@ export const AttachmentCreateWithoutUploaderInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  user: t.field({"required":false,"type":UserCreateNestedOneWithoutAttachmentInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
@@ -14252,7 +14419,7 @@ export const AuditLogCreateWithoutUserInputFields = (t: any) => ({
   action: t.string({"required":true}),
   eventDetails: t.field({"required":true,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogsInput}),
   offer: t.field({"required":false,"type":OfferCreateNestedOneWithoutAuditLogsInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutAuditLogsInput}),
 });
@@ -14348,7 +14515,7 @@ export const OfferCreateWithoutRecruiterInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
   screeningQuestionsTemplate: t.field({"required":true,"type":TemplateCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
@@ -14400,7 +14567,7 @@ export const OfferCreateWithoutHiringManagerInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   screeningQuestionsTemplate: t.field({"required":true,"type":TemplateCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
@@ -14627,16 +14794,16 @@ export const UserUpdateWithoutHiringRoleInputFields = (t: any) => ({
   timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
   timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  photoId: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
   featureDiscovery: t.stringList({"required":false}),
   emailProvider: t.stringList({"required":false}),
   theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
-  Attachment: t.field({"required":false,"type":AttachmentUpdateManyWithoutUserNestedInput}),
+  companies: t.field({"required":false,"type":CompanyUpdateManyWithoutOwnerNestedInput}),
 });
 export const UserUpdateWithoutHiringRoleInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutHiringRoleInput>>('UserUpdateWithoutHiringRoleInput').implement({
   fields: UserUpdateWithoutHiringRoleInputFields,
@@ -14686,6 +14853,22 @@ export const AttachmentUpdateManyWithWhereWithoutUploaderInputFields = (t: any) 
 });
 export const AttachmentUpdateManyWithWhereWithoutUploaderInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateManyWithWhereWithoutUploaderInput>>('AttachmentUpdateManyWithWhereWithoutUploaderInput').implement({
   fields: AttachmentUpdateManyWithWhereWithoutUploaderInputFields,
+});
+
+export const AttachmentScalarWhereInputFields = (t: any) => ({
+  AND: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
+  OR: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
+  NOT: t.field({"required":false,"type":[AttachmentScalarWhereInput]}),
+  id: t.field({"required":false,"type":IntFilter}),
+  contentType: t.field({"required":false,"type":StringFilter}),
+  filename: t.field({"required":false,"type":StringFilter}),
+  path: t.field({"required":false,"type":StringFilter}),
+  uploaderId: t.field({"required":false,"type":IntFilter}),
+  createdAt: t.field({"required":false,"type":DateTimeFilter}),
+  updatedAt: t.field({"required":false,"type":DateTimeFilter}),
+});
+export const AttachmentScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentScalarWhereInput>>('AttachmentScalarWhereInput').implement({
+  fields: AttachmentScalarWhereInputFields,
 });
 
 export const AuditLogUpsertWithWhereUniqueWithoutUserInputFields = (t: any) => ({
@@ -14841,7 +15024,7 @@ export const OfferUpdateWithoutRecruiterInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":TemplateUpdateOneRequiredWithoutScreeningQuestionsTemplateNestedInput}),
@@ -14893,7 +15076,7 @@ export const OfferUpdateWithoutHiringManagerInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":TemplateUpdateOneRequiredWithoutScreeningQuestionsTemplateNestedInput}),
@@ -15164,18 +15347,17 @@ export const FollowScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInp
 
 export const CompanyCreateWithoutRolesInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   subscription: t.field({"required":false,"type":SubscriptionDataCreateNestedOneWithoutCompanyInput}),
@@ -15183,13 +15365,14 @@ export const CompanyCreateWithoutRolesInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutRolesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutRolesInput>>('CompanyCreateWithoutRolesInput').implement({
   fields: CompanyCreateWithoutRolesInputFields,
@@ -15302,18 +15485,17 @@ export const CompanyUpsertWithoutRolesInput = builder.inputRef<PrismaUpdateOpera
 
 export const CompanyUpdateWithoutRolesInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   subscription: t.field({"required":false,"type":SubscriptionDataUpdateOneWithoutCompanyNestedInput}),
@@ -15321,13 +15503,14 @@ export const CompanyUpdateWithoutRolesInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutRolesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutRolesInput>>('CompanyUpdateWithoutRolesInput').implement({
   fields: CompanyUpdateWithoutRolesInputFields,
@@ -15798,6 +15981,43 @@ export const TaskCreateManyCompanyInputEnvelopeFields = (t: any) => ({
 });
 export const TaskCreateManyCompanyInputEnvelope = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskCreateManyCompanyInputEnvelope>>('TaskCreateManyCompanyInputEnvelope').implement({
   fields: TaskCreateManyCompanyInputEnvelopeFields,
+});
+
+export const UserCreateWithoutCompaniesInputFields = (t: any) => ({
+  id: t.string({"required":false}),
+  name: t.string({"required":false}),
+  email: t.string({"required":true}),
+  emailVerified: t.field({"required":false,"type":DateTime}),
+  image: t.string({"required":false}),
+  password: t.string({"required":false}),
+  phone: t.string({"required":false}),
+  firstName: t.string({"required":false}),
+  lastName: t.string({"required":false}),
+  preferredLanguage: t.string({"required":false}),
+  timeformat24: t.boolean({"required":false}),
+  timezone: t.string({"required":false}),
+  weekStartDate: t.string({"required":false}),
+  featureDiscovery: t.stringList({"required":false}),
+  emailProvider: t.stringList({"required":false}),
+  theme: t.string({"required":false}),
+  notifications: t.field({"required":false,"type":Json}),
+  createdAt: t.field({"required":false,"type":DateTime}),
+  updatedAt: t.field({"required":false,"type":DateTime}),
+  photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
+  accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
+  sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
+});
+export const UserCreateWithoutCompaniesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateWithoutCompaniesInput>>('UserCreateWithoutCompaniesInput').implement({
+  fields: UserCreateWithoutCompaniesInputFields,
+});
+
+export const UserCreateOrConnectWithoutCompaniesInputFields = (t: any) => ({
+  where: t.field({"required":true,"type":UserWhereUniqueInput}),
+  create: t.field({"required":true,"type":UserCreateWithoutCompaniesInput}),
+});
+export const UserCreateOrConnectWithoutCompaniesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateOrConnectWithoutCompaniesInput>>('UserCreateOrConnectWithoutCompaniesInput').implement({
+  fields: UserCreateOrConnectWithoutCompaniesInputFields,
 });
 
 export const RoleUpsertWithWhereUniqueWithoutCompanyInputFields = (t: any) => ({
@@ -16314,20 +16534,56 @@ export const TaskScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInput
   fields: TaskScalarWhereInputFields,
 });
 
+export const UserUpsertWithoutCompaniesInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":UserUpdateWithoutCompaniesInput}),
+  create: t.field({"required":true,"type":UserCreateWithoutCompaniesInput}),
+});
+export const UserUpsertWithoutCompaniesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpsertWithoutCompaniesInput>>('UserUpsertWithoutCompaniesInput').implement({
+  fields: UserUpsertWithoutCompaniesInputFields,
+});
+
+export const UserUpdateWithoutCompaniesInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  name: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  emailVerified: t.field({"required":false,"type":NullableDateTimeFieldUpdateOperationsInput}),
+  image: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  password: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  firstName: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  lastName: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  preferredLanguage: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  timeformat24: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
+  timezone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  weekStartDate: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  featureDiscovery: t.stringList({"required":false}),
+  emailProvider: t.stringList({"required":false}),
+  theme: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  notifications: t.field({"required":false,"type":Json}),
+  createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
+  accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
+  sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
+  hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
+});
+export const UserUpdateWithoutCompaniesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateWithoutCompaniesInput>>('UserUpdateWithoutCompaniesInput').implement({
+  fields: UserUpdateWithoutCompaniesInputFields,
+});
+
 export const CompanyCreateWithoutSubscriptionInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -16335,13 +16591,14 @@ export const CompanyCreateWithoutSubscriptionInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutSubscriptionInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutSubscriptionInput>>('CompanyCreateWithoutSubscriptionInput').implement({
   fields: CompanyCreateWithoutSubscriptionInputFields,
@@ -16365,18 +16622,17 @@ export const CompanyUpsertWithoutSubscriptionInput = builder.inputRef<PrismaUpda
 
 export const CompanyUpdateWithoutSubscriptionInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -16384,13 +16640,14 @@ export const CompanyUpdateWithoutSubscriptionInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutSubscriptionInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutSubscriptionInput>>('CompanyUpdateWithoutSubscriptionInput').implement({
   fields: CompanyUpdateWithoutSubscriptionInputFields,
@@ -16398,18 +16655,17 @@ export const CompanyUpdateWithoutSubscriptionInput = builder.inputRef<PrismaUpda
 
 export const CompanyCreateWithoutMetadataInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -16417,13 +16673,14 @@ export const CompanyCreateWithoutMetadataInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutMetadataInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutMetadataInput>>('CompanyCreateWithoutMetadataInput').implement({
   fields: CompanyCreateWithoutMetadataInputFields,
@@ -16447,18 +16704,17 @@ export const CompanyUpsertWithoutMetadataInput = builder.inputRef<PrismaUpdateOp
 
 export const CompanyUpdateWithoutMetadataInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -16466,32 +16722,32 @@ export const CompanyUpdateWithoutMetadataInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutMetadataInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutMetadataInput>>('CompanyUpdateWithoutMetadataInput').implement({
   fields: CompanyUpdateWithoutMetadataInputFields,
 });
 
-export const CompanyCreateWithoutDepartmentInputFields = (t: any) => ({
+export const CompanyCreateWithoutDepartmentsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -16500,23 +16756,24 @@ export const CompanyCreateWithoutDepartmentInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutDepartmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutDepartmentInput>>('CompanyCreateWithoutDepartmentInput').implement({
-  fields: CompanyCreateWithoutDepartmentInputFields,
+export const CompanyCreateWithoutDepartmentsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutDepartmentsInput>>('CompanyCreateWithoutDepartmentsInput').implement({
+  fields: CompanyCreateWithoutDepartmentsInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutDepartmentInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutDepartmentsInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutDepartmentInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutDepartmentsInput}),
 });
-export const CompanyCreateOrConnectWithoutDepartmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutDepartmentInput>>('CompanyCreateOrConnectWithoutDepartmentInput').implement({
-  fields: CompanyCreateOrConnectWithoutDepartmentInputFields,
+export const CompanyCreateOrConnectWithoutDepartmentsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutDepartmentsInput>>('CompanyCreateOrConnectWithoutDepartmentsInput').implement({
+  fields: CompanyCreateOrConnectWithoutDepartmentsInputFields,
 });
 
 export const OfferCreateWithoutDeparmentInputFields = (t: any) => ({
@@ -16544,7 +16801,7 @@ export const OfferCreateWithoutDeparmentInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
   screeningQuestionsTemplate: t.field({"required":true,"type":TemplateCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
@@ -16579,28 +16836,27 @@ export const OfferCreateManyDeparmentInputEnvelope = builder.inputRef<PrismaUpda
   fields: OfferCreateManyDeparmentInputEnvelopeFields,
 });
 
-export const CompanyUpsertWithoutDepartmentInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutDepartmentInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutDepartmentInput}),
+export const CompanyUpsertWithoutDepartmentsInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutDepartmentsInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutDepartmentsInput}),
 });
-export const CompanyUpsertWithoutDepartmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutDepartmentInput>>('CompanyUpsertWithoutDepartmentInput').implement({
-  fields: CompanyUpsertWithoutDepartmentInputFields,
+export const CompanyUpsertWithoutDepartmentsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutDepartmentsInput>>('CompanyUpsertWithoutDepartmentsInput').implement({
+  fields: CompanyUpsertWithoutDepartmentsInputFields,
 });
 
-export const CompanyUpdateWithoutDepartmentInputFields = (t: any) => ({
+export const CompanyUpdateWithoutDepartmentsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -16609,15 +16865,16 @@ export const CompanyUpdateWithoutDepartmentInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutDepartmentInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutDepartmentInput>>('CompanyUpdateWithoutDepartmentInput').implement({
-  fields: CompanyUpdateWithoutDepartmentInputFields,
+export const CompanyUpdateWithoutDepartmentsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutDepartmentsInput>>('CompanyUpdateWithoutDepartmentsInput').implement({
+  fields: CompanyUpdateWithoutDepartmentsInputFields,
 });
 
 export const OfferUpsertWithWhereUniqueWithoutDeparmentInputFields = (t: any) => ({
@@ -16645,20 +16902,19 @@ export const OfferUpdateManyWithWhereWithoutDeparmentInput = builder.inputRef<Pr
   fields: OfferUpdateManyWithWhereWithoutDeparmentInputFields,
 });
 
-export const CompanyCreateWithoutDisqualifyReasonInputFields = (t: any) => ({
+export const CompanyCreateWithoutDisqualifyReasonsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -16667,23 +16923,24 @@ export const CompanyCreateWithoutDisqualifyReasonInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutDisqualifyReasonInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutDisqualifyReasonInput>>('CompanyCreateWithoutDisqualifyReasonInput').implement({
-  fields: CompanyCreateWithoutDisqualifyReasonInputFields,
+export const CompanyCreateWithoutDisqualifyReasonsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutDisqualifyReasonsInput>>('CompanyCreateWithoutDisqualifyReasonsInput').implement({
+  fields: CompanyCreateWithoutDisqualifyReasonsInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutDisqualifyReasonInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutDisqualifyReasonsInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutDisqualifyReasonInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutDisqualifyReasonsInput}),
 });
-export const CompanyCreateOrConnectWithoutDisqualifyReasonInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutDisqualifyReasonInput>>('CompanyCreateOrConnectWithoutDisqualifyReasonInput').implement({
-  fields: CompanyCreateOrConnectWithoutDisqualifyReasonInputFields,
+export const CompanyCreateOrConnectWithoutDisqualifyReasonsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutDisqualifyReasonsInput>>('CompanyCreateOrConnectWithoutDisqualifyReasonsInput').implement({
+  fields: CompanyCreateOrConnectWithoutDisqualifyReasonsInputFields,
 });
 
 export const MatchCreateWithoutDisqualifyReasonInputFields = (t: any) => ({
@@ -16712,28 +16969,27 @@ export const MatchCreateManyDisqualifyReasonInputEnvelope = builder.inputRef<Pri
   fields: MatchCreateManyDisqualifyReasonInputEnvelopeFields,
 });
 
-export const CompanyUpsertWithoutDisqualifyReasonInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutDisqualifyReasonInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutDisqualifyReasonInput}),
+export const CompanyUpsertWithoutDisqualifyReasonsInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutDisqualifyReasonsInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutDisqualifyReasonsInput}),
 });
-export const CompanyUpsertWithoutDisqualifyReasonInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutDisqualifyReasonInput>>('CompanyUpsertWithoutDisqualifyReasonInput').implement({
-  fields: CompanyUpsertWithoutDisqualifyReasonInputFields,
+export const CompanyUpsertWithoutDisqualifyReasonsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutDisqualifyReasonsInput>>('CompanyUpsertWithoutDisqualifyReasonsInput').implement({
+  fields: CompanyUpsertWithoutDisqualifyReasonsInputFields,
 });
 
-export const CompanyUpdateWithoutDisqualifyReasonInputFields = (t: any) => ({
+export const CompanyUpdateWithoutDisqualifyReasonsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -16742,15 +16998,16 @@ export const CompanyUpdateWithoutDisqualifyReasonInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutDisqualifyReasonInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutDisqualifyReasonInput>>('CompanyUpdateWithoutDisqualifyReasonInput').implement({
-  fields: CompanyUpdateWithoutDisqualifyReasonInputFields,
+export const CompanyUpdateWithoutDisqualifyReasonsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutDisqualifyReasonsInput>>('CompanyUpdateWithoutDisqualifyReasonsInput').implement({
+  fields: CompanyUpdateWithoutDisqualifyReasonsInputFields,
 });
 
 export const MatchUpsertWithWhereUniqueWithoutDisqualifyReasonInputFields = (t: any) => ({
@@ -16793,20 +17050,19 @@ export const MatchScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInpu
   fields: MatchScalarWhereInputFields,
 });
 
-export const CompanyCreateWithoutTagSourceInputFields = (t: any) => ({
+export const CompanyCreateWithoutTagSourcesInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -16815,23 +17071,24 @@ export const CompanyCreateWithoutTagSourceInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutTagSourceInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTagSourceInput>>('CompanyCreateWithoutTagSourceInput').implement({
-  fields: CompanyCreateWithoutTagSourceInputFields,
+export const CompanyCreateWithoutTagSourcesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTagSourcesInput>>('CompanyCreateWithoutTagSourcesInput').implement({
+  fields: CompanyCreateWithoutTagSourcesInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutTagSourceInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutTagSourcesInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTagSourceInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTagSourcesInput}),
 });
-export const CompanyCreateOrConnectWithoutTagSourceInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTagSourceInput>>('CompanyCreateOrConnectWithoutTagSourceInput').implement({
-  fields: CompanyCreateOrConnectWithoutTagSourceInputFields,
+export const CompanyCreateOrConnectWithoutTagSourcesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTagSourcesInput>>('CompanyCreateOrConnectWithoutTagSourcesInput').implement({
+  fields: CompanyCreateOrConnectWithoutTagSourcesInputFields,
 });
 
 export const OfferTagCreateWithoutTagInputFields = (t: any) => ({
@@ -16921,28 +17178,27 @@ export const CandidateTagCreateManyTagInputEnvelope = builder.inputRef<PrismaUpd
   fields: CandidateTagCreateManyTagInputEnvelopeFields,
 });
 
-export const CompanyUpsertWithoutTagSourceInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutTagSourceInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTagSourceInput}),
+export const CompanyUpsertWithoutTagSourcesInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutTagSourcesInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTagSourcesInput}),
 });
-export const CompanyUpsertWithoutTagSourceInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTagSourceInput>>('CompanyUpsertWithoutTagSourceInput').implement({
-  fields: CompanyUpsertWithoutTagSourceInputFields,
+export const CompanyUpsertWithoutTagSourcesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTagSourcesInput>>('CompanyUpsertWithoutTagSourcesInput').implement({
+  fields: CompanyUpsertWithoutTagSourcesInputFields,
 });
 
-export const CompanyUpdateWithoutTagSourceInputFields = (t: any) => ({
+export const CompanyUpdateWithoutTagSourcesInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -16951,15 +17207,16 @@ export const CompanyUpdateWithoutTagSourceInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutTagSourceInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTagSourceInput>>('CompanyUpdateWithoutTagSourceInput').implement({
-  fields: CompanyUpdateWithoutTagSourceInputFields,
+export const CompanyUpdateWithoutTagSourcesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTagSourcesInput>>('CompanyUpdateWithoutTagSourcesInput').implement({
+  fields: CompanyUpdateWithoutTagSourcesInputFields,
 });
 
 export const OfferTagUpsertWithWhereUniqueWithoutTagInputFields = (t: any) => ({
@@ -17077,20 +17334,19 @@ export const CandidateTagScalarWhereInput = builder.inputRef<PrismaUpdateOperati
   fields: CandidateTagScalarWhereInputFields,
 });
 
-export const CompanyCreateWithoutAuditLogInputFields = (t: any) => ({
+export const CompanyCreateWithoutAuditLogsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -17099,23 +17355,24 @@ export const CompanyCreateWithoutAuditLogInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutAuditLogInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutAuditLogInput>>('CompanyCreateWithoutAuditLogInput').implement({
-  fields: CompanyCreateWithoutAuditLogInputFields,
+export const CompanyCreateWithoutAuditLogsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutAuditLogsInput>>('CompanyCreateWithoutAuditLogsInput').implement({
+  fields: CompanyCreateWithoutAuditLogsInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutAuditLogInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutAuditLogsInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutAuditLogInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutAuditLogsInput}),
 });
-export const CompanyCreateOrConnectWithoutAuditLogInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutAuditLogInput>>('CompanyCreateOrConnectWithoutAuditLogInput').implement({
-  fields: CompanyCreateOrConnectWithoutAuditLogInputFields,
+export const CompanyCreateOrConnectWithoutAuditLogsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutAuditLogsInput>>('CompanyCreateOrConnectWithoutAuditLogsInput').implement({
+  fields: CompanyCreateOrConnectWithoutAuditLogsInputFields,
 });
 
 export const HiringRoleCreateWithoutAuditLogsInputFields = (t: any) => ({
@@ -17174,7 +17431,7 @@ export const OfferCreateWithoutAuditLogsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -17242,28 +17499,27 @@ export const CandidateCreateOrConnectWithoutAuditLogsInput = builder.inputRef<Pr
   fields: CandidateCreateOrConnectWithoutAuditLogsInputFields,
 });
 
-export const CompanyUpsertWithoutAuditLogInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutAuditLogInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutAuditLogInput}),
+export const CompanyUpsertWithoutAuditLogsInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutAuditLogsInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutAuditLogsInput}),
 });
-export const CompanyUpsertWithoutAuditLogInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutAuditLogInput>>('CompanyUpsertWithoutAuditLogInput').implement({
-  fields: CompanyUpsertWithoutAuditLogInputFields,
+export const CompanyUpsertWithoutAuditLogsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutAuditLogsInput>>('CompanyUpsertWithoutAuditLogsInput').implement({
+  fields: CompanyUpsertWithoutAuditLogsInputFields,
 });
 
-export const CompanyUpdateWithoutAuditLogInputFields = (t: any) => ({
+export const CompanyUpdateWithoutAuditLogsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -17272,15 +17528,16 @@ export const CompanyUpdateWithoutAuditLogInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutAuditLogInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutAuditLogInput>>('CompanyUpdateWithoutAuditLogInput').implement({
-  fields: CompanyUpdateWithoutAuditLogInputFields,
+export const CompanyUpdateWithoutAuditLogsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutAuditLogsInput>>('CompanyUpdateWithoutAuditLogsInput').implement({
+  fields: CompanyUpdateWithoutAuditLogsInputFields,
 });
 
 export const HiringRoleUpsertWithoutAuditLogsInputFields = (t: any) => ({
@@ -17347,7 +17604,7 @@ export const OfferUpdateWithoutAuditLogsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -17409,18 +17666,17 @@ export const CandidateUpdateWithoutAuditLogsInput = builder.inputRef<PrismaUpdat
 
 export const CompanyCreateWithoutMeetingRoomsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -17428,13 +17684,14 @@ export const CompanyCreateWithoutMeetingRoomsInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutMeetingRoomsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutMeetingRoomsInput>>('CompanyCreateWithoutMeetingRoomsInput').implement({
   fields: CompanyCreateWithoutMeetingRoomsInputFields,
@@ -17458,18 +17715,17 @@ export const CompanyUpsertWithoutMeetingRoomsInput = builder.inputRef<PrismaUpda
 
 export const CompanyUpdateWithoutMeetingRoomsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -17477,13 +17733,14 @@ export const CompanyUpdateWithoutMeetingRoomsInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutMeetingRoomsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutMeetingRoomsInput>>('CompanyUpdateWithoutMeetingRoomsInput').implement({
   fields: CompanyUpdateWithoutMeetingRoomsInputFields,
@@ -17491,18 +17748,17 @@ export const CompanyUpdateWithoutMeetingRoomsInput = builder.inputRef<PrismaUpda
 
 export const CompanyCreateWithoutEventScheduleInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -17510,13 +17766,14 @@ export const CompanyCreateWithoutEventScheduleInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomCreateNestedManyWithoutCompanyInput}),
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutEventScheduleInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutEventScheduleInput>>('CompanyCreateWithoutEventScheduleInput').implement({
   fields: CompanyCreateWithoutEventScheduleInputFields,
@@ -17587,18 +17844,17 @@ export const CompanyUpsertWithoutEventScheduleInput = builder.inputRef<PrismaUpd
 
 export const CompanyUpdateWithoutEventScheduleInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -17606,13 +17862,14 @@ export const CompanyUpdateWithoutEventScheduleInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomUpdateManyWithoutCompanyNestedInput}),
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutEventScheduleInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutEventScheduleInput>>('CompanyUpdateWithoutEventScheduleInput').implement({
   fields: CompanyUpdateWithoutEventScheduleInputFields,
@@ -17914,18 +18171,17 @@ export const EvaluationUpdateWithoutEventScheduleEvaluationsInput = builder.inpu
 
 export const CompanyCreateWithoutEventsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -17933,13 +18189,14 @@ export const CompanyCreateWithoutEventsInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomCreateNestedManyWithoutCompanyInput}),
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
 export const CompanyCreateWithoutEventsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutEventsInput>>('CompanyCreateWithoutEventsInput').implement({
   fields: CompanyCreateWithoutEventsInputFields,
@@ -18009,18 +18266,17 @@ export const CompanyUpsertWithoutEventsInput = builder.inputRef<PrismaUpdateOper
 
 export const CompanyUpdateWithoutEventsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -18028,13 +18284,14 @@ export const CompanyUpdateWithoutEventsInputFields = (t: any) => ({
   meetingRooms: t.field({"required":false,"type":MeetingRoomUpdateManyWithoutCompanyNestedInput}),
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
 export const CompanyUpdateWithoutEventsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutEventsInput>>('CompanyUpdateWithoutEventsInput').implement({
   fields: CompanyUpdateWithoutEventsInputFields,
@@ -18302,20 +18559,19 @@ export const EvaluationUpdateWithoutEventEvaluationsInput = builder.inputRef<Pri
   fields: EvaluationUpdateWithoutEventEvaluationsInputFields,
 });
 
-export const CompanyCreateWithoutOfferInputFields = (t: any) => ({
+export const CompanyCreateWithoutOffersInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -18324,28 +18580,29 @@ export const CompanyCreateWithoutOfferInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutOfferInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutOfferInput>>('CompanyCreateWithoutOfferInput').implement({
-  fields: CompanyCreateWithoutOfferInputFields,
+export const CompanyCreateWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutOffersInput>>('CompanyCreateWithoutOffersInput').implement({
+  fields: CompanyCreateWithoutOffersInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutOfferInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutOffersInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutOfferInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutOffersInput}),
 });
-export const CompanyCreateOrConnectWithoutOfferInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutOfferInput>>('CompanyCreateOrConnectWithoutOfferInput').implement({
-  fields: CompanyCreateOrConnectWithoutOfferInputFields,
+export const CompanyCreateOrConnectWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutOffersInput>>('CompanyCreateOrConnectWithoutOffersInput').implement({
+  fields: CompanyCreateOrConnectWithoutOffersInputFields,
 });
 
 export const DepartmentCreateWithoutOffersInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDepartmentInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDepartmentsInput}),
 });
 export const DepartmentCreateWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentCreateWithoutOffersInput>>('DepartmentCreateWithoutOffersInput').implement({
   fields: DepartmentCreateWithoutOffersInputFields,
@@ -18426,7 +18683,7 @@ export const TemplateCreateWithoutScreeningQuestionsTemplateInputFields = (t: an
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutPipelineTemplateInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferCreateNestedOneWithoutAutoConfirmationEmailInput}),
   stages: t.field({"required":false,"type":StageCreateNestedManyWithoutTemplateInput}),
@@ -18449,7 +18706,7 @@ export const TemplateCreateWithoutPipelineTemplateInputFields = (t: any) => ({
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferCreateNestedOneWithoutAutoConfirmationEmailInput}),
   stages: t.field({"required":false,"type":StageCreateNestedManyWithoutTemplateInput}),
@@ -18472,7 +18729,7 @@ export const TemplateCreateWithoutAutoConfirmationEmailInputFields = (t: any) =>
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutPipelineTemplateInput}),
   stages: t.field({"required":false,"type":StageCreateNestedManyWithoutTemplateInput}),
@@ -18497,7 +18754,7 @@ export const AuditLogCreateWithoutOfferInputFields = (t: any) => ({
   action: t.string({"required":true}),
   eventDetails: t.field({"required":true,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogsInput}),
   user: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAuditLogsInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutAuditLogsInput}),
 });
@@ -18723,28 +18980,27 @@ export const FollowCreateManyOfferInputEnvelope = builder.inputRef<PrismaUpdateO
   fields: FollowCreateManyOfferInputEnvelopeFields,
 });
 
-export const CompanyUpsertWithoutOfferInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutOfferInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutOfferInput}),
+export const CompanyUpsertWithoutOffersInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutOffersInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutOffersInput}),
 });
-export const CompanyUpsertWithoutOfferInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutOfferInput>>('CompanyUpsertWithoutOfferInput').implement({
-  fields: CompanyUpsertWithoutOfferInputFields,
+export const CompanyUpsertWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutOffersInput>>('CompanyUpsertWithoutOffersInput').implement({
+  fields: CompanyUpsertWithoutOffersInputFields,
 });
 
-export const CompanyUpdateWithoutOfferInputFields = (t: any) => ({
+export const CompanyUpdateWithoutOffersInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -18753,15 +19009,16 @@ export const CompanyUpdateWithoutOfferInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutOfferInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutOfferInput>>('CompanyUpdateWithoutOfferInput').implement({
-  fields: CompanyUpdateWithoutOfferInputFields,
+export const CompanyUpdateWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutOffersInput>>('CompanyUpdateWithoutOffersInput').implement({
+  fields: CompanyUpdateWithoutOffersInputFields,
 });
 
 export const DepartmentUpsertWithoutOffersInputFields = (t: any) => ({
@@ -18774,7 +19031,7 @@ export const DepartmentUpsertWithoutOffersInput = builder.inputRef<PrismaUpdateO
 
 export const DepartmentUpdateWithoutOffersInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDepartmentNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDepartmentsNestedInput}),
 });
 export const DepartmentUpdateWithoutOffersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentUpdateWithoutOffersInput>>('DepartmentUpdateWithoutOffersInput').implement({
   fields: DepartmentUpdateWithoutOffersInputFields,
@@ -18855,7 +19112,7 @@ export const TemplateUpdateWithoutScreeningQuestionsTemplateInputFields = (t: an
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutPipelineTemplateNestedInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferUpdateOneWithoutAutoConfirmationEmailNestedInput}),
   stages: t.field({"required":false,"type":StageUpdateManyWithoutTemplateNestedInput}),
@@ -18878,7 +19135,7 @@ export const TemplateUpdateWithoutPipelineTemplateInputFields = (t: any) => ({
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferUpdateOneWithoutAutoConfirmationEmailNestedInput}),
   stages: t.field({"required":false,"type":StageUpdateManyWithoutTemplateNestedInput}),
@@ -18901,7 +19158,7 @@ export const TemplateUpdateWithoutAutoConfirmationEmailInputFields = (t: any) =>
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutPipelineTemplateNestedInput}),
   stages: t.field({"required":false,"type":StageUpdateManyWithoutTemplateNestedInput}),
@@ -19136,7 +19393,7 @@ export const OfferCreateWithoutFilesInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -19169,7 +19426,7 @@ export const AttachmentCreateWithoutOfferFilesInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  user: t.field({"required":false,"type":UserCreateNestedOneWithoutAttachmentInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
   uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
@@ -19219,7 +19476,7 @@ export const OfferUpdateWithoutFilesInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -19252,7 +19509,7 @@ export const AttachmentUpdateWithoutOfferFilesInputFields = (t: any) => ({
   path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  user: t.field({"required":false,"type":UserUpdateOneWithoutAttachmentNestedInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
   uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
@@ -19286,7 +19543,7 @@ export const OfferCreateWithoutMatchesInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -19379,7 +19636,7 @@ export const StageCreateOrConnectWithoutMatchesInput = builder.inputRef<PrismaUp
 export const DisqualifyReasonCreateWithoutMatchesInputFields = (t: any) => ({
   name: t.string({"required":true}),
   action: t.field({"required":true,"type":Json}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDisqualifyReasonInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDisqualifyReasonsInput}),
 });
 export const DisqualifyReasonCreateWithoutMatchesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonCreateWithoutMatchesInput>>('DisqualifyReasonCreateWithoutMatchesInput').implement({
   fields: DisqualifyReasonCreateWithoutMatchesInputFields,
@@ -19426,7 +19683,7 @@ export const OfferUpdateWithoutMatchesInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -19519,7 +19776,7 @@ export const DisqualifyReasonUpsertWithoutMatchesInput = builder.inputRef<Prisma
 export const DisqualifyReasonUpdateWithoutMatchesInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   action: t.field({"required":false,"type":Json}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDisqualifyReasonNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutDisqualifyReasonsNestedInput}),
 });
 export const DisqualifyReasonUpdateWithoutMatchesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonUpdateWithoutMatchesInput>>('DisqualifyReasonUpdateWithoutMatchesInput').implement({
   fields: DisqualifyReasonUpdateWithoutMatchesInputFields,
@@ -19550,7 +19807,7 @@ export const OfferCreateWithoutOfferTagsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -19580,7 +19837,7 @@ export const OfferCreateOrConnectWithoutOfferTagsInput = builder.inputRef<Prisma
 export const TagSourceCreateWithoutOfferTagsInputFields = (t: any) => ({
   name: t.string({"required":true}),
   type: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourceInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
 });
@@ -19629,7 +19886,7 @@ export const OfferUpdateWithoutOfferTagsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -19659,7 +19916,7 @@ export const TagSourceUpsertWithoutOfferTagsInput = builder.inputRef<PrismaUpdat
 export const TagSourceUpdateWithoutOfferTagsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourceNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
 });
@@ -19744,7 +20001,7 @@ export const OfferCreateWithoutMembershipsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -19856,7 +20113,7 @@ export const OfferUpdateWithoutMembershipsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -20057,7 +20314,7 @@ export const AttachmentCreateWithoutTalentPoolFilesInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  user: t.field({"required":false,"type":UserCreateNestedOneWithoutAttachmentInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
   uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
@@ -20106,7 +20363,7 @@ export const AttachmentUpdateWithoutTalentPoolFilesInputFields = (t: any) => ({
   path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  user: t.field({"required":false,"type":UserUpdateOneWithoutAttachmentNestedInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
   uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
@@ -20233,20 +20490,19 @@ export const CandidateUpdateWithoutTalentPoolsInput = builder.inputRef<PrismaUpd
   fields: CandidateUpdateWithoutTalentPoolsInputFields,
 });
 
-export const CompanyCreateWithoutTemplateInputFields = (t: any) => ({
+export const CompanyCreateWithoutTemplatesInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -20255,23 +20511,24 @@ export const CompanyCreateWithoutTemplateInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Task: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  tasks: t.field({"required":false,"type":TaskCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutTemplateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTemplateInput>>('CompanyCreateWithoutTemplateInput').implement({
-  fields: CompanyCreateWithoutTemplateInputFields,
+export const CompanyCreateWithoutTemplatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTemplatesInput>>('CompanyCreateWithoutTemplatesInput').implement({
+  fields: CompanyCreateWithoutTemplatesInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutTemplateInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutTemplatesInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTemplateInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTemplatesInput}),
 });
-export const CompanyCreateOrConnectWithoutTemplateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTemplateInput>>('CompanyCreateOrConnectWithoutTemplateInput').implement({
-  fields: CompanyCreateOrConnectWithoutTemplateInputFields,
+export const CompanyCreateOrConnectWithoutTemplatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTemplatesInput>>('CompanyCreateOrConnectWithoutTemplatesInput').implement({
+  fields: CompanyCreateOrConnectWithoutTemplatesInputFields,
 });
 
 export const OfferCreateWithoutScreeningQuestionsTemplateInputFields = (t: any) => ({
@@ -20299,7 +20556,7 @@ export const OfferCreateWithoutScreeningQuestionsTemplateInputFields = (t: any) 
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -20351,7 +20608,7 @@ export const OfferCreateWithoutPipelineTemplateInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -20403,7 +20660,7 @@ export const OfferCreateWithoutAutoConfirmationEmailInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -20491,28 +20748,27 @@ export const EvaluationCreateManyTemplateInputEnvelope = builder.inputRef<Prisma
   fields: EvaluationCreateManyTemplateInputEnvelopeFields,
 });
 
-export const CompanyUpsertWithoutTemplateInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutTemplateInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTemplateInput}),
+export const CompanyUpsertWithoutTemplatesInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutTemplatesInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTemplatesInput}),
 });
-export const CompanyUpsertWithoutTemplateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTemplateInput>>('CompanyUpsertWithoutTemplateInput').implement({
-  fields: CompanyUpsertWithoutTemplateInputFields,
+export const CompanyUpsertWithoutTemplatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTemplatesInput>>('CompanyUpsertWithoutTemplatesInput').implement({
+  fields: CompanyUpsertWithoutTemplatesInputFields,
 });
 
-export const CompanyUpdateWithoutTemplateInputFields = (t: any) => ({
+export const CompanyUpdateWithoutTemplatesInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -20521,15 +20777,16 @@ export const CompanyUpdateWithoutTemplateInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Task: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutTemplateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTemplateInput>>('CompanyUpdateWithoutTemplateInput').implement({
-  fields: CompanyUpdateWithoutTemplateInputFields,
+export const CompanyUpdateWithoutTemplatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTemplatesInput>>('CompanyUpdateWithoutTemplatesInput').implement({
+  fields: CompanyUpdateWithoutTemplatesInputFields,
 });
 
 export const OfferUpsertWithoutScreeningQuestionsTemplateInputFields = (t: any) => ({
@@ -20565,7 +20822,7 @@ export const OfferUpdateWithoutScreeningQuestionsTemplateInputFields = (t: any) 
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -20617,7 +20874,7 @@ export const OfferUpdateWithoutPipelineTemplateInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -20669,7 +20926,7 @@ export const OfferUpdateWithoutAutoConfirmationEmailInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -20759,7 +21016,7 @@ export const TemplateCreateWithoutStagesInputFields = (t: any) => ({
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutPipelineTemplateInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferCreateNestedOneWithoutAutoConfirmationEmailInput}),
@@ -20865,7 +21122,7 @@ export const TemplateUpdateWithoutStagesInputFields = (t: any) => ({
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutPipelineTemplateNestedInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferUpdateOneWithoutAutoConfirmationEmailNestedInput}),
@@ -21158,7 +21415,7 @@ export const StageUpdateWithoutMetadataInput = builder.inputRef<PrismaUpdateOper
 export const TagSourceCreateWithoutCandidateReferrerInputFields = (t: any) => ({
   name: t.string({"required":true}),
   type: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourceInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
 });
@@ -21180,7 +21437,7 @@ export const AttachmentCreateWithoutCandidateInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  user: t.field({"required":false,"type":UserCreateNestedOneWithoutAttachmentInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
@@ -21222,7 +21479,7 @@ export const OfferCreateWithoutHiredInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -21287,7 +21544,7 @@ export const AuditLogCreateWithoutCandidateInputFields = (t: any) => ({
   action: t.string({"required":true}),
   eventDetails: t.field({"required":true,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutAuditLogsInput}),
   user: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAuditLogsInput}),
   offer: t.field({"required":false,"type":OfferCreateNestedOneWithoutAuditLogsInput}),
 });
@@ -21446,7 +21703,7 @@ export const TaskCreateWithoutCandidateInputFields = (t: any) => ({
   status: t.string({"required":true}),
   dueDate: t.field({"required":true,"type":DateTime}),
   note: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTaskInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTasksInput}),
   taskMembers: t.field({"required":false,"type":TaskMemberCreateNestedManyWithoutTaskInput}),
 });
 export const TaskCreateWithoutCandidateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskCreateWithoutCandidateInput>>('TaskCreateWithoutCandidateInput').implement({
@@ -21532,7 +21789,7 @@ export const TagSourceUpsertWithoutCandidateReferrerInput = builder.inputRef<Pri
 export const TagSourceUpdateWithoutCandidateReferrerInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourceNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
 });
@@ -21554,7 +21811,7 @@ export const AttachmentUpdateWithoutCandidateInputFields = (t: any) => ({
   path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  user: t.field({"required":false,"type":UserUpdateOneWithoutAttachmentNestedInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
@@ -21596,7 +21853,7 @@ export const OfferUpdateWithoutHiredInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -21946,7 +22203,7 @@ export const CandidateCreateOrConnectWithoutCandidateTagsInput = builder.inputRe
 export const TagSourceCreateWithoutCandidateTagsInputFields = (t: any) => ({
   name: t.string({"required":true}),
   type: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourceInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
 });
@@ -22014,7 +22271,7 @@ export const TagSourceUpsertWithoutCandidateTagsInput = builder.inputRef<PrismaU
 export const TagSourceUpdateWithoutCandidateTagsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourceNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
 });
@@ -22169,7 +22426,7 @@ export const TemplateCreateWithoutEvaluationsInputFields = (t: any) => ({
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
   category: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplateInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTemplatesInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutScreeningQuestionsTemplateInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferCreateNestedOneWithoutPipelineTemplateInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferCreateNestedOneWithoutAutoConfirmationEmailInput}),
@@ -22212,7 +22469,7 @@ export const OfferCreateWithoutEvaluationsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -22393,7 +22650,7 @@ export const TemplateUpdateWithoutEvaluationsInputFields = (t: any) => ({
   type: t.field({"required":false,"type":EnumTemplateTypesFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   category: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplateNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTemplatesNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutScreeningQuestionsTemplateNestedInput}),
   pipelineTemplate: t.field({"required":false,"type":OfferUpdateOneWithoutPipelineTemplateNestedInput}),
   autoConfirmationEmail: t.field({"required":false,"type":OfferUpdateOneWithoutAutoConfirmationEmailNestedInput}),
@@ -22436,7 +22693,7 @@ export const OfferUpdateWithoutEvaluationsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -22768,20 +23025,19 @@ export const CandidateUpdateWithoutSharedCandidateLinkInput = builder.inputRef<P
   fields: CandidateUpdateWithoutSharedCandidateLinkInputFields,
 });
 
-export const CompanyCreateWithoutTaskInputFields = (t: any) => ({
+export const CompanyCreateWithoutTasksInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  email: t.string({"required":true}),
-  phone: t.string({"required":true}),
-  address: t.string({"required":true}),
-  city: t.string({"required":true}),
-  state: t.string({"required":true}),
-  country: t.string({"required":true}),
-  companyInbox: t.string({"required":true}),
-  subdomain: t.string({"required":true}),
-  gdprEnable: t.boolean({"required":true}),
-  gdprRetention: t.int({"required":true}),
-  gdprPrivacyPolicyLink: t.string({"required":true}),
-  gdprEmailFooter: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   roles: t.field({"required":false,"type":RoleCreateNestedManyWithoutCompanyInput}),
@@ -22790,23 +23046,24 @@ export const CompanyCreateWithoutTaskInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataCreateNestedManyWithoutCompanyInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleCreateNestedManyWithoutCompanyInput}),
   events: t.field({"required":false,"type":EventCreateNestedManyWithoutCompanyInput}),
-  Department: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
-  TagSource: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
-  Offer: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
-  Template: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  departments: t.field({"required":false,"type":DepartmentCreateNestedManyWithoutCompanyInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonCreateNestedManyWithoutCompanyInput}),
+  tagSources: t.field({"required":false,"type":TagSourceCreateNestedManyWithoutCompanyInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutCompanyInput}),
+  offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutCompanyInput}),
+  templates: t.field({"required":false,"type":TemplateCreateNestedManyWithoutCompanyInput}),
+  owner: t.field({"required":true,"type":UserCreateNestedOneWithoutCompaniesInput}),
 });
-export const CompanyCreateWithoutTaskInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTaskInput>>('CompanyCreateWithoutTaskInput').implement({
-  fields: CompanyCreateWithoutTaskInputFields,
+export const CompanyCreateWithoutTasksInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateWithoutTasksInput>>('CompanyCreateWithoutTasksInput').implement({
+  fields: CompanyCreateWithoutTasksInputFields,
 });
 
-export const CompanyCreateOrConnectWithoutTaskInputFields = (t: any) => ({
+export const CompanyCreateOrConnectWithoutTasksInputFields = (t: any) => ({
   where: t.field({"required":true,"type":CompanyWhereUniqueInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTaskInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTasksInput}),
 });
-export const CompanyCreateOrConnectWithoutTaskInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTaskInput>>('CompanyCreateOrConnectWithoutTaskInput').implement({
-  fields: CompanyCreateOrConnectWithoutTaskInputFields,
+export const CompanyCreateOrConnectWithoutTasksInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateOrConnectWithoutTasksInput>>('CompanyCreateOrConnectWithoutTasksInput').implement({
+  fields: CompanyCreateOrConnectWithoutTasksInputFields,
 });
 
 export const TaskMemberCreateWithoutTaskInputFields = (t: any) => ({
@@ -22873,28 +23130,27 @@ export const CandidateCreateOrConnectWithoutTasksInput = builder.inputRef<Prisma
   fields: CandidateCreateOrConnectWithoutTasksInputFields,
 });
 
-export const CompanyUpsertWithoutTaskInputFields = (t: any) => ({
-  update: t.field({"required":true,"type":CompanyUpdateWithoutTaskInput}),
-  create: t.field({"required":true,"type":CompanyCreateWithoutTaskInput}),
+export const CompanyUpsertWithoutTasksInputFields = (t: any) => ({
+  update: t.field({"required":true,"type":CompanyUpdateWithoutTasksInput}),
+  create: t.field({"required":true,"type":CompanyCreateWithoutTasksInput}),
 });
-export const CompanyUpsertWithoutTaskInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTaskInput>>('CompanyUpsertWithoutTaskInput').implement({
-  fields: CompanyUpsertWithoutTaskInputFields,
+export const CompanyUpsertWithoutTasksInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpsertWithoutTasksInput>>('CompanyUpsertWithoutTasksInput').implement({
+  fields: CompanyUpsertWithoutTasksInputFields,
 });
 
-export const CompanyUpdateWithoutTaskInputFields = (t: any) => ({
+export const CompanyUpdateWithoutTasksInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  email: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  phone: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  address: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  city: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  state: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  country: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  companyInbox: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  subdomain: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEnable: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  gdprRetention: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
-  gdprPrivacyPolicyLink: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  gdprEmailFooter: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
@@ -22903,15 +23159,16 @@ export const CompanyUpdateWithoutTaskInputFields = (t: any) => ({
   metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
   eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
   events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
-  Department: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
-  DisqualifyReason: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
-  TagSource: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
-  AuditLog: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
-  Offer: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
-  Template: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  owner: t.field({"required":false,"type":UserUpdateOneRequiredWithoutCompaniesNestedInput}),
 });
-export const CompanyUpdateWithoutTaskInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTaskInput>>('CompanyUpdateWithoutTaskInput').implement({
-  fields: CompanyUpdateWithoutTaskInputFields,
+export const CompanyUpdateWithoutTasksInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutTasksInput>>('CompanyUpdateWithoutTasksInput').implement({
+  fields: CompanyUpdateWithoutTasksInputFields,
 });
 
 export const TaskMemberUpsertWithWhereUniqueWithoutTaskInputFields = (t: any) => ({
@@ -22985,7 +23242,7 @@ export const TaskCreateWithoutTaskMembersInputFields = (t: any) => ({
   status: t.string({"required":true}),
   dueDate: t.field({"required":true,"type":DateTime}),
   note: t.string({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTaskInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTasksInput}),
   Candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutTasksInput}),
 });
 export const TaskCreateWithoutTaskMembersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskCreateWithoutTaskMembersInput>>('TaskCreateWithoutTaskMembersInput').implement({
@@ -23044,7 +23301,7 @@ export const TaskUpdateWithoutTaskMembersInputFields = (t: any) => ({
   status: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   dueDate: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   note: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTaskNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTasksNestedInput}),
   Candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutTasksNestedInput}),
 });
 export const TaskUpdateWithoutTaskMembersInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskUpdateWithoutTaskMembersInput>>('TaskUpdateWithoutTaskMembersInput').implement({
@@ -23107,7 +23364,7 @@ export const OfferCreateWithoutFollowsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":true,"type":OfferPersonalItems}),
   personalInfoPhone: t.field({"required":true,"type":OfferPersonalItems}),
   isPublished: t.boolean({"required":true}),
-  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOfferInput}),
+  company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutOffersInput}),
   deparment: t.field({"required":false,"type":DepartmentCreateNestedOneWithoutOffersInput}),
   recruiter: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferRecruiterInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutOfferHiringManagerInput}),
@@ -23257,7 +23514,7 @@ export const OfferUpdateWithoutFollowsInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   deparment: t.field({"required":false,"type":DepartmentUpdateOneWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
@@ -23392,19 +23649,6 @@ export const SessionCreateManyUserInput = builder.inputRef<PrismaUpdateOperation
   fields: SessionCreateManyUserInputFields,
 });
 
-export const AttachmentCreateManyUserInputFields = (t: any) => ({
-  id: t.int({"required":false}),
-  contentType: t.string({"required":true}),
-  filename: t.string({"required":true}),
-  path: t.string({"required":true}),
-  uploaderId: t.int({"required":true}),
-  createdAt: t.field({"required":false,"type":DateTime}),
-  updatedAt: t.field({"required":false,"type":DateTime}),
-});
-export const AttachmentCreateManyUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateManyUserInput>>('AttachmentCreateManyUserInput').implement({
-  fields: AttachmentCreateManyUserInputFields,
-});
-
 export const HiringRoleCreateManyUserInputFields = (t: any) => ({
   id: t.int({"required":false}),
   roleId: t.int({"required":true}),
@@ -23415,6 +23659,27 @@ export const HiringRoleCreateManyUserInputFields = (t: any) => ({
 });
 export const HiringRoleCreateManyUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateManyUserInput>>('HiringRoleCreateManyUserInput').implement({
   fields: HiringRoleCreateManyUserInputFields,
+});
+
+export const CompanyCreateManyOwnerInputFields = (t: any) => ({
+  id: t.int({"required":false}),
+  name: t.string({"required":true}),
+  phone: t.string({"required":false}),
+  address: t.string({"required":false}),
+  city: t.string({"required":false}),
+  state: t.string({"required":false}),
+  country: t.string({"required":false}),
+  companyInbox: t.string({"required":false}),
+  subdomain: t.string({"required":false}),
+  gdprEnable: t.boolean({"required":false}),
+  gdprRetention: t.int({"required":false}),
+  gdprPrivacyPolicyLink: t.string({"required":false}),
+  gdprEmailFooter: t.string({"required":false}),
+  createdAt: t.field({"required":false,"type":DateTime}),
+  updatedAt: t.field({"required":false,"type":DateTime}),
+});
+export const CompanyCreateManyOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyCreateManyOwnerInput>>('CompanyCreateManyOwnerInput').implement({
+  fields: CompanyCreateManyOwnerInputFields,
 });
 
 export const AccountUpdateWithoutUserInputFields = (t: any) => ({
@@ -23443,21 +23708,6 @@ export const SessionUpdateWithoutUserInput = builder.inputRef<PrismaUpdateOperat
   fields: SessionUpdateWithoutUserInputFields,
 });
 
-export const AttachmentUpdateWithoutUserInputFields = (t: any) => ({
-  contentType: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  filename: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
-  offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
-  talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
-});
-export const AttachmentUpdateWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateWithoutUserInput>>('AttachmentUpdateWithoutUserInput').implement({
-  fields: AttachmentUpdateWithoutUserInputFields,
-});
-
 export const HiringRoleUpdateWithoutUserInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
@@ -23479,6 +23729,39 @@ export const HiringRoleUpdateWithoutUserInputFields = (t: any) => ({
 });
 export const HiringRoleUpdateWithoutUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleUpdateWithoutUserInput>>('HiringRoleUpdateWithoutUserInput').implement({
   fields: HiringRoleUpdateWithoutUserInputFields,
+});
+
+export const CompanyUpdateWithoutOwnerInputFields = (t: any) => ({
+  name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  city: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  state: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  country: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  companyInbox: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  subdomain: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEnable: t.field({"required":false,"type":NullableBoolFieldUpdateOperationsInput}),
+  gdprRetention: t.field({"required":false,"type":NullableIntFieldUpdateOperationsInput}),
+  gdprPrivacyPolicyLink: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  gdprEmailFooter: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
+  createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  roles: t.field({"required":false,"type":RoleUpdateManyWithoutCompanyNestedInput}),
+  subscription: t.field({"required":false,"type":SubscriptionDataUpdateOneWithoutCompanyNestedInput}),
+  meetingRooms: t.field({"required":false,"type":MeetingRoomUpdateManyWithoutCompanyNestedInput}),
+  metadata: t.field({"required":false,"type":CompanyMetadataUpdateManyWithoutCompanyNestedInput}),
+  eventSchedule: t.field({"required":false,"type":EventScheduleUpdateManyWithoutCompanyNestedInput}),
+  events: t.field({"required":false,"type":EventUpdateManyWithoutCompanyNestedInput}),
+  departments: t.field({"required":false,"type":DepartmentUpdateManyWithoutCompanyNestedInput}),
+  disqualifyReasons: t.field({"required":false,"type":DisqualifyReasonUpdateManyWithoutCompanyNestedInput}),
+  tagSources: t.field({"required":false,"type":TagSourceUpdateManyWithoutCompanyNestedInput}),
+  auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutCompanyNestedInput}),
+  offers: t.field({"required":false,"type":OfferUpdateManyWithoutCompanyNestedInput}),
+  templates: t.field({"required":false,"type":TemplateUpdateManyWithoutCompanyNestedInput}),
+  tasks: t.field({"required":false,"type":TaskUpdateManyWithoutCompanyNestedInput}),
+});
+export const CompanyUpdateWithoutOwnerInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyUpdateWithoutOwnerInput>>('CompanyUpdateWithoutOwnerInput').implement({
+  fields: CompanyUpdateWithoutOwnerInputFields,
 });
 
 export const OfferFileCreateManyAttachmentInputFields = (t: any) => ({
@@ -23518,7 +23801,6 @@ export const AttachmentCreateManyUploaderInputFields = (t: any) => ({
   path: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  userId: t.string({"required":false}),
 });
 export const AttachmentCreateManyUploaderInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateManyUploaderInput>>('AttachmentCreateManyUploaderInput').implement({
   fields: AttachmentCreateManyUploaderInputFields,
@@ -23639,7 +23921,7 @@ export const AttachmentUpdateWithoutUploaderInputFields = (t: any) => ({
   path: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  user: t.field({"required":false,"type":UserUpdateOneWithoutAttachmentNestedInput}),
+  userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
@@ -23655,7 +23937,7 @@ export const AuditLogUpdateWithoutUserInputFields = (t: any) => ({
   action: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   eventDetails: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogsNestedInput}),
   offer: t.field({"required":false,"type":OfferUpdateOneWithoutAuditLogsNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutAuditLogsNestedInput}),
 });
@@ -24245,7 +24527,7 @@ export const OfferUpdateWithoutDeparmentInputFields = (t: any) => ({
   personalInfoPhoto: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   personalInfoPhone: t.field({"required":false,"type":EnumOfferPersonalItemsFieldUpdateOperationsInput}),
   isPublished: t.field({"required":false,"type":BoolFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOfferNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutOffersNestedInput}),
   recruiter: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferRecruiterNestedInput}),
   hiringManager: t.field({"required":false,"type":HiringRoleUpdateOneWithoutOfferHiringManagerNestedInput}),
   screeningQuestionsTemplate: t.field({"required":false,"type":TemplateUpdateOneRequiredWithoutScreeningQuestionsTemplateNestedInput}),
@@ -24485,7 +24767,7 @@ export const AuditLogUpdateWithoutOfferInputFields = (t: any) => ({
   action: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   eventDetails: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogsNestedInput}),
   user: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAuditLogsNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutAuditLogsNestedInput}),
 });
@@ -24851,7 +25133,7 @@ export const AuditLogUpdateWithoutCandidateInputFields = (t: any) => ({
   action: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   eventDetails: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutAuditLogsNestedInput}),
   user: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAuditLogsNestedInput}),
   offer: t.field({"required":false,"type":OfferUpdateOneWithoutAuditLogsNestedInput}),
 });
@@ -24914,7 +25196,7 @@ export const TaskUpdateWithoutCandidateInputFields = (t: any) => ({
   status: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   dueDate: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   note: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTaskNestedInput}),
+  company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTasksNestedInput}),
   taskMembers: t.field({"required":false,"type":TaskMemberUpdateManyWithoutTaskNestedInput}),
 });
 export const TaskUpdateWithoutCandidateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskUpdateWithoutCandidateInput>>('TaskUpdateWithoutCandidateInput').implement({

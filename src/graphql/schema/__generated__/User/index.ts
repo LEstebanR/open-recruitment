@@ -13,6 +13,7 @@ export {
   UserTimeformat24FieldObject,
   UserTimezoneFieldObject,
   UserWeekStartDateFieldObject,
+  UserPhotoFieldObject,
   UserPhotoIdFieldObject,
   UserFeatureDiscoveryFieldObject,
   UserEmailProviderFieldObject,
@@ -22,8 +23,8 @@ export {
   UserUpdatedAtFieldObject,
   UserAccountsFieldObject,
   UserSessionsFieldObject,
-  UserAttachmentFieldObject,
-  UserHiringRoleFieldObject
+  UserHiringRoleFieldObject,
+  UserCompaniesFieldObject
 } from './object.base';
 export {
   createManyUserMutation,

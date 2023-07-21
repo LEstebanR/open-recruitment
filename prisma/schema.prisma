@@ -34,19 +34,18 @@ model User {
   timeformat24      Boolean      @default(false)
   timezone          String       @default("UTC")
   weekStartDate     String       @default("monday")
-  // photo             Attachment?  @relation(fields: [photoId], references: [id])
+  photo             Attachment?  @relation("profilePhoto", fields: [photoId], references: [id])
   photoId           Int?         @unique
   featureDiscovery  String[]
   emailProvider     String[] // Test actual Integrations
   theme             String?
   notifications     Json?
-  // hiringRoles       HiringRole[]
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   accounts          Account[]
   sessions          Session[]
-  Attachment        Attachment[]
-  HiringRole        HiringRole[]
+  hiringRole        HiringRole[]
+  companies         Company[]    @relation("owner")
 }
 
 model Account {
@@ -85,19 +84,18 @@ model VerificationToken {
 }
 
 model Attachment {
-  id              Int              @id @default(autoincrement())
-  contentType     String
-  filename        String
-  path            String
-  user            User?            @relation(fields: [userId], references: [id])
-  candidate       Candidate?
-  uploader        HiringRole       @relation(fields: [uploaderId], references: [id])
-  uploaderId      Int
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  offerFiles      OfferFile[]
-  talentPoolFiles TalentPoolFile[]
-  userId          String?
+  id               Int              @id @default(autoincrement())
+  contentType      String
+  filename         String
+  path             String
+  userProfilePhoto User?            @relation("profilePhoto")
+  candidate        Candidate?
+  uploader         HiringRole       @relation(fields: [uploaderId], references: [id])
+  uploaderId       Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  offerFiles       OfferFile[]
+  talentPoolFiles  TalentPoolFile[]
 }
 
 model HiringRole {
@@ -140,18 +138,17 @@ model Role {
 model Company {
   id                    Int                @id @default(autoincrement())
   name                  String
-  email                 String             @unique
-  phone                 String
-  address               String
-  city                  String
-  state                 String
-  country               String
-  companyInbox          String
-  subdomain             String
-  gdprEnable            Boolean // **
-  gdprRetention         Int // Maybe metadata
-  gdprPrivacyPolicyLink String // *
-  gdprEmailFooter       String // **
+  phone                 String?
+  address               String?
+  city                  String?
+  state                 String?
+  country               String?
+  companyInbox          String?
+  subdomain             String?
+  gdprEnable            Boolean? // **
+  gdprRetention         Int? // Maybe metadata
+  gdprPrivacyPolicyLink String? // *
+  gdprEmailFooter       String? // **
   roles                 Role[]
   subscription          SubscriptionData?
   meetingRooms          MeetingRoom[]
@@ -160,13 +157,15 @@ model Company {
   events                Event[]
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
-  Department            Department[]
-  DisqualifyReason      DisqualifyReason[]
-  TagSource             TagSource[]
-  AuditLog              AuditLog[]
-  Offer                 Offer[]
-  Template              Template[]
-  Task                  Task[]
+  departments           Department[]
+  disqualifyReasons     DisqualifyReason[]
+  tagSources            TagSource[]
+  auditLogs             AuditLog[]
+  offers                Offer[]
+  templates             Template[]
+  tasks                 Task[]
+  owner                 User               @relation("owner", fields: [ownerId], references: [id])
+  ownerId               String
 }
 
 model SubscriptionData {

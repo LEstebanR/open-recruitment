@@ -1,12 +1,12 @@
 import { builder } from '../builder'
 import * as User from './User'
-import * as Account from './Account'
+// import * as Account from './Account'
 // import * as Session from './Session'
 // import * as VerificationToken from './VerificationToken'
 // import * as Attachment from './Attachment'
 // import * as HiringRole from './HiringRole'
 // import * as Role from './Role'
-// import * as Company from './Company'
+import * as Company from './Company'
 // import * as SubscriptionData from './SubscriptionData'
 // import * as CompanyMetadata from './CompanyMetadata'
 // import * as Department from './Department'
@@ -60,12 +60,15 @@ export const Cruds: Record<
     queries: {
       ...AutoCruds.User.queries,
     },
-    mutations: AutoCruds.User.mutations,
+    mutations: {
+      ...AutoCruds.User.mutations,
+      signUp: User.signUpUserMutationObject,
+    },
   },
-  Account: {
-    Object: Account.AccountObject,
-    queries: AutoCruds.Account.queries,
-    mutations: AutoCruds.Account.mutations,
+  Company: {
+    Object: Company.CompanyObject,
+    queries: AutoCruds.Company.queries,
+    mutations: AutoCruds.Company.mutations,
   },
 }
 

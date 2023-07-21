@@ -7,10 +7,13 @@ import { SelectField } from '../UI/Fields'
 import { gql, useMutation } from '@apollo/client'
 
 const SignupMutation = gql`
-  mutation createUser($data: UserCreateInput!){
-    createOneUser(data:$data) {
+  mutation createUserAndCompany($data: UserSignUpInput!){
+    signUpUser (data:$data) {
       id
       emailAddress
+      companies {
+        id
+      }
     }
   }
 `
@@ -18,6 +21,7 @@ const SignupMutation = gql`
 const SignUpForm = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [companyName, setCompanyName] = useState('')
 
   const [signup] = useMutation(SignupMutation)
 
@@ -41,16 +45,19 @@ const SignUpForm = () => {
       <form className='bg-white md:p-8 px-4 py-8 rounded-3xl my-4'
             onSubmit={async e => {
               e.preventDefault()
-              console.log('submit', name, email)
+              console.log('submit', name, email, companyName)
 
-              await signup({
+              const response = await signup({
                 variables: {
                   data: {
                     name: name,
                     email: email,
+                    companyName: companyName,
                   },
                 },
               })
+
+              console.log(response)
             }}
       >
         <div className='grid grid-cols-2 gap-6 mb-4'>
@@ -62,6 +69,7 @@ const SignUpForm = () => {
             type='text'
             autoComplete='company'
             required
+            onChange={e => setCompanyName(e.target.value)}
           />
           <TextField
             label='First name'

@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix && npx prisma format",
     "cypress": "cypress run",
     "prismaMigrateLocal": "dotenv -e .env.local -- npx prisma migrate dev",
-    "prismaMigrateLocalNoSeed": "dotenv -e .env.local -- npx prisma migrate dev --skip-seed"
+    "prismaMigrateLocalNoSeed": "dotenv -e .env.local -- npx prisma migrate dev --skip-seed",
+    "prismaDbSeed": "dotenv -e .env.local -- npx prisma db seed"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",

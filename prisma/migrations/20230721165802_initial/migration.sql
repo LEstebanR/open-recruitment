@@ -77,7 +77,6 @@ CREATE TABLE "Attachment" (
     "uploaderId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userId" TEXT,
 
     CONSTRAINT "Attachment_pkey" PRIMARY KEY ("id")
 );
@@ -111,20 +110,20 @@ CREATE TABLE "Role" (
 CREATE TABLE "Company" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "state" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
-    "companyInbox" TEXT NOT NULL,
-    "subdomain" TEXT NOT NULL,
-    "gdprEnable" BOOLEAN NOT NULL,
-    "gdprRetention" INTEGER NOT NULL,
-    "gdprPrivacyPolicyLink" TEXT NOT NULL,
-    "gdprEmailFooter" TEXT NOT NULL,
+    "phone" TEXT,
+    "address" TEXT,
+    "city" TEXT,
+    "state" TEXT,
+    "country" TEXT,
+    "companyInbox" TEXT,
+    "subdomain" TEXT,
+    "gdprEnable" BOOLEAN,
+    "gdprRetention" INTEGER,
+    "gdprPrivacyPolicyLink" TEXT,
+    "gdprEmailFooter" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "ownerId" TEXT NOT NULL,
 
     CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
 );
@@ -570,9 +569,6 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Company_email_key" ON "Company"("email");
-
--- CreateIndex
 CREATE UNIQUE INDEX "SubscriptionData_companyId_key" ON "SubscriptionData"("companyId");
 
 -- CreateIndex
@@ -600,13 +596,13 @@ CREATE UNIQUE INDEX "Candidate_referrerId_key" ON "Candidate"("referrerId");
 CREATE UNIQUE INDEX "Candidate_cvId_key" ON "Candidate"("cvId");
 
 -- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_photoId_fkey" FOREIGN KEY ("photoId") REFERENCES "Attachment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_uploaderId_fkey" FOREIGN KEY ("uploaderId") REFERENCES "HiringRole"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -619,6 +615,9 @@ ALTER TABLE "HiringRole" ADD CONSTRAINT "HiringRole_roleId_fkey" FOREIGN KEY ("r
 
 -- AddForeignKey
 ALTER TABLE "Role" ADD CONSTRAINT "Role_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Company" ADD CONSTRAINT "Company_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SubscriptionData" ADD CONSTRAINT "SubscriptionData_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

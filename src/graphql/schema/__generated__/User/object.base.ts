@@ -24,6 +24,7 @@ export const UserObject = definePrismaObject('User', {
     timeformat24: t.exposeBoolean('timeformat24', UserTimeformat24FieldObject),
     timezone: t.exposeString('timezone', UserTimezoneFieldObject),
     weekStartDate: t.exposeString('weekStartDate', UserWeekStartDateFieldObject),
+    photo: t.relation('photo', UserPhotoFieldObject),
     photoId: t.exposeInt('photoId', UserPhotoIdFieldObject),
     featureDiscovery: t.exposeStringList('featureDiscovery', UserFeatureDiscoveryFieldObject),
     emailProvider: t.exposeStringList('emailProvider', UserEmailProviderFieldObject),
@@ -33,8 +34,8 @@ export const UserObject = definePrismaObject('User', {
     updatedAt: t.field(UserUpdatedAtFieldObject),
     accounts: t.relation('accounts', UserAccountsFieldObject(t)),
     sessions: t.relation('sessions', UserSessionsFieldObject(t)),
-    Attachment: t.relation('Attachment', UserAttachmentFieldObject(t)),
-    HiringRole: t.relation('HiringRole', UserHiringRoleFieldObject(t)),
+    hiringRole: t.relation('hiringRole', UserHiringRoleFieldObject(t)),
+    companies: t.relation('companies', UserCompaniesFieldObject(t)),
   }),
 });
 
@@ -103,6 +104,13 @@ export const UserTimezoneFieldObject = defineExposeObject('String', {
 export const UserWeekStartDateFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
+});
+
+export const UserPhotoFieldObject = defineRelationObject('User', 'photo', {
+  description: undefined,
+  nullable: true,
+  args: undefined,
+  query: undefined,
 });
 
 export const UserPhotoIdFieldObject = defineExposeObject('Int', {
@@ -192,17 +200,17 @@ export const UserSessionsFieldObject = defineRelationFunction('User', (t) =>
   }),
 );
 
-export const UserAttachmentFieldObject = defineRelationFunction('User', (t) =>
-  defineRelationObject('User', 'Attachment', {
+export const UserHiringRoleFieldObject = defineRelationFunction('User', (t) =>
+  defineRelationObject('User', 'hiringRole', {
     description: undefined,
     nullable: false,
     args: {
-      where: t.arg({ type: Inputs.AttachmentWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.AttachmentOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.AttachmentWhereUniqueInput, required: false }),
+      where: t.arg({ type: Inputs.HiringRoleWhereInput, required: false }),
+      orderBy: t.arg({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
+      cursor: t.arg({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
       take: t.arg({ type: 'Int', required: false }),
       skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.AttachmentScalarFieldEnum], required: false }),
+      distinct: t.arg({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
     },
     query: (args) => ({
       where: args.where || undefined,
@@ -215,17 +223,17 @@ export const UserAttachmentFieldObject = defineRelationFunction('User', (t) =>
   }),
 );
 
-export const UserHiringRoleFieldObject = defineRelationFunction('User', (t) =>
-  defineRelationObject('User', 'HiringRole', {
+export const UserCompaniesFieldObject = defineRelationFunction('User', (t) =>
+  defineRelationObject('User', 'companies', {
     description: undefined,
     nullable: false,
     args: {
-      where: t.arg({ type: Inputs.HiringRoleWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
+      where: t.arg({ type: Inputs.CompanyWhereInput, required: false }),
+      orderBy: t.arg({ type: [Inputs.CompanyOrderByWithRelationInput], required: false }),
+      cursor: t.arg({ type: Inputs.CompanyWhereUniqueInput, required: false }),
       take: t.arg({ type: 'Int', required: false }),
       skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
+      distinct: t.arg({ type: [Inputs.CompanyScalarFieldEnum], required: false }),
     },
     query: (args) => ({
       where: args.where || undefined,

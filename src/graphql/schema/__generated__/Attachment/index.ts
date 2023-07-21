@@ -4,15 +4,14 @@ export {
   AttachmentContentTypeFieldObject,
   AttachmentFilenameFieldObject,
   AttachmentPathFieldObject,
-  AttachmentUserFieldObject,
+  AttachmentUserProfilePhotoFieldObject,
   AttachmentCandidateFieldObject,
   AttachmentUploaderFieldObject,
   AttachmentUploaderIdFieldObject,
   AttachmentCreatedAtFieldObject,
   AttachmentUpdatedAtFieldObject,
   AttachmentOfferFilesFieldObject,
-  AttachmentTalentPoolFilesFieldObject,
-  AttachmentUserIdFieldObject
+  AttachmentTalentPoolFilesFieldObject
 } from './object.base';
 export {
   createManyAttachmentMutation,

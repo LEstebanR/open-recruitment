@@ -19,7 +19,6 @@ async function main() {
       timeformat24: true,
       timezone: '5',
       weekStartDate: 'monday',
-      photoId: 2,
       featureDiscovery: ['asdf1'],
       emailProvider: ['email1'],
       theme: 'a',
@@ -28,6 +27,28 @@ async function main() {
     },
   })
   console.log({ alice })
+
+  const company1 = await prisma.company.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: 'Testing Company Co',
+      ownerId: '12345',
+    },
+  })
+  console.log({ company1 })
+
+  const alicePhoto = '1' || await prisma.attachment.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      contentType: 'profilePhoto',
+      filename: 'photo1.png',
+      path: '/images/photo1.png',
+      uploaderId: 1,
+      updatedAt: new Date(),
+    },
+  })
 }
 
 main()

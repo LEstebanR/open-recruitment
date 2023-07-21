@@ -15,7 +15,7 @@ export const AttachmentObject = definePrismaObject('Attachment', {
     contentType: t.exposeString('contentType', AttachmentContentTypeFieldObject),
     filename: t.exposeString('filename', AttachmentFilenameFieldObject),
     path: t.exposeString('path', AttachmentPathFieldObject),
-    user: t.relation('user', AttachmentUserFieldObject),
+    userProfilePhoto: t.relation('userProfilePhoto', AttachmentUserProfilePhotoFieldObject),
     candidate: t.relation('candidate', AttachmentCandidateFieldObject),
     uploader: t.relation('uploader', AttachmentUploaderFieldObject),
     uploaderId: t.exposeInt('uploaderId', AttachmentUploaderIdFieldObject),
@@ -23,7 +23,6 @@ export const AttachmentObject = definePrismaObject('Attachment', {
     updatedAt: t.field(AttachmentUpdatedAtFieldObject),
     offerFiles: t.relation('offerFiles', AttachmentOfferFilesFieldObject(t)),
     talentPoolFiles: t.relation('talentPoolFiles', AttachmentTalentPoolFilesFieldObject(t)),
-    userId: t.exposeString('userId', AttachmentUserIdFieldObject),
   }),
 });
 
@@ -47,7 +46,7 @@ export const AttachmentPathFieldObject = defineExposeObject('String', {
   nullable: false,
 });
 
-export const AttachmentUserFieldObject = defineRelationObject('Attachment', 'user', {
+export const AttachmentUserProfilePhotoFieldObject = defineRelationObject('Attachment', 'userProfilePhoto', {
   description: undefined,
   nullable: true,
   args: undefined,
@@ -132,8 +131,3 @@ export const AttachmentTalentPoolFilesFieldObject = defineRelationFunction('Atta
     }),
   }),
 );
-
-export const AttachmentUserIdFieldObject = defineExposeObject('String', {
-  description: undefined,
-  nullable: true,
-});

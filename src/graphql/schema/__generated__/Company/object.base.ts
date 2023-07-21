@@ -13,7 +13,6 @@ export const CompanyObject = definePrismaObject('Company', {
   fields: (t) => ({
     id: t.exposeID('id', CompanyIdFieldObject),
     name: t.exposeString('name', CompanyNameFieldObject),
-    email: t.exposeString('email', CompanyEmailFieldObject),
     phone: t.exposeString('phone', CompanyPhoneFieldObject),
     address: t.exposeString('address', CompanyAddressFieldObject),
     city: t.exposeString('city', CompanyCityFieldObject),
@@ -33,13 +32,15 @@ export const CompanyObject = definePrismaObject('Company', {
     events: t.relation('events', CompanyEventsFieldObject(t)),
     createdAt: t.field(CompanyCreatedAtFieldObject),
     updatedAt: t.field(CompanyUpdatedAtFieldObject),
-    Department: t.relation('Department', CompanyDepartmentFieldObject(t)),
-    DisqualifyReason: t.relation('DisqualifyReason', CompanyDisqualifyReasonFieldObject(t)),
-    TagSource: t.relation('TagSource', CompanyTagSourceFieldObject(t)),
-    AuditLog: t.relation('AuditLog', CompanyAuditLogFieldObject(t)),
-    Offer: t.relation('Offer', CompanyOfferFieldObject(t)),
-    Template: t.relation('Template', CompanyTemplateFieldObject(t)),
-    Task: t.relation('Task', CompanyTaskFieldObject(t)),
+    departments: t.relation('departments', CompanyDepartmentsFieldObject(t)),
+    disqualifyReasons: t.relation('disqualifyReasons', CompanyDisqualifyReasonsFieldObject(t)),
+    tagSources: t.relation('tagSources', CompanyTagSourcesFieldObject(t)),
+    auditLogs: t.relation('auditLogs', CompanyAuditLogsFieldObject(t)),
+    offers: t.relation('offers', CompanyOffersFieldObject(t)),
+    templates: t.relation('templates', CompanyTemplatesFieldObject(t)),
+    tasks: t.relation('tasks', CompanyTasksFieldObject(t)),
+    owner: t.relation('owner', CompanyOwnerFieldObject),
+    ownerId: t.exposeString('ownerId', CompanyOwnerIdFieldObject),
   }),
 });
 
@@ -53,64 +54,59 @@ export const CompanyNameFieldObject = defineExposeObject('String', {
   nullable: false,
 });
 
-export const CompanyEmailFieldObject = defineExposeObject('String', {
-  description: undefined,
-  nullable: false,
-});
-
 export const CompanyPhoneFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyAddressFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyCityFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyStateFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyCountryFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyCompanyInboxFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanySubdomainFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyGdprEnableFieldObject = defineExposeObject('Boolean', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyGdprRetentionFieldObject = defineExposeObject('Int', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyGdprPrivacyPolicyLinkFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyGdprEmailFooterFieldObject = defineExposeObject('String', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const CompanyRolesFieldObject = defineRelationFunction('Company', (t) =>
@@ -249,8 +245,8 @@ export const CompanyUpdatedAtFieldObject = defineFieldObject('Company', {
   resolve: (parent) => parent.updatedAt,
 });
 
-export const CompanyDepartmentFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'Department', {
+export const CompanyDepartmentsFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'departments', {
     description: undefined,
     nullable: false,
     args: {
@@ -272,8 +268,8 @@ export const CompanyDepartmentFieldObject = defineRelationFunction('Company', (t
   }),
 );
 
-export const CompanyDisqualifyReasonFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'DisqualifyReason', {
+export const CompanyDisqualifyReasonsFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'disqualifyReasons', {
     description: undefined,
     nullable: false,
     args: {
@@ -295,8 +291,8 @@ export const CompanyDisqualifyReasonFieldObject = defineRelationFunction('Compan
   }),
 );
 
-export const CompanyTagSourceFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'TagSource', {
+export const CompanyTagSourcesFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'tagSources', {
     description: undefined,
     nullable: false,
     args: {
@@ -318,8 +314,8 @@ export const CompanyTagSourceFieldObject = defineRelationFunction('Company', (t)
   }),
 );
 
-export const CompanyAuditLogFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'AuditLog', {
+export const CompanyAuditLogsFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'auditLogs', {
     description: undefined,
     nullable: false,
     args: {
@@ -341,8 +337,8 @@ export const CompanyAuditLogFieldObject = defineRelationFunction('Company', (t) 
   }),
 );
 
-export const CompanyOfferFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'Offer', {
+export const CompanyOffersFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'offers', {
     description: undefined,
     nullable: false,
     args: {
@@ -364,8 +360,8 @@ export const CompanyOfferFieldObject = defineRelationFunction('Company', (t) =>
   }),
 );
 
-export const CompanyTemplateFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'Template', {
+export const CompanyTemplatesFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'templates', {
     description: undefined,
     nullable: false,
     args: {
@@ -387,8 +383,8 @@ export const CompanyTemplateFieldObject = defineRelationFunction('Company', (t) 
   }),
 );
 
-export const CompanyTaskFieldObject = defineRelationFunction('Company', (t) =>
-  defineRelationObject('Company', 'Task', {
+export const CompanyTasksFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'tasks', {
     description: undefined,
     nullable: false,
     args: {
@@ -409,3 +405,15 @@ export const CompanyTaskFieldObject = defineRelationFunction('Company', (t) =>
     }),
   }),
 );
+
+export const CompanyOwnerFieldObject = defineRelationObject('Company', 'owner', {
+  description: undefined,
+  nullable: false,
+  args: undefined,
+  query: undefined,
+});
+
+export const CompanyOwnerIdFieldObject = defineExposeObject('String', {
+  description: undefined,
+  nullable: false,
+});
