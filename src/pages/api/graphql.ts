@@ -30,7 +30,7 @@ export default createYoga<
   },
   schema: schema,
   graphiql: {
-    defaultQuery: `query Session { session { expires user { id email image } } }`,
+    defaultQuery: `query { countUser }`,
   },
   graphqlEndpoint: '/api/graphql',
 })

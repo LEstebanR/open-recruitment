@@ -52,7 +52,8 @@ const LoginForm = () => {
           Forgot your password?
         </Link>
 
-        <Button onClick={() => signIn('credentials', { email: email, password: password })} color='primary' size='full'>
+        <Button onClick={() => signIn('credentials', { email: email, password: password, redirect: false })}
+                color='primary' size='full'>
           Sign in to account
         </Button>
         <Button onClick={() => signIn('google', { redirect: false })} color='white' size='full'>

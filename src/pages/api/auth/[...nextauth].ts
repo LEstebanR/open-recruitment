@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { PrismaAdapter } from '@auth/prisma-adapter'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '@/prisma'
 
 export default NextAuth({
@@ -26,7 +26,7 @@ export default NextAuth({
               'Content-Type': 'application/x-www-form-urlencoded',
               accept: 'application/json',
             },
-            body: Object.entries(credentials)
+            body: Object.entries(credentials ?? [])
               .map((e) => e.join('='))
               .join('&'),
           },

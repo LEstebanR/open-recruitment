@@ -1,86 +1,117 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../UI/Button'
 import { PhoneField, TextField } from '../UI/Fields'
 import Link from 'next/link'
 import BackgroundIllustration from '../layout/BackgroundIlustration'
 import { SelectField } from '../UI/Fields'
+import { gql, useMutation } from '@apollo/client'
+
+const SignupMutation = gql`
+  mutation createUser($data: UserCreateInput!){
+    createOneUser(data:$data) {
+      id
+      email
+    }
+  }
+`
 
 const SignUpForm = () => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  const [signup] = useMutation(SignupMutation)
+
   return (
-    <div className="px-4">
+    <div className='px-4'>
       <BackgroundIllustration
-        width="900"
-        height="900"
-        className="hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block"
+        width='900'
+        height='900'
+        className='hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block'
       />
-      <h1 className="text-2xl font-semibold text-gray-900">
+      <h1 className='text-2xl font-semibold text-gray-900'>
         Create a company account
       </h1>
-      <p className="text-gray-600 mt-2">
+      <p className='text-gray-600 mt-2'>
         Does your company already has account? &nbsp;
-        <Link href="/login" className="text-cyan-600 hover:underline">
+        <Link href='/login' className='text-cyan-600 hover:underline'>
           Log in
         </Link>
       </p>
 
-      <form className="bg-white md:p-8 px-4 py-8 rounded-3xl my-4">
-        <div className="grid grid-cols-2 gap-6 mb-4">
+      <form className='bg-white md:p-8 px-4 py-8 rounded-3xl my-4'
+            onSubmit={async e => {
+              e.preventDefault()
+              console.log('submit', name, email)
+
+              await signup({
+                variables: {
+                  data: {
+                    name: name,
+                    email: email,
+                  },
+                },
+              })
+            }}
+      >
+        <div className='grid grid-cols-2 gap-6 mb-4'>
           <TextField
-            className="col-span-full"
-            label="Company name"
-            id="company"
-            name="company"
-            type="text"
-            autoComplete="company"
+            className='col-span-full'
+            label='Company name'
+            id='company'
+            name='company'
+            type='text'
+            autoComplete='company'
             required
           />
           <TextField
-            label="First name"
-            id="first_name"
-            name="first_name"
-            type="text"
-            autoComplete="given-name"
+            label='First name'
+            id='first_name'
+            name='first_name'
+            type='text'
+            autoComplete='given-name'
+            required
+            onChange={e => setName(e.target.value)}
+          />
+          <TextField
+            label='Last name'
+            id='last_name'
+            name='last_name'
+            type='text'
+            autoComplete='family-name'
             required
           />
           <TextField
-            label="Last name"
-            id="last_name"
-            name="last_name"
-            type="text"
-            autoComplete="family-name"
+            className='col-span-full'
+            label='Email address'
+            id='email'
+            name='email'
+            type='email'
+            autoComplete='email'
             required
-          />
-          <TextField
-            className="col-span-full"
-            label="Email address"
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
+            onChange={e => setEmail(e.target.value)}
           />
           <PhoneField
-            className="col-span-full"
-            label="Phone number"
-            id="phone"
-            name="phone"
-            autoComplete="tel"
+            className='col-span-full'
+            label='Phone number'
+            id='phone'
+            name='phone'
+            autoComplete='tel'
             required
           />
           <TextField
-            className="col-span-full"
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
+            className='col-span-full'
+            label='Password'
+            id='password'
+            name='password'
+            type='password'
+            autoComplete='new-password'
             required
           />
           <SelectField
-            className="col-span-full"
-            label="How did you hear about us?"
-            id="referral-source"
-            name="referral_source"
+            className='col-span-full'
+            label='How did you hear about us?'
+            id='referral-source'
+            name='referral_source'
             options={[
               { value: 'google', label: 'Google' },
               { value: 'friend', label: 'Friend' },
@@ -88,7 +119,7 @@ const SignUpForm = () => {
             ]}
           ></SelectField>
         </div>
-        <Button type="submit" color="primary" className="mt-8 w-full">
+        <Button type='submit' color='primary' className='mt-8 w-full'>
           Start your free trial
         </Button>
       </form>
