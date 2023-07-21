@@ -4149,6 +4149,7 @@ export const DepartmentCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
   company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutDepartmentInput}),
   offers: t.field({"required":false,"type":OfferCreateNestedManyWithoutDeparmentInput}),
+
 });
 export const DepartmentCreateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentCreateInput>>('DepartmentCreateInput').implement({
   fields: DepartmentCreateInputFields,

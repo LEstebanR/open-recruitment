@@ -57,7 +57,9 @@ export const Cruds: Record<
   ...AutoCruds,
   User: {
     Object: User.UserObject,
-    queries: AutoCruds.User.queries,
+    queries: {
+      ...AutoCruds.User.queries,
+    },
     mutations: AutoCruds.User.mutations,
   },
   Account: {

@@ -24,3 +24,4 @@ export const UserObject = definePrismaObject('User', {
     }
   },
 })
+

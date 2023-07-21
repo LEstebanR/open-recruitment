@@ -8,6 +8,7 @@ async function main() {
     where: { email: 'alice@prisma.io' },
     update: {},
     create: {
+      id: '12345',
       email: 'alice@prisma.io',
       password: await hash('admin', 12),
       name: 'Alice',
