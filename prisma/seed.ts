@@ -9,11 +9,11 @@ async function main() {
     update: {},
     create: {
       id: '12345',
-      email: 'alice@prisma.io',
+      email: 'admin@admin.ad',
       password: await hash('admin', 12),
-      name: 'Alice',
+      name: 'Admin',
       phone: '1234567',
-      firstName: 'Alicia2',
+      firstName: 'Admin',
       lastName: 'Smith',
       preferredLanguage: 'en',
       timeformat24: true,
@@ -21,9 +21,10 @@ async function main() {
       weekStartDate: 'monday',
       featureDiscovery: ['asdf1'],
       emailProvider: ['email1'],
-      theme: 'a',
+      theme: 'light',
       notifications: { 'asdf': '1234' },
       updatedAt: new Date(),
+      userRole: 'SUPERADMIN',
     },
   })
   console.log({ alice })

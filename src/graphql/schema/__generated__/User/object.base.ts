@@ -36,6 +36,7 @@ export const UserObject = definePrismaObject('User', {
     sessions: t.relation('sessions', UserSessionsFieldObject(t)),
     hiringRole: t.relation('hiringRole', UserHiringRoleFieldObject(t)),
     companies: t.relation('companies', UserCompaniesFieldObject(t)),
+    userRole: t.field(UserUserRoleFieldObject),
   }),
 });
 
@@ -245,3 +246,10 @@ export const UserCompaniesFieldObject = defineRelationFunction('User', (t) =>
     }),
   }),
 );
+
+export const UserUserRoleFieldObject = defineFieldObject('User', {
+  type: Inputs.UserRoles,
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.userRole,
+});

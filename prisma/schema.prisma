@@ -46,6 +46,12 @@ model User {
   sessions          Session[]
   hiringRole        HiringRole[]
   companies         Company[]    @relation("owner")
+  userRole          UserRoles    @default(DEFAULT)
+}
+
+enum UserRoles {
+  SUPERADMIN
+  DEFAULT
 }
 
 model Account {

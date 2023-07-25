@@ -28,6 +28,7 @@ export {
   UserSessionsFieldObject,
   UserHiringRoleFieldObject,
   UserCompaniesFieldObject,
+  UserUserRoleFieldObject,
   createManyUserMutation,
   createOneUserMutation,
   deleteManyUserMutation,

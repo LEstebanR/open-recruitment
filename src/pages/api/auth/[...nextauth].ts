@@ -1,10 +1,12 @@
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '@/prisma'
+import { JWT } from 'next-auth/jwt'
+import { AdapterUser } from 'next-auth/adapters'
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -49,5 +51,34 @@ export default NextAuth({
     }),
   ],
   secret: process.env.SECRET,
-  session: { strategy: 'jwt' },
-})
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+  jwt: {
+    maxAge: 24 * 60 * 60,
+  },
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT, user: (AdapterUser | User) & { userRole?: string } }) {
+      if (user) {
+        token.userRole = user?.userRole
+      }
+      return token
+    },
+    async session({ session, user, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          userRole: token.userRole,
+        },
+      }
+    },
+  },
+
+}
+export default NextAuth(authOptions)

@@ -24,7 +24,8 @@ export {
   UserAccountsFieldObject,
   UserSessionsFieldObject,
   UserHiringRoleFieldObject,
-  UserCompaniesFieldObject
+  UserCompaniesFieldObject,
+  UserUserRoleFieldObject
 } from './object.base';
 export {
   createManyUserMutation,

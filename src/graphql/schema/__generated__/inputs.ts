@@ -240,11 +240,15 @@ export const TransactionIsolationLevel = builder.enumType('TransactionIsolationL
 });
 
 export const UserScalarFieldEnum = builder.enumType('UserScalarFieldEnum', {
-  values: ["id","name","email","emailVerified","image","password","phone","firstName","lastName","preferredLanguage","timeformat24","timezone","weekStartDate","photoId","featureDiscovery","emailProvider","theme","notifications","createdAt","updatedAt"] as const,
+  values: ["id","name","email","emailVerified","image","password","phone","firstName","lastName","preferredLanguage","timeformat24","timezone","weekStartDate","photoId","featureDiscovery","emailProvider","theme","notifications","createdAt","updatedAt","userRole"] as const,
 });
 
 export const VerificationTokenScalarFieldEnum = builder.enumType('VerificationTokenScalarFieldEnum', {
   values: ["identifier","token","expires"] as const,
+});
+
+export const UserRoles = builder.enumType('UserRoles', {
+  values: ["SUPERADMIN","DEFAULT"] as const,
 });
 
 export const OfferPersonalItems = builder.enumType('OfferPersonalItems', {
@@ -283,6 +287,7 @@ export const UserWhereInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":JsonNullableFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFilter}),
   photo: t.field({"required":false,"type":AttachmentWhereInput}),
   accounts: t.field({"required":false,"type":AccountListRelationFilter}),
   sessions: t.field({"required":false,"type":SessionListRelationFilter}),
@@ -314,6 +319,7 @@ export const UserOrderByWithRelationInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  userRole: t.field({"required":false,"type":SortOrder}),
   photo: t.field({"required":false,"type":AttachmentOrderByWithRelationInput}),
   accounts: t.field({"required":false,"type":AccountOrderByRelationAggregateInput}),
   sessions: t.field({"required":false,"type":SessionOrderByRelationAggregateInput}),
@@ -354,6 +360,7 @@ export const UserOrderByWithAggregationInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  userRole: t.field({"required":false,"type":SortOrder}),
   _count: t.field({"required":false,"type":UserCountOrderByAggregateInput}),
   _avg: t.field({"required":false,"type":UserAvgOrderByAggregateInput}),
   _max: t.field({"required":false,"type":UserMaxOrderByAggregateInput}),
@@ -388,6 +395,7 @@ export const UserScalarWhereWithAggregatesInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":JsonNullableWithAggregatesFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
+  userRole: t.field({"required":false,"type":EnumUserRolesWithAggregatesFilter}),
 });
 export const UserScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserScalarWhereWithAggregatesInput>>('UserScalarWhereWithAggregatesInput').implement({
   fields: UserScalarWhereWithAggregatesInputFields,
@@ -3537,6 +3545,7 @@ export const UserCreateInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
@@ -3567,6 +3576,7 @@ export const UserUpdateInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
@@ -3598,6 +3608,7 @@ export const UserCreateManyInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
 });
 export const UserCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCreateManyInput>>('UserCreateManyInput').implement({
   fields: UserCreateManyInputFields,
@@ -3623,6 +3634,7 @@ export const UserUpdateManyMutationInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
 });
 export const UserUpdateManyMutationInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserUpdateManyMutationInput>>('UserUpdateManyMutationInput').implement({
   fields: UserUpdateManyMutationInputFields,
@@ -5788,6 +5800,16 @@ export const DateTimeFilter = builder.inputRef<PrismaUpdateOperationsInputFilter
   fields: DateTimeFilterFields,
 });
 
+export const EnumUserRolesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":UserRoles}),
+  in: t.field({"required":false,"type":[UserRoles]}),
+  notIn: t.field({"required":false,"type":[UserRoles]}),
+  not: t.field({"required":false,"type":UserRoles}),
+});
+export const EnumUserRolesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumUserRolesFilter>>('EnumUserRolesFilter').implement({
+  fields: EnumUserRolesFilterFields,
+});
+
 export const AttachmentRelationFilterFields = (t: any) => ({
   is: t.field({"required":false,"type":AttachmentWhereInput}),
   isNot: t.field({"required":false,"type":AttachmentWhereInput}),
@@ -5881,6 +5903,7 @@ export const UserCountOrderByAggregateInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  userRole: t.field({"required":false,"type":SortOrder}),
 });
 export const UserCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserCountOrderByAggregateInput>>('UserCountOrderByAggregateInput').implement({
   fields: UserCountOrderByAggregateInputFields,
@@ -5911,6 +5934,7 @@ export const UserMaxOrderByAggregateInputFields = (t: any) => ({
   theme: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  userRole: t.field({"required":false,"type":SortOrder}),
 });
 export const UserMaxOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserMaxOrderByAggregateInput>>('UserMaxOrderByAggregateInput').implement({
   fields: UserMaxOrderByAggregateInputFields,
@@ -5934,6 +5958,7 @@ export const UserMinOrderByAggregateInputFields = (t: any) => ({
   theme: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
+  userRole: t.field({"required":false,"type":SortOrder}),
 });
 export const UserMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.UserMinOrderByAggregateInput>>('UserMinOrderByAggregateInput').implement({
   fields: UserMinOrderByAggregateInputFields,
@@ -6072,6 +6097,19 @@ export const DateTimeWithAggregatesFilterFields = (t: any) => ({
 });
 export const DateTimeWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DateTimeWithAggregatesFilter>>('DateTimeWithAggregatesFilter').implement({
   fields: DateTimeWithAggregatesFilterFields,
+});
+
+export const EnumUserRolesWithAggregatesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":UserRoles}),
+  in: t.field({"required":false,"type":[UserRoles]}),
+  notIn: t.field({"required":false,"type":[UserRoles]}),
+  not: t.field({"required":false,"type":UserRoles}),
+  _count: t.field({"required":false,"type":NestedIntFilter}),
+  _min: t.field({"required":false,"type":NestedEnumUserRolesFilter}),
+  _max: t.field({"required":false,"type":NestedEnumUserRolesFilter}),
+});
+export const EnumUserRolesWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumUserRolesWithAggregatesFilter>>('EnumUserRolesWithAggregatesFilter').implement({
+  fields: EnumUserRolesWithAggregatesFilterFields,
 });
 
 export const UserRelationFilterFields = (t: any) => ({
@@ -9309,6 +9347,13 @@ export const DateTimeFieldUpdateOperationsInputFields = (t: any) => ({
 });
 export const DateTimeFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DateTimeFieldUpdateOperationsInput>>('DateTimeFieldUpdateOperationsInput').implement({
   fields: DateTimeFieldUpdateOperationsInputFields,
+});
+
+export const EnumUserRolesFieldUpdateOperationsInputFields = (t: any) => ({
+  set: t.field({"required":false,"type":UserRoles}),
+});
+export const EnumUserRolesFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumUserRolesFieldUpdateOperationsInput>>('EnumUserRolesFieldUpdateOperationsInput').implement({
+  fields: EnumUserRolesFieldUpdateOperationsInputFields,
 });
 
 export const AttachmentUpdateOneWithoutUserProfilePhotoNestedInputFields = (t: any) => ({
@@ -13179,6 +13224,16 @@ export const NestedDateTimeFilter = builder.inputRef<PrismaUpdateOperationsInput
   fields: NestedDateTimeFilterFields,
 });
 
+export const NestedEnumUserRolesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":UserRoles}),
+  in: t.field({"required":false,"type":[UserRoles]}),
+  notIn: t.field({"required":false,"type":[UserRoles]}),
+  not: t.field({"required":false,"type":UserRoles}),
+});
+export const NestedEnumUserRolesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedEnumUserRolesFilter>>('NestedEnumUserRolesFilter').implement({
+  fields: NestedEnumUserRolesFilterFields,
+});
+
 export const NestedStringWithAggregatesFilterFields = (t: any) => ({
   equals: t.string({"required":false}),
   in: t.stringList({"required":false}),
@@ -13328,6 +13383,19 @@ export const NestedDateTimeWithAggregatesFilterFields = (t: any) => ({
 });
 export const NestedDateTimeWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedDateTimeWithAggregatesFilter>>('NestedDateTimeWithAggregatesFilter').implement({
   fields: NestedDateTimeWithAggregatesFilterFields,
+});
+
+export const NestedEnumUserRolesWithAggregatesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":UserRoles}),
+  in: t.field({"required":false,"type":[UserRoles]}),
+  notIn: t.field({"required":false,"type":[UserRoles]}),
+  not: t.field({"required":false,"type":UserRoles}),
+  _count: t.field({"required":false,"type":NestedIntFilter}),
+  _min: t.field({"required":false,"type":NestedEnumUserRolesFilter}),
+  _max: t.field({"required":false,"type":NestedEnumUserRolesFilter}),
+});
+export const NestedEnumUserRolesWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedEnumUserRolesWithAggregatesFilter>>('NestedEnumUserRolesWithAggregatesFilter').implement({
+  fields: NestedEnumUserRolesWithAggregatesFilterFields,
 });
 
 export const NestedIntWithAggregatesFilterFields = (t: any) => ({
@@ -13857,6 +13925,7 @@ export const UserCreateWithoutAccountsInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
@@ -13902,6 +13971,7 @@ export const UserUpdateWithoutAccountsInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
@@ -13931,6 +14001,7 @@ export const UserCreateWithoutSessionsInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
@@ -13976,6 +14047,7 @@ export const UserUpdateWithoutSessionsInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
@@ -14005,6 +14077,7 @@ export const UserCreateWithoutPhotoInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleCreateNestedManyWithoutUserInput}),
@@ -14168,6 +14241,7 @@ export const UserUpdateWithoutPhotoInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
   hiringRole: t.field({"required":false,"type":HiringRoleUpdateManyWithoutUserNestedInput}),
@@ -14343,6 +14417,7 @@ export const UserCreateWithoutHiringRoleInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
@@ -14800,6 +14875,7 @@ export const UserUpdateWithoutHiringRoleInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),
@@ -16003,6 +16079,7 @@ export const UserCreateWithoutCompaniesInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
+  userRole: t.field({"required":false,"type":UserRoles}),
   photo: t.field({"required":false,"type":AttachmentCreateNestedOneWithoutUserProfilePhotoInput}),
   accounts: t.field({"required":false,"type":AccountCreateNestedManyWithoutUserInput}),
   sessions: t.field({"required":false,"type":SessionCreateNestedManyWithoutUserInput}),
@@ -16562,6 +16639,7 @@ export const UserUpdateWithoutCompaniesInputFields = (t: any) => ({
   notifications: t.field({"required":false,"type":Json}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
+  userRole: t.field({"required":false,"type":EnumUserRolesFieldUpdateOperationsInput}),
   photo: t.field({"required":false,"type":AttachmentUpdateOneWithoutUserProfilePhotoNestedInput}),
   accounts: t.field({"required":false,"type":AccountUpdateManyWithoutUserNestedInput}),
   sessions: t.field({"required":false,"type":SessionUpdateManyWithoutUserNestedInput}),

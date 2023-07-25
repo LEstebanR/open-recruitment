@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createYoga } from 'graphql-yoga'
 import type { Session } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
-import authOptions from './auth/[...nextauth]'
+import { authOptions } from './auth/[...nextauth]'
 import { schema } from '@/graphql/schema'
 
 
@@ -20,7 +20,7 @@ export default createYoga<
     res: NextApiResponse;
   },
   {
-    session: Session;
+    session: Session | null
   }
 >({
   context: async ({ req, res }) => {

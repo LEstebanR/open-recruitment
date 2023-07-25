@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/prisma'
-import { hash, compare } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 import { omit } from 'lodash'
 
 export default async function handle(
@@ -29,11 +29,12 @@ async function handlePOST(res: NextApiResponse, req: NextApiRequest) {
       name: true,
       email: true,
       image: true,
+      userRole: true,
       password: true,
     },
   })
 
-  if (user && await compare(req.body.password, user.password)) {
+  if (user && user.password && await compare(req.body.password, user.password)) {
     res.json(omit(user, 'password'))
   } else {
     res.status(400).end('Invalid credentials')
