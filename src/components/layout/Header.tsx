@@ -93,7 +93,7 @@ const Header: React.FC = () => {
 
   const AuthenticatedHeader = () => {
     return (
-      <div className="flex justify-between px-8 py-4 items-center max-w-screen">
+      <div className="flex justify-between px-8 py-1 items-center max-w-screen">
         <div className="flex items-center gap-8">
           <Logo />
           <div className="md:flex gap-2 hidden">
@@ -103,7 +103,7 @@ const Header: React.FC = () => {
         </div>
         <div className="md:flex items-center gap-8 hidden">
           <IoMdNotificationsOutline className="h-8 w-8" />
-          <Avatar src={user.avatar} alt={user.name} />
+          <Avatar src={user.avatar} name={user.name} />
         </div>
         <Popover className="md:hidden">
           {({ open, close }) => (

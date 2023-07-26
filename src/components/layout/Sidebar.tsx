@@ -77,7 +77,7 @@ const Sidebar: React.FC = () => {
         ))}
       </ul>
       <Link
-        href="settings"
+        href="/settings"
         data-tooltip-id="my-tooltip"
         data-tooltip-content="settings"
       >

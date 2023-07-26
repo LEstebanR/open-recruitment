@@ -6,7 +6,7 @@ interface Props {
 
 const Chip: React.FC<Props> = ({ children }) => {
   return (
-    <div className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 h-10">
+    <div className="inline-flex items-center px-2  rounded-lg text-sm font-base bg-gray-100 text-gray-800 ">
       {children}
     </div>
   )

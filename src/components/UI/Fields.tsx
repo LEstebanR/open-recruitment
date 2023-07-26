@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, InputHTMLAttributes } from 'react'
 import clsx from 'clsx'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { PiBuildingsBold } from 'react-icons/pi'
+import { GoUpload } from 'react-icons/go'
 
 const formClasses =
   'block w-full rounded-lg border border-gray-200 bg-white py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm'
@@ -12,7 +13,7 @@ interface LabelProps {
   children: ReactNode
 }
 
-interface TextFieldProps {
+interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string
   label?: string
   type?: string
@@ -21,6 +22,7 @@ interface TextFieldProps {
   autoComplete?: string
   required?: boolean
   name?: string
+  value?: string
 }
 
 type option = {
@@ -51,6 +53,12 @@ interface PhoneFieldProps {
 interface Company {
   id: number
   name: string
+}
+
+interface UploadFileProps {
+  id: string
+  label?: string
+  className?: string
 }
 
 function Label({ id, children }: LabelProps) {
@@ -148,5 +156,65 @@ export function SelectCompany({ companies }: { companies: Company[] }) {
         ))}
       </select>
     </div>
+  )
+}
+
+export function UploadFile({ label, id }: UploadFileProps) {
+  return (
+    <div className="flex items-center gap-2 w-full justify-between">
+      <p>{label}</p>
+      <label
+        htmlFor={id}
+        className="flex  gap-2 cursor-pointer bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-md text-gray-800 font-medium"
+      >
+        <GoUpload className="h-6 w-6" />
+        <p>Select file</p>
+      </label>
+      <input type="file" id={id} className="hidden" />
+    </div>
+  )
+}
+
+export function LanguageSelect({ languages }: { languages: option[] }) {
+  return (
+    <div className="flex flex-col items-center">
+      <label htmlFor="languaje" className="mr-2">
+        Select Language
+      </label>
+      <select
+        id="languaje"
+        name="languaje"
+        className="block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent"
+        defaultValue="0"
+      >
+        {languages.map((language) => (
+          <option key={language.value} value={language.value}>
+            {language.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
+export function TimezoneSelect({
+  id,
+  className,
+}: {
+  id: string
+  className?: string
+}) {
+  const timeZones = [
+    { value: '+1', label: 'GMT +1' },
+    { value: '+2', label: 'GMT +2' },
+  ]
+
+  return (
+    <SelectField
+      id={id}
+      className={className}
+      options={timeZones}
+      label="Select Time Zone"
+    />
   )
 }
