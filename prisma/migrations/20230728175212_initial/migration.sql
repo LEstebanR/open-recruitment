@@ -102,7 +102,7 @@ CREATE TABLE "Role" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "abilities" TEXT[],
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -111,7 +111,7 @@ CREATE TABLE "Role" (
 
 -- CreateTable
 CREATE TABLE "Company" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phone" TEXT,
     "address" TEXT,
@@ -138,7 +138,7 @@ CREATE TABLE "SubscriptionData" (
     "currentPeriodStart" TIMESTAMP(3) NOT NULL,
     "currentPeriodEnd" TIMESTAMP(3) NOT NULL,
     "status" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "SubscriptionData_pkey" PRIMARY KEY ("id")
 );
@@ -146,7 +146,7 @@ CREATE TABLE "SubscriptionData" (
 -- CreateTable
 CREATE TABLE "CompanyMetadata" (
     "id" SERIAL NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "metaKey" TEXT NOT NULL,
     "metaValue" TEXT NOT NULL,
 
@@ -157,7 +157,7 @@ CREATE TABLE "CompanyMetadata" (
 CREATE TABLE "Department" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
 );
@@ -167,7 +167,7 @@ CREATE TABLE "DisqualifyReason" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "action" JSONB NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "DisqualifyReason_pkey" PRIMARY KEY ("id")
 );
@@ -177,7 +177,7 @@ CREATE TABLE "TagSource" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "TagSource_pkey" PRIMARY KEY ("id")
 );
@@ -185,7 +185,7 @@ CREATE TABLE "TagSource" (
 -- CreateTable
 CREATE TABLE "AuditLog" (
     "id" SERIAL NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "userId" INTEGER,
     "offerId" INTEGER,
     "candidateId" INTEGER,
@@ -205,7 +205,7 @@ CREATE TABLE "MeetingRoom" (
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "link" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "MeetingRoom_pkey" PRIMARY KEY ("id")
 );
@@ -228,7 +228,7 @@ CREATE TABLE "EventSchedule" (
     "note" TEXT NOT NULL,
     "privateNote" TEXT NOT NULL,
     "link" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "EventSchedule_pkey" PRIMARY KEY ("id")
 );
@@ -262,7 +262,7 @@ CREATE TABLE "Event" (
     "location" TEXT NOT NULL,
     "note" TEXT NOT NULL,
     "privateNote" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
@@ -289,7 +289,7 @@ CREATE TABLE "EventEvaluation" (
 CREATE TABLE "Offer" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "deparmentId" INTEGER,
     "recruiterId" INTEGER,
     "hiringManagerId" INTEGER,
@@ -394,7 +394,7 @@ CREATE TABLE "TalentPoolMatch" (
 -- CreateTable
 CREATE TABLE "Template" (
     "id" SERIAL NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "isCompanyWide" BOOLEAN NOT NULL,
     "type" "TemplateTypes" NOT NULL,
     "name" TEXT NOT NULL,
@@ -523,7 +523,7 @@ CREATE TABLE "SharedCandidateLink" (
 -- CreateTable
 CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
-    "companyId" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "dueDate" TIMESTAMP(3) NOT NULL,

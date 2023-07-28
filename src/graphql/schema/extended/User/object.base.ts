@@ -3,9 +3,6 @@ import * as User from '../../__generated__/User'
 
 export const UserObject = definePrismaObject('User', {
   ...User.UserObject,
-  authz: {
-    rules: ['IsAuthenticated2'],
-  },
   fields: (t) => {
     // Type-safely omit and rename fields
     const { phone: asopotaPhone, email: emailAddress, ...fields } = User.UserObject.fields(t)
@@ -17,9 +14,7 @@ export const UserObject = definePrismaObject('User', {
       asopotaPhone,
       // Add custom fields
       customField: t.field({
-        type: 'String', authz: {
-          rules: ['IsAuthenticated'],
-        }, resolve: () => 'Hello world!2',
+        type: 'String', resolve: () => 'Hello world!2',
       }),
     }
   },

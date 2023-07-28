@@ -132,7 +132,7 @@ model Role {
   name            String
   abilities       String[]
   company         Company           @relation(fields: [companyId], references: [id])
-  companyId       Int
+  companyId       String
   hiringRoles     HiringRole[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
@@ -141,7 +141,7 @@ model Role {
 }
 
 model Company {
-  id                    Int                @id @default(autoincrement())
+  id                    String                @id @default(cuid())
   name                  String
   phone                 String?
   address               String?
@@ -180,13 +180,13 @@ model SubscriptionData {
   currentPeriodEnd   DateTime
   status             String
   company            Company  @relation(fields: [companyId], references: [id])
-  companyId          Int      @unique
+  companyId          String      @unique
 }
 
 model CompanyMetadata {
   id        Int     @id @default(autoincrement())
   company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  companyId String
   metaKey   String
   metaValue String
 }
@@ -195,7 +195,7 @@ model Department {
   id        Int     @id @default(autoincrement())
   name      String
   company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  companyId String
   offers    Offer[]
 }
 
@@ -204,7 +204,7 @@ model DisqualifyReason {
   name      String
   action    Json
   company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  companyId String
   matches   Match[]
 }
 
@@ -213,7 +213,7 @@ model TagSource {
   name              String
   type              String
   company           Company        @relation(fields: [companyId], references: [id])
-  companyId         Int
+  companyId         String
   offerTags         OfferTag[]
   candidateReferrer Candidate?     @relation("referrer")
   candidateTags     CandidateTag[]
@@ -222,7 +222,7 @@ model TagSource {
 model AuditLog {
   id           Int         @id @default(autoincrement())
   company      Company     @relation(fields: [companyId], references: [id])
-  companyId    Int
+  companyId    String
   user         HiringRole? @relation(fields: [userId], references: [id])
   userId       Int?
   offer        Offer?      @relation(fields: [offerId], references: [id])
@@ -244,7 +244,7 @@ model MeetingRoom {
   type      String
   link      String
   company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  companyId String
 }
 
 model EventSchedule {
@@ -265,7 +265,7 @@ model EventSchedule {
   privateNote               String
   link                      String
   company                   Company                    @relation(fields: [companyId], references: [id])
-  companyId                 Int
+  companyId                 String
   eventScheduleInterviewers EventScheduleInterviewer[]
   eventScheduleEvaluations  EventScheduleEvaluation[]
 }
@@ -297,7 +297,7 @@ model Event {
   note              String
   privateNote       String
   company           Company            @relation(fields: [companyId], references: [id])
-  companyId         Int
+  companyId         String
   eventInterviewers EventInterviewer[]
   eventEvaluations  EventEvaluation[]
 }
@@ -323,7 +323,7 @@ model Offer {
   id                           Int                @id @default(autoincrement())
   name                         String
   company                      Company            @relation(fields: [companyId], references: [id])
-  companyId                    Int
+  companyId                    String
   deparment                    Department?        @relation(fields: [deparmentId], references: [id])
   deparmentId                  Int?
   recruiter                    HiringRole?        @relation("recruiter", fields: [recruiterId], references: [id])
@@ -456,7 +456,7 @@ enum TemplateTypes {
 model Template {
   id                         Int           @id @default(autoincrement())
   company                    Company       @relation(fields: [companyId], references: [id])
-  companyId                  Int
+  companyId                  String
   isCompanyWide              Boolean
   type                       TemplateTypes
   name                       String
@@ -599,7 +599,7 @@ model SharedCandidateLink {
 model Task {
   id          Int          @id @default(autoincrement())
   company     Company      @relation(fields: [companyId], references: [id])
-  companyId   Int
+  companyId   String
   name        String
   status      String
   dueDate     DateTime

@@ -17,7 +17,7 @@ export const SubscriptionDataObject = definePrismaObject('SubscriptionData', {
     currentPeriodEnd: t.field(SubscriptionDataCurrentPeriodEndFieldObject),
     status: t.exposeString('status', SubscriptionDataStatusFieldObject),
     company: t.relation('company', SubscriptionDataCompanyFieldObject),
-    companyId: t.exposeInt('companyId', SubscriptionDataCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', SubscriptionDataCompanyIdFieldObject),
   }),
 });
 
@@ -57,7 +57,7 @@ export const SubscriptionDataCompanyFieldObject = defineRelationObject('Subscrip
   query: undefined,
 });
 
-export const SubscriptionDataCompanyIdFieldObject = defineExposeObject('Int', {
+export const SubscriptionDataCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

@@ -55,10 +55,10 @@ async function main() {
   console.log({ user2 })
 
   const company1 = await prisma.company.upsert({
-    where: { id: 1 },
+    where: { id: '1' },
     update: {},
     create: {
-      id: 1,
+      id: '1',
       name: 'Testing Company Co',
       ownerId: '12345',
     },
@@ -66,10 +66,10 @@ async function main() {
   console.log({ company1 })
 
   const company2 = await prisma.company.upsert({
-    where: { id: 2 },
+    where: { id: '2' },
     update: {},
     create: {
-      id: 2,
+      id: '2',
       name: 'Company Test 2',
       ownerId: '23456',
     },
@@ -77,17 +77,19 @@ async function main() {
   console.log({ company2 })
 
   const company3 = await prisma.company.upsert({
-    where: { id: 3 },
+    where: { id: '3' },
     update: {},
     create: {
-      id: 3,
+      id: '3',
       name: 'Test Company 3',
       ownerId: '23456',
     },
   })
   console.log({ company3 })
 
-  const defaultRoles = async (companyId: number) => {
+  const defaultRoles = async (companyIdS: string) => {
+    let companyId = parseInt(companyIdS)
+
     const role1 = await prisma.role.upsert({
       where: { id: companyId * 1000 + 1 },
       update: {},
@@ -95,7 +97,7 @@ async function main() {
         id: companyId * 1000 + 1,
         name: 'Administrator',
         abilities: ['all'],
-        companyId: companyId,
+        companyId: companyIdS,
       },
     })
     const role2 = await prisma.role.upsert({
@@ -105,7 +107,7 @@ async function main() {
         id: companyId * 1000 + 2,
         name: 'Recruiter',
         abilities: ['recruiter'],
-        companyId: companyId,
+        companyId: companyIdS,
       },
     })
     const role3 = await prisma.role.upsert({
@@ -115,7 +117,7 @@ async function main() {
         id: companyId * 1000 + 3,
         name: 'Viewer',
         abilities: ['viewer'],
-        companyId: companyId,
+        companyId: companyIdS,
       },
     })
   }
@@ -129,7 +131,7 @@ async function main() {
     update: {},
     create: {
       userId: user1.id,
-      roleId: company1.id * 1000 + 1,
+      roleId: parseInt(company1.id) * 1000 + 1,
     },
   })
 
@@ -138,7 +140,7 @@ async function main() {
     update: {},
     create: {
       userId: user1.id,
-      roleId: company2.id * 1000 + 2,
+      roleId: parseInt(company2.id) * 1000 + 2,
     },
   })
 
@@ -147,7 +149,7 @@ async function main() {
     update: {},
     create: {
       userId: user1.id,
-      roleId: company3.id * 1000 + 3,
+      roleId: parseInt(company3.id) * 1000 + 3,
     },
   })
 
@@ -156,7 +158,7 @@ async function main() {
     update: {},
     create: {
       userId: user2.id,
-      roleId: company1.id * 1000 + 1,
+      roleId: parseInt(company1.id) * 1000 + 1,
     },
   })
 

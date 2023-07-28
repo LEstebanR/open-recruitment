@@ -13,7 +13,7 @@ export const TemplateObject = definePrismaObject('Template', {
   fields: (t) => ({
     id: t.exposeID('id', TemplateIdFieldObject),
     company: t.relation('company', TemplateCompanyFieldObject),
-    companyId: t.exposeInt('companyId', TemplateCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', TemplateCompanyIdFieldObject),
     isCompanyWide: t.exposeBoolean('isCompanyWide', TemplateIsCompanyWideFieldObject),
     type: t.field(TemplateTypeFieldObject),
     name: t.exposeString('name', TemplateNameFieldObject),
@@ -38,7 +38,7 @@ export const TemplateCompanyFieldObject = defineRelationObject('Template', 'comp
   query: undefined,
 });
 
-export const TemplateCompanyIdFieldObject = defineExposeObject('Int', {
+export const TemplateCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

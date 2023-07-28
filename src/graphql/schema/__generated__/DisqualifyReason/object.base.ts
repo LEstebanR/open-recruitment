@@ -15,7 +15,7 @@ export const DisqualifyReasonObject = definePrismaObject('DisqualifyReason', {
     name: t.exposeString('name', DisqualifyReasonNameFieldObject),
     action: t.field(DisqualifyReasonActionFieldObject),
     company: t.relation('company', DisqualifyReasonCompanyFieldObject),
-    companyId: t.exposeInt('companyId', DisqualifyReasonCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', DisqualifyReasonCompanyIdFieldObject),
     matches: t.relation('matches', DisqualifyReasonMatchesFieldObject(t)),
   }),
 });
@@ -44,7 +44,7 @@ export const DisqualifyReasonCompanyFieldObject = defineRelationObject('Disquali
   query: undefined,
 });
 
-export const DisqualifyReasonCompanyIdFieldObject = defineExposeObject('Int', {
+export const DisqualifyReasonCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

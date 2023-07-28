@@ -14,7 +14,7 @@ export const OfferObject = definePrismaObject('Offer', {
     id: t.exposeID('id', OfferIdFieldObject),
     name: t.exposeString('name', OfferNameFieldObject),
     company: t.relation('company', OfferCompanyFieldObject),
-    companyId: t.exposeInt('companyId', OfferCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', OfferCompanyIdFieldObject),
     deparment: t.relation('deparment', OfferDeparmentFieldObject),
     deparmentId: t.exposeInt('deparmentId', OfferDeparmentIdFieldObject),
     recruiter: t.relation('recruiter', OfferRecruiterFieldObject),
@@ -78,7 +78,7 @@ export const OfferCompanyFieldObject = defineRelationObject('Offer', 'company', 
   query: undefined,
 });
 
-export const OfferCompanyIdFieldObject = defineExposeObject('Int', {
+export const OfferCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

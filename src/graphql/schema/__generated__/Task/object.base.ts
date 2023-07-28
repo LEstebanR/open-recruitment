@@ -13,7 +13,7 @@ export const TaskObject = definePrismaObject('Task', {
   fields: (t) => ({
     id: t.exposeID('id', TaskIdFieldObject),
     company: t.relation('company', TaskCompanyFieldObject),
-    companyId: t.exposeInt('companyId', TaskCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', TaskCompanyIdFieldObject),
     name: t.exposeString('name', TaskNameFieldObject),
     status: t.exposeString('status', TaskStatusFieldObject),
     dueDate: t.field(TaskDueDateFieldObject),
@@ -36,7 +36,7 @@ export const TaskCompanyFieldObject = defineRelationObject('Task', 'company', {
   query: undefined,
 });
 
-export const TaskCompanyIdFieldObject = defineExposeObject('Int', {
+export const TaskCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

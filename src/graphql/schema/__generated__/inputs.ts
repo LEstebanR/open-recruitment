@@ -787,7 +787,7 @@ export const RoleWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   abilities: t.field({"required":false,"type":StringNullableListFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
@@ -846,7 +846,7 @@ export const RoleScalarWhereWithAggregatesInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   abilities: t.field({"required":false,"type":StringNullableListFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
 });
@@ -858,7 +858,7 @@ export const CompanyWhereInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CompanyWhereInput]}),
   OR: t.field({"required":false,"type":[CompanyWhereInput]}),
   NOT: t.field({"required":false,"type":[CompanyWhereInput]}),
-  id: t.field({"required":false,"type":IntFilter}),
+  id: t.field({"required":false,"type":StringFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   phone: t.field({"required":false,"type":StringNullableFilter}),
   address: t.field({"required":false,"type":StringNullableFilter}),
@@ -930,7 +930,7 @@ export const CompanyOrderByWithRelationInput = builder.inputRef<PrismaUpdateOper
 });
 
 export const CompanyWhereUniqueInputFields = (t: any) => ({
-  id: t.int({"required":false}),
+  id: t.string({"required":false}),
 });
 export const CompanyWhereUniqueInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyWhereUniqueInput>>('CompanyWhereUniqueInput').implement({
   fields: CompanyWhereUniqueInputFields,
@@ -967,7 +967,7 @@ export const CompanyScalarWhereWithAggregatesInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CompanyScalarWhereWithAggregatesInput]}),
   OR: t.field({"required":false,"type":[CompanyScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[CompanyScalarWhereWithAggregatesInput]}),
-  id: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  id: t.field({"required":false,"type":StringWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   phone: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
   address: t.field({"required":false,"type":StringNullableWithAggregatesFilter}),
@@ -997,7 +997,7 @@ export const SubscriptionDataWhereInputFields = (t: any) => ({
   currentPeriodStart: t.field({"required":false,"type":DateTimeFilter}),
   currentPeriodEnd: t.field({"required":false,"type":DateTimeFilter}),
   status: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
 });
 export const SubscriptionDataWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataWhereInput>>('SubscriptionDataWhereInput').implement({
@@ -1019,7 +1019,7 @@ export const SubscriptionDataOrderByWithRelationInput = builder.inputRef<PrismaU
 
 export const SubscriptionDataWhereUniqueInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":false}),
+  companyId: t.string({"required":false}),
 });
 export const SubscriptionDataWhereUniqueInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataWhereUniqueInput>>('SubscriptionDataWhereUniqueInput').implement({
   fields: SubscriptionDataWhereUniqueInputFields,
@@ -1051,7 +1051,7 @@ export const SubscriptionDataScalarWhereWithAggregatesInputFields = (t: any) => 
   currentPeriodStart: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   currentPeriodEnd: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   status: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const SubscriptionDataScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataScalarWhereWithAggregatesInput>>('SubscriptionDataScalarWhereWithAggregatesInput').implement({
   fields: SubscriptionDataScalarWhereWithAggregatesInputFields,
@@ -1062,7 +1062,7 @@ export const CompanyMetadataWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[CompanyMetadataWhereInput]}),
   NOT: t.field({"required":false,"type":[CompanyMetadataWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   metaKey: t.field({"required":false,"type":StringFilter}),
   metaValue: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
@@ -1109,7 +1109,7 @@ export const CompanyMetadataScalarWhereWithAggregatesInputFields = (t: any) => (
   OR: t.field({"required":false,"type":[CompanyMetadataScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[CompanyMetadataScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   metaKey: t.field({"required":false,"type":StringWithAggregatesFilter}),
   metaValue: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
@@ -1123,7 +1123,7 @@ export const DepartmentWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[DepartmentWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   offers: t.field({"required":false,"type":OfferListRelationFilter}),
 });
@@ -1169,7 +1169,7 @@ export const DepartmentScalarWhereWithAggregatesInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[DepartmentScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const DepartmentScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentScalarWhereWithAggregatesInput>>('DepartmentScalarWhereWithAggregatesInput').implement({
   fields: DepartmentScalarWhereWithAggregatesInputFields,
@@ -1182,7 +1182,7 @@ export const DisqualifyReasonWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   action: t.field({"required":false,"type":JsonFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   matches: t.field({"required":false,"type":MatchListRelationFilter}),
 });
@@ -1231,7 +1231,7 @@ export const DisqualifyReasonScalarWhereWithAggregatesInputFields = (t: any) => 
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   action: t.field({"required":false,"type":JsonWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const DisqualifyReasonScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonScalarWhereWithAggregatesInput>>('DisqualifyReasonScalarWhereWithAggregatesInput').implement({
   fields: DisqualifyReasonScalarWhereWithAggregatesInputFields,
@@ -1244,7 +1244,7 @@ export const TagSourceWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   type: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   offerTags: t.field({"required":false,"type":OfferTagListRelationFilter}),
   candidateReferrer: t.field({"required":false,"type":CandidateWhereInput}),
@@ -1297,7 +1297,7 @@ export const TagSourceScalarWhereWithAggregatesInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   type: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const TagSourceScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceScalarWhereWithAggregatesInput>>('TagSourceScalarWhereWithAggregatesInput').implement({
   fields: TagSourceScalarWhereWithAggregatesInputFields,
@@ -1308,7 +1308,7 @@ export const AuditLogWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[AuditLogWhereInput]}),
   NOT: t.field({"required":false,"type":[AuditLogWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   userId: t.field({"required":false,"type":IntNullableFilter}),
   offerId: t.field({"required":false,"type":IntNullableFilter}),
   candidateId: t.field({"required":false,"type":IntNullableFilter}),
@@ -1382,7 +1382,7 @@ export const AuditLogScalarWhereWithAggregatesInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[AuditLogScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[AuditLogScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   userId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
   offerId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
   candidateId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
@@ -1405,7 +1405,7 @@ export const MeetingRoomWhereInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFilter}),
   type: t.field({"required":false,"type":StringFilter}),
   link: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
 });
 export const MeetingRoomWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomWhereInput>>('MeetingRoomWhereInput').implement({
@@ -1455,7 +1455,7 @@ export const MeetingRoomScalarWhereWithAggregatesInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   type: t.field({"required":false,"type":StringWithAggregatesFilter}),
   link: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const MeetingRoomScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomScalarWhereWithAggregatesInput>>('MeetingRoomScalarWhereWithAggregatesInput').implement({
   fields: MeetingRoomScalarWhereWithAggregatesInputFields,
@@ -1481,7 +1481,7 @@ export const EventScheduleWhereInputFields = (t: any) => ({
   note: t.field({"required":false,"type":StringFilter}),
   privateNote: t.field({"required":false,"type":StringFilter}),
   link: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   eventScheduleInterviewers: t.field({"required":false,"type":EventScheduleInterviewerListRelationFilter}),
   eventScheduleEvaluations: t.field({"required":false,"type":EventScheduleEvaluationListRelationFilter}),
@@ -1571,7 +1571,7 @@ export const EventScheduleScalarWhereWithAggregatesInputFields = (t: any) => ({
   note: t.field({"required":false,"type":StringWithAggregatesFilter}),
   privateNote: t.field({"required":false,"type":StringWithAggregatesFilter}),
   link: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const EventScheduleScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScheduleScalarWhereWithAggregatesInput>>('EventScheduleScalarWhereWithAggregatesInput').implement({
   fields: EventScheduleScalarWhereWithAggregatesInputFields,
@@ -1709,7 +1709,7 @@ export const EventWhereInputFields = (t: any) => ({
   location: t.field({"required":false,"type":StringFilter}),
   note: t.field({"required":false,"type":StringFilter}),
   privateNote: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   eventInterviewers: t.field({"required":false,"type":EventInterviewerListRelationFilter}),
   eventEvaluations: t.field({"required":false,"type":EventEvaluationListRelationFilter}),
@@ -1775,7 +1775,7 @@ export const EventScalarWhereWithAggregatesInputFields = (t: any) => ({
   location: t.field({"required":false,"type":StringWithAggregatesFilter}),
   note: t.field({"required":false,"type":StringWithAggregatesFilter}),
   privateNote: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const EventScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScalarWhereWithAggregatesInput>>('EventScalarWhereWithAggregatesInput').implement({
   fields: EventScalarWhereWithAggregatesInputFields,
@@ -1903,7 +1903,7 @@ export const OfferWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[OfferWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   deparmentId: t.field({"required":false,"type":IntNullableFilter}),
   recruiterId: t.field({"required":false,"type":IntNullableFilter}),
   hiringManagerId: t.field({"required":false,"type":IntNullableFilter}),
@@ -2067,7 +2067,7 @@ export const OfferScalarWhereWithAggregatesInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[OfferScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   deparmentId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
   recruiterId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
   hiringManagerId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
@@ -2541,7 +2541,7 @@ export const TemplateWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TemplateWhereInput]}),
   NOT: t.field({"required":false,"type":[TemplateWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   isCompanyWide: t.field({"required":false,"type":BoolFilter}),
   type: t.field({"required":false,"type":EnumTemplateTypesFilter}),
   name: t.field({"required":false,"type":StringFilter}),
@@ -2604,7 +2604,7 @@ export const TemplateScalarWhereWithAggregatesInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TemplateScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[TemplateScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   isCompanyWide: t.field({"required":false,"type":BoolWithAggregatesFilter}),
   type: t.field({"required":false,"type":EnumTemplateTypesWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
@@ -3322,7 +3322,7 @@ export const TaskWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TaskWhereInput]}),
   NOT: t.field({"required":false,"type":[TaskWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   status: t.field({"required":false,"type":StringFilter}),
   dueDate: t.field({"required":false,"type":DateTimeFilter}),
@@ -3382,7 +3382,7 @@ export const TaskScalarWhereWithAggregatesInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TaskScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[TaskScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
-  companyId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
   status: t.field({"required":false,"type":StringWithAggregatesFilter}),
   dueDate: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
@@ -3937,7 +3937,7 @@ export const RoleCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
   abilities: t.stringList({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
 });
@@ -3956,6 +3956,7 @@ export const RoleUpdateManyMutationInput = builder.inputRef<PrismaUpdateOperatio
 });
 
 export const CompanyCreateInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -3990,6 +3991,7 @@ export const CompanyCreateInput = builder.inputRef<PrismaUpdateOperationsInputFi
 });
 
 export const CompanyUpdateInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -4024,7 +4026,7 @@ export const CompanyUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFi
 });
 
 export const CompanyCreateManyInputFields = (t: any) => ({
-  id: t.int({"required":false}),
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -4046,6 +4048,7 @@ export const CompanyCreateManyInput = builder.inputRef<PrismaUpdateOperationsInp
 });
 
 export const CompanyUpdateManyMutationInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -4093,7 +4096,7 @@ export const SubscriptionDataCreateManyInputFields = (t: any) => ({
   currentPeriodStart: t.field({"required":true,"type":DateTime}),
   currentPeriodEnd: t.field({"required":true,"type":DateTime}),
   status: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const SubscriptionDataCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataCreateManyInput>>('SubscriptionDataCreateManyInput').implement({
   fields: SubscriptionDataCreateManyInputFields,
@@ -4129,7 +4132,7 @@ export const CompanyMetadataUpdateInput = builder.inputRef<PrismaUpdateOperation
 
 export const CompanyMetadataCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   metaKey: t.string({"required":true}),
   metaValue: t.string({"required":true}),
 });
@@ -4166,7 +4169,7 @@ export const DepartmentUpdateInput = builder.inputRef<PrismaUpdateOperationsInpu
 export const DepartmentCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const DepartmentCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentCreateManyInput>>('DepartmentCreateManyInput').implement({
   fields: DepartmentCreateManyInputFields,
@@ -4203,7 +4206,7 @@ export const DisqualifyReasonCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
   action: t.field({"required":true,"type":Json}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const DisqualifyReasonCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonCreateManyInput>>('DisqualifyReasonCreateManyInput').implement({
   fields: DisqualifyReasonCreateManyInputFields,
@@ -4245,7 +4248,7 @@ export const TagSourceCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
   type: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const TagSourceCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceCreateManyInput>>('TagSourceCreateManyInput').implement({
   fields: TagSourceCreateManyInputFields,
@@ -4293,7 +4296,7 @@ export const AuditLogUpdateInput = builder.inputRef<PrismaUpdateOperationsInputF
 
 export const AuditLogCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   userId: t.int({"required":false}),
   offerId: t.int({"required":false}),
   candidateId: t.int({"required":false}),
@@ -4345,7 +4348,7 @@ export const MeetingRoomCreateManyInputFields = (t: any) => ({
   name: t.string({"required":true}),
   type: t.string({"required":true}),
   link: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const MeetingRoomCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomCreateManyInput>>('MeetingRoomCreateManyInput').implement({
   fields: MeetingRoomCreateManyInputFields,
@@ -4425,7 +4428,7 @@ export const EventScheduleCreateManyInputFields = (t: any) => ({
   note: t.string({"required":true}),
   privateNote: t.string({"required":true}),
   link: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const EventScheduleCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScheduleCreateManyInput>>('EventScheduleCreateManyInput').implement({
   fields: EventScheduleCreateManyInputFields,
@@ -4560,7 +4563,7 @@ export const EventCreateManyInputFields = (t: any) => ({
   location: t.string({"required":true}),
   note: t.string({"required":true}),
   privateNote: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
 });
 export const EventCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventCreateManyInput>>('EventCreateManyInput').implement({
   fields: EventCreateManyInputFields,
@@ -4736,7 +4739,7 @@ export const OfferUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilt
 export const OfferCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   deparmentId: t.int({"required":false}),
   recruiterId: t.int({"required":false}),
   hiringManagerId: t.int({"required":false}),
@@ -5081,7 +5084,7 @@ export const TemplateUpdateInput = builder.inputRef<PrismaUpdateOperationsInputF
 
 export const TemplateCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   isCompanyWide: t.boolean({"required":true}),
   type: t.field({"required":true,"type":TemplateTypes}),
   name: t.string({"required":true}),
@@ -5585,7 +5588,7 @@ export const TaskUpdateInput = builder.inputRef<PrismaUpdateOperationsInputFilte
 
 export const TaskCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   name: t.string({"required":true}),
   status: t.string({"required":true}),
   dueDate: t.field({"required":true,"type":DateTime}),
@@ -6637,7 +6640,6 @@ export const RoleCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOpera
 
 export const RoleAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const RoleAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.RoleAvgOrderByAggregateInput>>('RoleAvgOrderByAggregateInput').implement({
   fields: RoleAvgOrderByAggregateInputFields,
@@ -6667,7 +6669,6 @@ export const RoleMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperati
 
 export const RoleSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const RoleSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.RoleSumOrderByAggregateInput>>('RoleSumOrderByAggregateInput').implement({
   fields: RoleSumOrderByAggregateInputFields,
@@ -6888,7 +6889,6 @@ export const CompanyCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOp
 });
 
 export const CompanyAvgOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   gdprRetention: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyAvgOrderByAggregateInput>>('CompanyAvgOrderByAggregateInput').implement({
@@ -6940,7 +6940,6 @@ export const CompanyMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOper
 });
 
 export const CompanySumOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   gdprRetention: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanySumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanySumOrderByAggregateInput>>('CompanySumOrderByAggregateInput').implement({
@@ -6972,7 +6971,6 @@ export const SubscriptionDataCountOrderByAggregateInput = builder.inputRef<Prism
 
 export const SubscriptionDataAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const SubscriptionDataAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataAvgOrderByAggregateInput>>('SubscriptionDataAvgOrderByAggregateInput').implement({
   fields: SubscriptionDataAvgOrderByAggregateInputFields,
@@ -7004,7 +7002,6 @@ export const SubscriptionDataMinOrderByAggregateInput = builder.inputRef<PrismaU
 
 export const SubscriptionDataSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const SubscriptionDataSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.SubscriptionDataSumOrderByAggregateInput>>('SubscriptionDataSumOrderByAggregateInput').implement({
   fields: SubscriptionDataSumOrderByAggregateInputFields,
@@ -7022,7 +7019,6 @@ export const CompanyMetadataCountOrderByAggregateInput = builder.inputRef<Prisma
 
 export const CompanyMetadataAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyMetadataAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyMetadataAvgOrderByAggregateInput>>('CompanyMetadataAvgOrderByAggregateInput').implement({
   fields: CompanyMetadataAvgOrderByAggregateInputFields,
@@ -7050,7 +7046,6 @@ export const CompanyMetadataMinOrderByAggregateInput = builder.inputRef<PrismaUp
 
 export const CompanyMetadataSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const CompanyMetadataSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CompanyMetadataSumOrderByAggregateInput>>('CompanyMetadataSumOrderByAggregateInput').implement({
   fields: CompanyMetadataSumOrderByAggregateInputFields,
@@ -7067,7 +7062,6 @@ export const DepartmentCountOrderByAggregateInput = builder.inputRef<PrismaUpdat
 
 export const DepartmentAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const DepartmentAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentAvgOrderByAggregateInput>>('DepartmentAvgOrderByAggregateInput').implement({
   fields: DepartmentAvgOrderByAggregateInputFields,
@@ -7093,7 +7087,6 @@ export const DepartmentMinOrderByAggregateInput = builder.inputRef<PrismaUpdateO
 
 export const DepartmentSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const DepartmentSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentSumOrderByAggregateInput>>('DepartmentSumOrderByAggregateInput').implement({
   fields: DepartmentSumOrderByAggregateInputFields,
@@ -7146,7 +7139,6 @@ export const DisqualifyReasonCountOrderByAggregateInput = builder.inputRef<Prism
 
 export const DisqualifyReasonAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const DisqualifyReasonAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonAvgOrderByAggregateInput>>('DisqualifyReasonAvgOrderByAggregateInput').implement({
   fields: DisqualifyReasonAvgOrderByAggregateInputFields,
@@ -7172,7 +7164,6 @@ export const DisqualifyReasonMinOrderByAggregateInput = builder.inputRef<PrismaU
 
 export const DisqualifyReasonSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const DisqualifyReasonSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonSumOrderByAggregateInput>>('DisqualifyReasonSumOrderByAggregateInput').implement({
   fields: DisqualifyReasonSumOrderByAggregateInputFields,
@@ -7244,7 +7235,6 @@ export const TagSourceCountOrderByAggregateInput = builder.inputRef<PrismaUpdate
 
 export const TagSourceAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const TagSourceAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceAvgOrderByAggregateInput>>('TagSourceAvgOrderByAggregateInput').implement({
   fields: TagSourceAvgOrderByAggregateInputFields,
@@ -7272,7 +7262,6 @@ export const TagSourceMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOp
 
 export const TagSourceSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const TagSourceSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceSumOrderByAggregateInput>>('TagSourceSumOrderByAggregateInput').implement({
   fields: TagSourceSumOrderByAggregateInputFields,
@@ -7297,7 +7286,6 @@ export const AuditLogCountOrderByAggregateInput = builder.inputRef<PrismaUpdateO
 
 export const AuditLogAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   userId: t.field({"required":false,"type":SortOrder}),
   offerId: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
@@ -7340,7 +7328,6 @@ export const AuditLogMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOpe
 
 export const AuditLogSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   userId: t.field({"required":false,"type":SortOrder}),
   offerId: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
@@ -7362,7 +7349,6 @@ export const MeetingRoomCountOrderByAggregateInput = builder.inputRef<PrismaUpda
 
 export const MeetingRoomAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const MeetingRoomAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomAvgOrderByAggregateInput>>('MeetingRoomAvgOrderByAggregateInput').implement({
   fields: MeetingRoomAvgOrderByAggregateInputFields,
@@ -7392,7 +7378,6 @@ export const MeetingRoomMinOrderByAggregateInput = builder.inputRef<PrismaUpdate
 
 export const MeetingRoomSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const MeetingRoomSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomSumOrderByAggregateInput>>('MeetingRoomSumOrderByAggregateInput').implement({
   fields: MeetingRoomSumOrderByAggregateInputFields,
@@ -7445,7 +7430,6 @@ export const EventScheduleAvgOrderByAggregateInputFields = (t: any) => ({
   meetingLimit: t.field({"required":false,"type":SortOrder}),
   duration: t.field({"required":false,"type":SortOrder}),
   Interval: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const EventScheduleAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScheduleAvgOrderByAggregateInput>>('EventScheduleAvgOrderByAggregateInput').implement({
   fields: EventScheduleAvgOrderByAggregateInputFields,
@@ -7505,7 +7489,6 @@ export const EventScheduleSumOrderByAggregateInputFields = (t: any) => ({
   meetingLimit: t.field({"required":false,"type":SortOrder}),
   duration: t.field({"required":false,"type":SortOrder}),
   Interval: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const EventScheduleSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScheduleSumOrderByAggregateInput>>('EventScheduleSumOrderByAggregateInput').implement({
   fields: EventScheduleSumOrderByAggregateInputFields,
@@ -7653,7 +7636,6 @@ export const EventAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   time: t.field({"required":false,"type":SortOrder}),
   duration: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const EventAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventAvgOrderByAggregateInput>>('EventAvgOrderByAggregateInput').implement({
   fields: EventAvgOrderByAggregateInputFields,
@@ -7693,7 +7675,6 @@ export const EventSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   time: t.field({"required":false,"type":SortOrder}),
   duration: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const EventSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventSumOrderByAggregateInput>>('EventSumOrderByAggregateInput').implement({
   fields: EventSumOrderByAggregateInputFields,
@@ -7863,7 +7844,6 @@ export const OfferCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOper
 
 export const OfferAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   deparmentId: t.field({"required":false,"type":SortOrder}),
   recruiterId: t.field({"required":false,"type":SortOrder}),
   hiringManagerId: t.field({"required":false,"type":SortOrder}),
@@ -7957,7 +7937,6 @@ export const OfferMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperat
 
 export const OfferSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   deparmentId: t.field({"required":false,"type":SortOrder}),
   recruiterId: t.field({"required":false,"type":SortOrder}),
   hiringManagerId: t.field({"required":false,"type":SortOrder}),
@@ -8429,7 +8408,6 @@ export const TemplateCountOrderByAggregateInput = builder.inputRef<PrismaUpdateO
 
 export const TemplateAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const TemplateAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TemplateAvgOrderByAggregateInput>>('TemplateAvgOrderByAggregateInput').implement({
   fields: TemplateAvgOrderByAggregateInputFields,
@@ -8461,7 +8439,6 @@ export const TemplateMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOpe
 
 export const TemplateSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
 });
 export const TemplateSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TemplateSumOrderByAggregateInput>>('TemplateSumOrderByAggregateInput').implement({
   fields: TemplateSumOrderByAggregateInputFields,
@@ -9072,7 +9049,6 @@ export const TaskCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOpera
 
 export const TaskAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
 });
 export const TaskAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskAvgOrderByAggregateInput>>('TaskAvgOrderByAggregateInput').implement({
@@ -9107,7 +9083,6 @@ export const TaskMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperati
 
 export const TaskSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
-  companyId: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
 });
 export const TaskSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TaskSumOrderByAggregateInput>>('TaskSumOrderByAggregateInput').implement({
@@ -13645,6 +13620,7 @@ export const HiringRoleCreateManyUserInputEnvelope = builder.inputRef<PrismaUpda
 });
 
 export const CompanyCreateWithoutOwnerInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -13869,7 +13845,7 @@ export const CompanyScalarWhereInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
   OR: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[CompanyScalarWhereInput]}),
-  id: t.field({"required":false,"type":IntFilter}),
+  id: t.field({"required":false,"type":StringFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   phone: t.field({"required":false,"type":StringNullableFilter}),
   address: t.field({"required":false,"type":StringNullableFilter}),
@@ -14960,7 +14936,7 @@ export const AuditLogScalarWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[AuditLogScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[AuditLogScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   userId: t.field({"required":false,"type":IntNullableFilter}),
   offerId: t.field({"required":false,"type":IntNullableFilter}),
   candidateId: t.field({"required":false,"type":IntNullableFilter}),
@@ -15405,6 +15381,7 @@ export const FollowScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInp
 });
 
 export const CompanyCreateWithoutRolesInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -15542,6 +15519,7 @@ export const CompanyUpsertWithoutRolesInput = builder.inputRef<PrismaUpdateOpera
 });
 
 export const CompanyUpdateWithoutRolesInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -16111,7 +16089,7 @@ export const RoleScalarWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   abilities: t.field({"required":false,"type":StringNullableListFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
 });
@@ -16170,7 +16148,7 @@ export const MeetingRoomScalarWhereInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFilter}),
   type: t.field({"required":false,"type":StringFilter}),
   link: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const MeetingRoomScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.MeetingRoomScalarWhereInput>>('MeetingRoomScalarWhereInput').implement({
   fields: MeetingRoomScalarWhereInputFields,
@@ -16206,7 +16184,7 @@ export const CompanyMetadataScalarWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[CompanyMetadataScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[CompanyMetadataScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   metaKey: t.field({"required":false,"type":StringFilter}),
   metaValue: t.field({"required":false,"type":StringFilter}),
 });
@@ -16259,7 +16237,7 @@ export const EventScheduleScalarWhereInputFields = (t: any) => ({
   note: t.field({"required":false,"type":StringFilter}),
   privateNote: t.field({"required":false,"type":StringFilter}),
   link: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const EventScheduleScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScheduleScalarWhereInput>>('EventScheduleScalarWhereInput').implement({
   fields: EventScheduleScalarWhereInputFields,
@@ -16302,7 +16280,7 @@ export const EventScalarWhereInputFields = (t: any) => ({
   location: t.field({"required":false,"type":StringFilter}),
   note: t.field({"required":false,"type":StringFilter}),
   privateNote: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const EventScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EventScalarWhereInput>>('EventScalarWhereInput').implement({
   fields: EventScalarWhereInputFields,
@@ -16339,7 +16317,7 @@ export const DepartmentScalarWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[DepartmentScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const DepartmentScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DepartmentScalarWhereInput>>('DepartmentScalarWhereInput').implement({
   fields: DepartmentScalarWhereInputFields,
@@ -16377,7 +16355,7 @@ export const DisqualifyReasonScalarWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   action: t.field({"required":false,"type":JsonFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const DisqualifyReasonScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.DisqualifyReasonScalarWhereInput>>('DisqualifyReasonScalarWhereInput').implement({
   fields: DisqualifyReasonScalarWhereInputFields,
@@ -16415,7 +16393,7 @@ export const TagSourceScalarWhereInputFields = (t: any) => ({
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   type: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const TagSourceScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceScalarWhereInput>>('TagSourceScalarWhereInput').implement({
   fields: TagSourceScalarWhereInputFields,
@@ -16477,7 +16455,7 @@ export const OfferScalarWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[OfferScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   deparmentId: t.field({"required":false,"type":IntNullableFilter}),
   recruiterId: t.field({"required":false,"type":IntNullableFilter}),
   hiringManagerId: t.field({"required":false,"type":IntNullableFilter}),
@@ -16542,7 +16520,7 @@ export const TemplateScalarWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TemplateScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[TemplateScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   isCompanyWide: t.field({"required":false,"type":BoolFilter}),
   type: t.field({"required":false,"type":EnumTemplateTypesFilter}),
   name: t.field({"required":false,"type":StringFilter}),
@@ -16582,7 +16560,7 @@ export const TaskScalarWhereInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TaskScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[TaskScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
-  companyId: t.field({"required":false,"type":IntFilter}),
+  companyId: t.field({"required":false,"type":StringFilter}),
   name: t.field({"required":false,"type":StringFilter}),
   status: t.field({"required":false,"type":StringFilter}),
   dueDate: t.field({"required":false,"type":DateTimeFilter}),
@@ -16632,6 +16610,7 @@ export const UserUpdateWithoutCompaniesInput = builder.inputRef<PrismaUpdateOper
 });
 
 export const CompanyCreateWithoutSubscriptionInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -16681,6 +16660,7 @@ export const CompanyUpsertWithoutSubscriptionInput = builder.inputRef<PrismaUpda
 });
 
 export const CompanyUpdateWithoutSubscriptionInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -16714,6 +16694,7 @@ export const CompanyUpdateWithoutSubscriptionInput = builder.inputRef<PrismaUpda
 });
 
 export const CompanyCreateWithoutMetadataInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -16763,6 +16744,7 @@ export const CompanyUpsertWithoutMetadataInput = builder.inputRef<PrismaUpdateOp
 });
 
 export const CompanyUpdateWithoutMetadataInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -16796,6 +16778,7 @@ export const CompanyUpdateWithoutMetadataInput = builder.inputRef<PrismaUpdateOp
 });
 
 export const CompanyCreateWithoutDepartmentsInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -16905,6 +16888,7 @@ export const CompanyUpsertWithoutDepartmentsInput = builder.inputRef<PrismaUpdat
 });
 
 export const CompanyUpdateWithoutDepartmentsInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -16963,6 +16947,7 @@ export const OfferUpdateManyWithWhereWithoutDeparmentInput = builder.inputRef<Pr
 });
 
 export const CompanyCreateWithoutDisqualifyReasonsInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -17038,6 +17023,7 @@ export const CompanyUpsertWithoutDisqualifyReasonsInput = builder.inputRef<Prism
 });
 
 export const CompanyUpdateWithoutDisqualifyReasonsInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -17111,6 +17097,7 @@ export const MatchScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInpu
 });
 
 export const CompanyCreateWithoutTagSourcesInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -17247,6 +17234,7 @@ export const CompanyUpsertWithoutTagSourcesInput = builder.inputRef<PrismaUpdate
 });
 
 export const CompanyUpdateWithoutTagSourcesInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -17395,6 +17383,7 @@ export const CandidateTagScalarWhereInput = builder.inputRef<PrismaUpdateOperati
 });
 
 export const CompanyCreateWithoutAuditLogsInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -17567,6 +17556,7 @@ export const CompanyUpsertWithoutAuditLogsInput = builder.inputRef<PrismaUpdateO
 });
 
 export const CompanyUpdateWithoutAuditLogsInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -17723,6 +17713,7 @@ export const CandidateUpdateWithoutAuditLogsInput = builder.inputRef<PrismaUpdat
 });
 
 export const CompanyCreateWithoutMeetingRoomsInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -17772,6 +17763,7 @@ export const CompanyUpsertWithoutMeetingRoomsInput = builder.inputRef<PrismaUpda
 });
 
 export const CompanyUpdateWithoutMeetingRoomsInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -17805,6 +17797,7 @@ export const CompanyUpdateWithoutMeetingRoomsInput = builder.inputRef<PrismaUpda
 });
 
 export const CompanyCreateWithoutEventScheduleInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -17901,6 +17894,7 @@ export const CompanyUpsertWithoutEventScheduleInput = builder.inputRef<PrismaUpd
 });
 
 export const CompanyUpdateWithoutEventScheduleInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -18226,6 +18220,7 @@ export const EvaluationUpdateWithoutEventScheduleEvaluationsInput = builder.inpu
 });
 
 export const CompanyCreateWithoutEventsInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -18321,6 +18316,7 @@ export const CompanyUpsertWithoutEventsInput = builder.inputRef<PrismaUpdateOper
 });
 
 export const CompanyUpdateWithoutEventsInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -18614,6 +18610,7 @@ export const EvaluationUpdateWithoutEventEvaluationsInput = builder.inputRef<Pri
 });
 
 export const CompanyCreateWithoutOffersInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -19041,6 +19038,7 @@ export const CompanyUpsertWithoutOffersInput = builder.inputRef<PrismaUpdateOper
 });
 
 export const CompanyUpdateWithoutOffersInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -20539,6 +20537,7 @@ export const CandidateUpdateWithoutTalentPoolsInput = builder.inputRef<PrismaUpd
 });
 
 export const CompanyCreateWithoutTemplatesInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -20805,6 +20804,7 @@ export const CompanyUpsertWithoutTemplatesInput = builder.inputRef<PrismaUpdateO
 });
 
 export const CompanyUpdateWithoutTemplatesInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -23068,6 +23068,7 @@ export const CandidateUpdateWithoutSharedCandidateLinkInput = builder.inputRef<P
 });
 
 export const CompanyCreateWithoutTasksInputFields = (t: any) => ({
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -23181,6 +23182,7 @@ export const CompanyUpsertWithoutTasksInput = builder.inputRef<PrismaUpdateOpera
 });
 
 export const CompanyUpdateWithoutTasksInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -23699,7 +23701,7 @@ export const HiringRoleCreateManyUserInput = builder.inputRef<PrismaUpdateOperat
 });
 
 export const CompanyCreateManyOwnerInputFields = (t: any) => ({
-  id: t.int({"required":false}),
+  id: t.string({"required":false}),
   name: t.string({"required":true}),
   phone: t.string({"required":false}),
   address: t.string({"required":false}),
@@ -23768,6 +23770,7 @@ export const HiringRoleUpdateWithoutUserInput = builder.inputRef<PrismaUpdateOpe
 });
 
 export const CompanyUpdateWithoutOwnerInputFields = (t: any) => ({
+  id: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
   phone: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
   address: t.field({"required":false,"type":NullableStringFieldUpdateOperationsInput}),
@@ -23844,7 +23847,7 @@ export const AttachmentCreateManyUploaderInput = builder.inputRef<PrismaUpdateOp
 
 export const AuditLogCreateManyUserInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   offerId: t.int({"required":false}),
   candidateId: t.int({"required":false}),
   actor: t.string({"required":true}),
@@ -24502,7 +24505,7 @@ export const TaskUpdateWithoutCompanyInput = builder.inputRef<PrismaUpdateOperat
 export const OfferCreateManyDeparmentInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   recruiterId: t.int({"required":false}),
   hiringManagerId: t.int({"required":false}),
   description: t.string({"required":true}),
@@ -24695,7 +24698,7 @@ export const EventEvaluationUpdateWithoutEventInput = builder.inputRef<PrismaUpd
 
 export const AuditLogCreateManyOfferInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   userId: t.int({"required":false}),
   candidateId: t.int({"required":false}),
   actor: t.string({"required":true}),
@@ -25061,7 +25064,7 @@ export const StageMetadataUpdateWithoutStageInput = builder.inputRef<PrismaUpdat
 
 export const AuditLogCreateManyCandidateInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   userId: t.int({"required":false}),
   offerId: t.int({"required":false}),
   actor: t.string({"required":true}),
@@ -25128,7 +25131,7 @@ export const EvaluationCreateManyCandidateInput = builder.inputRef<PrismaUpdateO
 
 export const TaskCreateManyCandidateInputFields = (t: any) => ({
   id: t.int({"required":false}),
-  companyId: t.int({"required":true}),
+  companyId: t.string({"required":true}),
   name: t.string({"required":true}),
   status: t.string({"required":true}),
   dueDate: t.field({"required":true,"type":DateTime}),

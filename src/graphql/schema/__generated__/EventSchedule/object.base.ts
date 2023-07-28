@@ -28,7 +28,7 @@ export const EventScheduleObject = definePrismaObject('EventSchedule', {
     privateNote: t.exposeString('privateNote', EventSchedulePrivateNoteFieldObject),
     link: t.exposeString('link', EventScheduleLinkFieldObject),
     company: t.relation('company', EventScheduleCompanyFieldObject),
-    companyId: t.exposeInt('companyId', EventScheduleCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', EventScheduleCompanyIdFieldObject),
     eventScheduleInterviewers: t.relation('eventScheduleInterviewers', EventScheduleEventScheduleInterviewersFieldObject(t)),
     eventScheduleEvaluations: t.relation('eventScheduleEvaluations', EventScheduleEventScheduleEvaluationsFieldObject(t)),
   }),
@@ -121,7 +121,7 @@ export const EventScheduleCompanyFieldObject = defineRelationObject('EventSchedu
   query: undefined,
 });
 
-export const EventScheduleCompanyIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

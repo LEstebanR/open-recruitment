@@ -15,7 +15,7 @@ export const TagSourceObject = definePrismaObject('TagSource', {
     name: t.exposeString('name', TagSourceNameFieldObject),
     type: t.exposeString('type', TagSourceTypeFieldObject),
     company: t.relation('company', TagSourceCompanyFieldObject),
-    companyId: t.exposeInt('companyId', TagSourceCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', TagSourceCompanyIdFieldObject),
     offerTags: t.relation('offerTags', TagSourceOfferTagsFieldObject(t)),
     candidateReferrer: t.relation('candidateReferrer', TagSourceCandidateReferrerFieldObject),
     candidateTags: t.relation('candidateTags', TagSourceCandidateTagsFieldObject(t)),
@@ -44,7 +44,7 @@ export const TagSourceCompanyFieldObject = defineRelationObject('TagSource', 'co
   query: undefined,
 });
 
-export const TagSourceCompanyIdFieldObject = defineExposeObject('Int', {
+export const TagSourceCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

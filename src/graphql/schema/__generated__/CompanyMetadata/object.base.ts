@@ -13,7 +13,7 @@ export const CompanyMetadataObject = definePrismaObject('CompanyMetadata', {
   fields: (t) => ({
     id: t.exposeID('id', CompanyMetadataIdFieldObject),
     company: t.relation('company', CompanyMetadataCompanyFieldObject),
-    companyId: t.exposeInt('companyId', CompanyMetadataCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', CompanyMetadataCompanyIdFieldObject),
     metaKey: t.exposeString('metaKey', CompanyMetadataMetaKeyFieldObject),
     metaValue: t.exposeString('metaValue', CompanyMetadataMetaValueFieldObject),
   }),
@@ -31,7 +31,7 @@ export const CompanyMetadataCompanyFieldObject = defineRelationObject('CompanyMe
   query: undefined,
 });
 
-export const CompanyMetadataCompanyIdFieldObject = defineExposeObject('Int', {
+export const CompanyMetadataCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

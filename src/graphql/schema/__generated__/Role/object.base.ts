@@ -15,7 +15,7 @@ export const RoleObject = definePrismaObject('Role', {
     name: t.exposeString('name', RoleNameFieldObject),
     abilities: t.exposeStringList('abilities', RoleAbilitiesFieldObject),
     company: t.relation('company', RoleCompanyFieldObject),
-    companyId: t.exposeInt('companyId', RoleCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', RoleCompanyIdFieldObject),
     hiringRoles: t.relation('hiringRoles', RoleHiringRolesFieldObject(t)),
     createdAt: t.field(RoleCreatedAtFieldObject),
     updatedAt: t.field(RoleUpdatedAtFieldObject),
@@ -46,7 +46,7 @@ export const RoleCompanyFieldObject = defineRelationObject('Role', 'company', {
   query: undefined,
 });
 
-export const RoleCompanyIdFieldObject = defineExposeObject('Int', {
+export const RoleCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

@@ -1,11 +1,4 @@
-import * as Inputs from '@/graphql/schema/__generated__/inputs'
-import {
-  defineExposeObject,
-  definePrismaObject,
-  defineFieldObject,
-  defineRelationFunction,
-  defineRelationObject,
-} from '../../__generated__/utils'
+import { definePrismaObject } from '../../__generated__/utils'
 import * as Company from '../../__generated__/Company'
 
 export const CompanyObject = definePrismaObject('Company', {
@@ -15,7 +8,7 @@ export const CompanyObject = definePrismaObject('Company', {
   },
   fields: (t) => {
     // Type-safely omit and rename fields
-    const { ...fields } = Company.CompanyObject.fields(t)
+    const fields  = Company.CompanyObject.fields(t)
 
     return {
       ...fields,

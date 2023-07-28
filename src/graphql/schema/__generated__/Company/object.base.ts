@@ -44,7 +44,7 @@ export const CompanyObject = definePrismaObject('Company', {
   }),
 });
 
-export const CompanyIdFieldObject = defineExposeObject('Int', {
+export const CompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

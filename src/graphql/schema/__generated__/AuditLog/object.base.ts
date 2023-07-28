@@ -13,7 +13,7 @@ export const AuditLogObject = definePrismaObject('AuditLog', {
   fields: (t) => ({
     id: t.exposeID('id', AuditLogIdFieldObject),
     company: t.relation('company', AuditLogCompanyFieldObject),
-    companyId: t.exposeInt('companyId', AuditLogCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', AuditLogCompanyIdFieldObject),
     user: t.relation('user', AuditLogUserFieldObject),
     userId: t.exposeInt('userId', AuditLogUserIdFieldObject),
     offer: t.relation('offer', AuditLogOfferFieldObject),
@@ -41,7 +41,7 @@ export const AuditLogCompanyFieldObject = defineRelationObject('AuditLog', 'comp
   query: undefined,
 });
 
-export const AuditLogCompanyIdFieldObject = defineExposeObject('Int', {
+export const AuditLogCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

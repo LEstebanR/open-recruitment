@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../UI/Button'
-import { PhoneField, TextField } from '../UI/Fields'
+import { PhoneField, SelectField, TextField } from '../UI/Fields'
 import Link from 'next/link'
 import BackgroundIllustration from '../layout/BackgroundIlustration'
-import { SelectField } from '../UI/Fields'
 import { gql, useMutation } from '@apollo/client'
+import Alert from '@/utils/Alert'
+import { signIn } from 'next-auth/react'
 
 const SignupMutation = gql`
   mutation createUserAndCompany($data: UserSignUpInput!){
@@ -21,9 +22,21 @@ const SignupMutation = gql`
 const SignUpForm = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [companyName, setCompanyName] = useState('')
 
-  const [signup] = useMutation(SignupMutation)
+  const [signup, { data, loading, error }] = useMutation(SignupMutation)
+
+  useEffect(() => {
+    if (error) {
+      Alert({ type: 'error', message: error.message })
+    }
+
+    if (data) {
+      console.log('success')
+      signIn('credentials', { email, password })
+    }
+  }, [error, data])
 
   return (
     <div className='px-4'>
@@ -45,9 +58,8 @@ const SignUpForm = () => {
       <form className='bg-white md:p-8 px-4 py-8 rounded-3xl my-4'
             onSubmit={async e => {
               e.preventDefault()
-              console.log('submit', name, email, companyName)
 
-              const response = await signup({
+              await signup({
                 variables: {
                   data: {
                     name: name,
@@ -56,8 +68,6 @@ const SignUpForm = () => {
                   },
                 },
               })
-
-              console.log(response)
             }}
       >
         <div className='grid grid-cols-2 gap-6 mb-4'>
@@ -114,6 +124,7 @@ const SignUpForm = () => {
             type='password'
             autoComplete='new-password'
             required
+            onChange={e => setPassword(e.target.value)}
           />
           <SelectField
             className='col-span-full'

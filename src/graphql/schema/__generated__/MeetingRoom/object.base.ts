@@ -16,7 +16,7 @@ export const MeetingRoomObject = definePrismaObject('MeetingRoom', {
     type: t.exposeString('type', MeetingRoomTypeFieldObject),
     link: t.exposeString('link', MeetingRoomLinkFieldObject),
     company: t.relation('company', MeetingRoomCompanyFieldObject),
-    companyId: t.exposeInt('companyId', MeetingRoomCompanyIdFieldObject),
+    companyId: t.exposeString('companyId', MeetingRoomCompanyIdFieldObject),
   }),
 });
 
@@ -47,7 +47,7 @@ export const MeetingRoomCompanyFieldObject = defineRelationObject('MeetingRoom',
   query: undefined,
 });
 
-export const MeetingRoomCompanyIdFieldObject = defineExposeObject('Int', {
+export const MeetingRoomCompanyIdFieldObject = defineExposeObject('String', {
   description: undefined,
   nullable: false,
 });

@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import * as Inputs from '@/graphql/schema/__generated__/inputs'
 import { prisma } from '@/prisma'
 import { builder } from '@/graphql/schema/builder'
-import { defineMutation, defineMutationFunction, defineMutationPrismaObject } from '../../../__generated__/utils'
+import { defineMutationFunction, defineMutationPrismaObject } from '../../../__generated__/utils'
 
 const UserSignUpInput = builder.inputRef<Prisma.UserCreateInput & {
   companyName: string

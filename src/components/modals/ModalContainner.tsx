@@ -23,8 +23,8 @@ const ModalContainner: React.FC<props> = ({
       <div className="fixed inset-0 bg-black/80 " aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-white min-h-[200px] min-w-[400px] p-4">
-          <Dialog.Title>
-            <h2 className="text-2xl font-bold">{title}</h2>
+          <Dialog.Title className="text-2xl font-bold">
+            {title}
           </Dialog.Title>
           {children}
         </Dialog.Panel>
