@@ -141,7 +141,7 @@ model Role {
 }
 
 model Company {
-  id                    String                @id @default(cuid())
+  id                    String             @id @default(cuid())
   name                  String
   phone                 String?
   address               String?
@@ -180,7 +180,7 @@ model SubscriptionData {
   currentPeriodEnd   DateTime
   status             String
   company            Company  @relation(fields: [companyId], references: [id])
-  companyId          String      @unique
+  companyId          String   @unique
 }
 
 model CompanyMetadata {

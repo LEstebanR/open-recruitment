@@ -12,6 +12,6 @@ export const isAuthenticated = (url: string) => {
 
 // define useIsAuthenticated hook
 export const useIsAuthenticated = () => {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   return { isAuthenticated: status === 'authenticated' }
 }

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/prisma'
-import { compare, hash } from 'bcrypt'
+import { compare } from 'bcrypt'
 import { omit } from 'lodash'
 
 export default async function handle(
@@ -14,10 +14,6 @@ export default async function handle(
       `The HTTP ${req.method} method is not supported at this route.`,
     )
   }
-}
-
-const hashPassword = async (password: string) => {
-  return await hash(password, 12)
 }
 
 // POST /api/user

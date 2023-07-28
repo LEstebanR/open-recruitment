@@ -23,5 +23,5 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["cypress/**/*.js"]
+  "ignorePatterns": ["cypress/**/*.js","src/graphql/schema/__generated__/*"]
 }

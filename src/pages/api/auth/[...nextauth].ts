@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      authorize: async function(credentials, req) {
+      authorize: async function(credentials) {
         const user = await fetch(
           `${process.env.NEXTAUTH_URL}/api/user/check-credentials`,
           {
@@ -35,6 +35,7 @@ export const authOptions: NextAuthOptions = {
         )
           .then((res) => res.json())
           .catch((err) => {
+            console.log(err)
             return null
           })
 
@@ -69,7 +70,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, user, token }) {
+    async session({ session, token }) {
       return {
         ...session,
         user: {

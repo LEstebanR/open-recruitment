@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import { useIsAuthenticated } from '@/utils/auth'
-import { NextRouter, useRouter } from 'next/router'
 import Sidebar from './Sidebar'
 
 interface Props {
@@ -10,10 +9,7 @@ interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const router: NextRouter = useRouter()
-  const currentPath = router.pathname
   const { isAuthenticated } = useIsAuthenticated()
-
 
   return (
     <div className='flex flex-col items-center min-h-screen '>

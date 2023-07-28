@@ -25,7 +25,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState('')
   const [companyName, setCompanyName] = useState('')
 
-  const [signup, { data, loading, error }] = useMutation(SignupMutation)
+  const [signup, { data, error }] = useMutation(SignupMutation)
 
   useEffect(() => {
     if (error) {
@@ -36,7 +36,7 @@ const SignUpForm = () => {
       console.log('success')
       signIn('credentials', { email, password })
     }
-  }, [error, data])
+  }, [error, data, email, password])
 
   return (
     <div className='px-4'>

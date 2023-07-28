@@ -18,7 +18,7 @@ export const signUpUserMutationObject = defineMutationFunction((t) =>
     type: 'User',
     nullable: false,
     args: { data: t.arg({ type: UserSignUpInput, required: true }) },
-    resolve: async (query, _root, args, _context, _info) => {
+    resolve: async (query, _root, args) => {
       const { companyName, ...userArgs } = args.data
       const user = await prisma.user.create({ data: userArgs, ...query })
       await prisma.company.create({ data: { name: companyName, ownerId: user.id } })
