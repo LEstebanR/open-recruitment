@@ -25,6 +25,6 @@ export const config = {
     '/dashboard',
     '/api/graphql',
     '/api/graphql-yoga',
-    '/((?!auth|login|signup).*)(.+)',
+    '/((?!auth|login|signup|forgot\-password).*)(.+)',
   ],
 }
