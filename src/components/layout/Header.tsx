@@ -6,8 +6,8 @@ import { NavLinks } from '../UI/NavLinks'
 import Link from 'next/link'
 import { Button } from '../UI/Button'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useRouter, NextRouter } from 'next/router'
-import { isAuthenticated } from '@/utils/auth'
+import { NextRouter, useRouter } from 'next/router'
+import { useIsAuthenticated } from '@/utils/auth'
 import { SelectCompany } from '../UI/Fields'
 import { user } from '@/utils/mockdata'
 import Chip from '../UI/Chip'
@@ -83,6 +83,7 @@ const MobileNavLinks = (isAuthenticated: boolean) => {
 const Header: React.FC = () => {
   const router: NextRouter = useRouter()
   const currentPath = router.pathname
+  const { isAuthenticated } = useIsAuthenticated()
 
   const navOptions: [string, string][] = [
     ['Features', '#features'],
@@ -142,8 +143,8 @@ const Header: React.FC = () => {
                       }}
                       className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur"
                     >
-                      {MobileNavLinks(isAuthenticated(currentPath))}
-                      <div className="mt-4">
+                      {MobileNavLinks(isAuthenticated)}
+                      <div className='mt-4'>
                         <Button
                           href="#"
                           variant="solid"
@@ -165,8 +166,8 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="w-screen">
-      {isAuthenticated(currentPath) ? (
+    <header className='w-screen'>
+      {isAuthenticated ? (
         <AuthenticatedHeader />
       ) : (
         <nav className="h-12">
@@ -216,10 +217,10 @@ const Header: React.FC = () => {
                               }}
                               className="absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur"
                             >
-                              {MobileNavLinks(isAuthenticated(currentPath))}
-                              <div className="mt-8 flex flex-col gap-4">
+                              {MobileNavLinks(isAuthenticated)}
+                              <div className='mt-8 flex flex-col gap-4'>
                                 {currentPath !== '/login' &&
-                                  !isAuthenticated(currentPath) && (
+                                  !isAuthenticated && (
                                     <Button
                                       href="/login"
                                       variant="outline"
@@ -230,7 +231,7 @@ const Header: React.FC = () => {
                                     </Button>
                                   )}
                                 {currentPath !== '/signup' &&
-                                  !isAuthenticated(currentPath) && (
+                                  !isAuthenticated && (
                                     <Button
                                       href="/signup"
                                       size="full"
@@ -239,7 +240,7 @@ const Header: React.FC = () => {
                                       Sign Up
                                     </Button>
                                   )}
-                                {isAuthenticated(currentPath) && (
+                                {isAuthenticated && (
                                   <Button
                                     href="#"
                                     size="full"
@@ -256,7 +257,7 @@ const Header: React.FC = () => {
                     </>
                   )}
                 </Popover>
-                {currentPath !== '/login' && !isAuthenticated(currentPath) && (
+                {currentPath !== '/login' && !isAuthenticated && (
                   <Button
                     href="/login"
                     variant="outline"
@@ -266,7 +267,7 @@ const Header: React.FC = () => {
                     Log in
                   </Button>
                 )}
-                {currentPath !== '/signup' && !isAuthenticated(currentPath) && (
+                {currentPath !== '/signup' && !isAuthenticated && (
                   <Button
                     href="/signup"
                     className="hidden lg:block"
