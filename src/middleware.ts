@@ -1,9 +1,19 @@
 import { withAuth } from 'next-auth/middleware'
 
 export default withAuth({
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     authorized({ req, token }) {
-      if (req.nextUrl.pathname === '/api/graphql') {
+      const excludedPrefixes = ['/api/auth', '/login', '/forgot-password', '/signup', '/api/user/check-credentials']
+      const excludeHome = req.nextUrl.pathname === '/'
+
+      if (excludeHome || excludedPrefixes.some(prefix => req.nextUrl.pathname === prefix || req.nextUrl.pathname.startsWith(`${prefix}/`))) {
+        return true
+      }
+
+      if (req.nextUrl.pathname.startsWith('/api/graphql/')) {
         if (req.method === 'GET') {
           return token?.userRole === 'SUPERADMIN'
         } else if (req.method === 'POST') {
@@ -11,7 +21,7 @@ export default withAuth({
         }
       }
 
-      if (req.nextUrl.pathname === '/api/graphql-yoga') {
+      if (req.nextUrl.pathname.startsWith('/api/graphql-yoga/')) {
         return token?.userRole === 'SUPERADMIN'
       }
 
@@ -21,10 +31,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: [
-    '/dashboard',
-    '/api/graphql',
-    '/api/graphql-yoga',
-    '/((?!auth|login|signup|forgot-password).*)(.+)',
-  ],
+  matcher: ['/(.*)'],
 }

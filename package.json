@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix && npx prisma format",
     "cypress": "cypress run",
     "prismaMigrateLocal": "dotenv -e .env.local -- npx prisma migrate dev",
+    "prismaGenerate": "dotenv -e .env.local -- npx prisma generate",
     "prismaMigrateLocalNoSeed": "dotenv -e .env.local -- npx prisma migrate dev --skip-seed",
     "prismaDBSeed": "dotenv -e .env.local -- npx prisma db seed",
     "prismaDBReset": "dotenv -e .env.local -- npx prisma db push --force-reset && dotenv -e .env.local -- npx prisma db seed"

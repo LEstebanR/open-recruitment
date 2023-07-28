@@ -14,7 +14,6 @@ import {
   PrismaObjectTypeOptions,
   RelatedFieldOptions,
 } from '@pothos/plugin-prisma';
-/* eslint-disable */
 import { builder } from '../builder';
 
 type Types = typeof builder extends PothosSchemaTypes.SchemaBuilder<infer T> ? T : unknown;

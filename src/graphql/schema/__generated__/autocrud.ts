@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { builder } from '../builder';
 import * as User from './User';
 import * as Account from './Account';

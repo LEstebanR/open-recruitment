@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* eslint-disable */
 import { Prisma } from '@prisma/client';
 import { builder } from '../builder';
 

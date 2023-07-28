@@ -1,5 +1,4 @@
 
-/* eslint-disable */
 import { builder } from '../builder';
 import { Prisma } from '@prisma/client';
 export {
