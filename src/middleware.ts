@@ -3,7 +3,11 @@ import { withAuth } from 'next-auth/middleware'
 export default withAuth({
   callbacks: {
     authorized({ req, token }) {
-      if (req.nextUrl.pathname === '/api/graphql') {
+      if (req.nextUrl.pathname === '/api/graphql' && req.method === 'GET') {
+        return token?.userRole === 'SUPERADMIN'
+      }
+
+      if (req.nextUrl.pathname === '/api/graphql-yoga') {
         return token?.userRole === 'SUPERADMIN'
       }
 
@@ -12,4 +16,10 @@ export default withAuth({
   },
 })
 
-export const config = { matcher: ['/api/graphql'] }
+export const config = {
+  matcher: [
+    '/dashboard',
+    '/api/graphql',
+    '/api/graphql-yoga',
+  ],
+}

@@ -132,7 +132,7 @@ export const FollowScalarFieldEnum = builder.enumType('FollowScalarFieldEnum', {
 });
 
 export const HiringRoleScalarFieldEnum = builder.enumType('HiringRoleScalarFieldEnum', {
-  values: ["id","userId","roleId","extraAbilities","createdAt","updatedAt","offerId"] as const,
+  values: ["id","userId","roleId","extraAbilities","createdAt","updatedAt"] as const,
 });
 
 export const JsonNullValueFilter = builder.enumType('JsonNullValueFilter', {
@@ -696,7 +696,6 @@ export const HiringRoleWhereInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":StringNullableListFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
-  offerId: t.field({"required":false,"type":IntFilter}),
   user: t.field({"required":false,"type":UserWhereInput}),
   role: t.field({"required":false,"type":RoleWhereInput}),
   attachments: t.field({"required":false,"type":AttachmentListRelationFilter}),
@@ -723,7 +722,6 @@ export const HiringRoleOrderByWithRelationInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
   user: t.field({"required":false,"type":UserOrderByWithRelationInput}),
   role: t.field({"required":false,"type":RoleOrderByWithRelationInput}),
   attachments: t.field({"required":false,"type":AttachmentOrderByRelationAggregateInput}),
@@ -757,7 +755,6 @@ export const HiringRoleOrderByWithAggregationInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
   _count: t.field({"required":false,"type":HiringRoleCountOrderByAggregateInput}),
   _avg: t.field({"required":false,"type":HiringRoleAvgOrderByAggregateInput}),
   _max: t.field({"required":false,"type":HiringRoleMaxOrderByAggregateInput}),
@@ -778,7 +775,6 @@ export const HiringRoleScalarWhereWithAggregatesInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":StringNullableListFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
-  offerId: t.field({"required":false,"type":IntWithAggregatesFilter}),
 });
 export const HiringRoleScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleScalarWhereWithAggregatesInput>>('HiringRoleScalarWhereWithAggregatesInput').implement({
   fields: HiringRoleScalarWhereWithAggregatesInputFields,
@@ -3846,7 +3842,6 @@ export const HiringRoleCreateInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -3870,7 +3865,6 @@ export const HiringRoleUpdateInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -3897,7 +3891,6 @@ export const HiringRoleCreateManyInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
 });
 export const HiringRoleCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateManyInput>>('HiringRoleCreateManyInput').implement({
   fields: HiringRoleCreateManyInputFields,
@@ -3907,7 +3900,6 @@ export const HiringRoleUpdateManyMutationInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
 });
 export const HiringRoleUpdateManyMutationInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleUpdateManyMutationInput>>('HiringRoleUpdateManyMutationInput').implement({
   fields: HiringRoleUpdateManyMutationInputFields,
@@ -6580,7 +6572,6 @@ export const HiringRoleCountOrderByAggregateInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleCountOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCountOrderByAggregateInput>>('HiringRoleCountOrderByAggregateInput').implement({
   fields: HiringRoleCountOrderByAggregateInputFields,
@@ -6589,7 +6580,6 @@ export const HiringRoleCountOrderByAggregateInput = builder.inputRef<PrismaUpdat
 export const HiringRoleAvgOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   roleId: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleAvgOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleAvgOrderByAggregateInput>>('HiringRoleAvgOrderByAggregateInput').implement({
   fields: HiringRoleAvgOrderByAggregateInputFields,
@@ -6601,7 +6591,6 @@ export const HiringRoleMaxOrderByAggregateInputFields = (t: any) => ({
   roleId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleMaxOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleMaxOrderByAggregateInput>>('HiringRoleMaxOrderByAggregateInput').implement({
   fields: HiringRoleMaxOrderByAggregateInputFields,
@@ -6613,7 +6602,6 @@ export const HiringRoleMinOrderByAggregateInputFields = (t: any) => ({
   roleId: t.field({"required":false,"type":SortOrder}),
   createdAt: t.field({"required":false,"type":SortOrder}),
   updatedAt: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleMinOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleMinOrderByAggregateInput>>('HiringRoleMinOrderByAggregateInput').implement({
   fields: HiringRoleMinOrderByAggregateInputFields,
@@ -6622,7 +6610,6 @@ export const HiringRoleMinOrderByAggregateInput = builder.inputRef<PrismaUpdateO
 export const HiringRoleSumOrderByAggregateInputFields = (t: any) => ({
   id: t.field({"required":false,"type":SortOrder}),
   roleId: t.field({"required":false,"type":SortOrder}),
-  offerId: t.field({"required":false,"type":SortOrder}),
 });
 export const HiringRoleSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleSumOrderByAggregateInput>>('HiringRoleSumOrderByAggregateInput').implement({
   fields: HiringRoleSumOrderByAggregateInputFields,
@@ -13623,7 +13610,6 @@ export const HiringRoleCreateWithoutUserInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
   auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutUserInput}),
@@ -13849,7 +13835,6 @@ export const HiringRoleScalarWhereInputFields = (t: any) => ({
   extraAbilities: t.field({"required":false,"type":StringNullableListFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
-  offerId: t.field({"required":false,"type":IntFilter}),
 });
 export const HiringRoleScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleScalarWhereInput>>('HiringRoleScalarWhereInput').implement({
   fields: HiringRoleScalarWhereInputFields,
@@ -14140,7 +14125,6 @@ export const HiringRoleCreateWithoutAttachmentsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutUserInput}),
@@ -14304,7 +14288,6 @@ export const HiringRoleUpdateWithoutAttachmentsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutUserNestedInput}),
@@ -15466,7 +15449,6 @@ export const HiringRoleCreateWithoutRoleInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
   auditLogs: t.field({"required":false,"type":AuditLogCreateNestedManyWithoutUserInput}),
@@ -17457,7 +17439,6 @@ export const HiringRoleCreateWithoutAuditLogsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -17630,7 +17611,6 @@ export const HiringRoleUpdateWithoutAuditLogsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -18050,7 +18030,6 @@ export const HiringRoleCreateWithoutEventScheduleInterviewerInputFields = (t: an
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -18120,7 +18099,6 @@ export const HiringRoleUpdateWithoutEventScheduleInterviewerInputFields = (t: an
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -18464,7 +18442,6 @@ export const HiringRoleCreateWithoutEventInterviewerInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -18526,7 +18503,6 @@ export const HiringRoleUpdateWithoutEventInterviewerInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -18698,7 +18674,6 @@ export const HiringRoleCreateWithoutOfferRecruiterInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -18729,7 +18704,6 @@ export const HiringRoleCreateWithoutOfferHiringManagerInputFields = (t: any) => 
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -19127,7 +19101,6 @@ export const HiringRoleUpdateWithoutOfferRecruiterInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -19158,7 +19131,6 @@ export const HiringRoleUpdateWithoutOfferHiringManagerInputFields = (t: any) => 
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -20006,7 +19978,6 @@ export const HiringRoleCreateWithoutMembershipsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -20118,7 +20089,6 @@ export const HiringRoleUpdateWithoutMembershipsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -21302,7 +21272,6 @@ export const HiringRoleCreateWithoutStageVisibilityInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -21384,7 +21353,6 @@ export const HiringRoleUpdateWithoutStageVisibilityInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -21588,7 +21556,6 @@ export const HiringRoleCreateWithoutHiredCandidatesInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -21962,7 +21929,6 @@ export const HiringRoleUpdateWithoutHiredCandidatesInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -22619,7 +22585,6 @@ export const HiringRoleCreateWithoutEvaluationsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -22843,7 +22808,6 @@ export const HiringRoleUpdateWithoutEvaluationsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -23339,7 +23303,6 @@ export const HiringRoleCreateWithoutTasksInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -23398,7 +23361,6 @@ export const HiringRoleUpdateWithoutTasksInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -23532,7 +23494,6 @@ export const HiringRoleCreateWithoutFollowsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
   user: t.field({"required":true,"type":UserCreateNestedOneWithoutHiringRoleInput}),
   role: t.field({"required":true,"type":RoleCreateNestedOneWithoutHiringRolesInput}),
   attachments: t.field({"required":false,"type":AttachmentCreateNestedManyWithoutUploaderInput}),
@@ -23682,7 +23643,6 @@ export const HiringRoleUpdateWithoutFollowsInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
@@ -23733,7 +23693,6 @@ export const HiringRoleCreateManyUserInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
 });
 export const HiringRoleCreateManyUserInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateManyUserInput>>('HiringRoleCreateManyUserInput').implement({
   fields: HiringRoleCreateManyUserInputFields,
@@ -23790,7 +23749,6 @@ export const HiringRoleUpdateWithoutUserInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   role: t.field({"required":false,"type":RoleUpdateOneRequiredWithoutHiringRolesNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
   auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutUserNestedInput}),
@@ -24126,7 +24084,6 @@ export const HiringRoleCreateManyRoleInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
-  offerId: t.int({"required":true}),
 });
 export const HiringRoleCreateManyRoleInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleCreateManyRoleInput>>('HiringRoleCreateManyRoleInput').implement({
   fields: HiringRoleCreateManyRoleInputFields,
@@ -24156,7 +24113,6 @@ export const HiringRoleUpdateWithoutRoleInputFields = (t: any) => ({
   extraAbilities: t.stringList({"required":false}),
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
-  offerId: t.field({"required":false,"type":IntFieldUpdateOperationsInput}),
   user: t.field({"required":false,"type":UserUpdateOneRequiredWithoutHiringRoleNestedInput}),
   attachments: t.field({"required":false,"type":AttachmentUpdateManyWithoutUploaderNestedInput}),
   auditLogs: t.field({"required":false,"type":AuditLogUpdateManyWithoutUserNestedInput}),

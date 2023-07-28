@@ -11,7 +11,8 @@
     "cypress": "cypress run",
     "prismaMigrateLocal": "dotenv -e .env.local -- npx prisma migrate dev",
     "prismaMigrateLocalNoSeed": "dotenv -e .env.local -- npx prisma migrate dev --skip-seed",
-    "prismaDbSeed": "dotenv -e .env.local -- npx prisma db seed"
+    "prismaDBSeed": "dotenv -e .env.local -- npx prisma db seed",
+    "prismaDBReset": "dotenv -e .env.local -- npx prisma db push --force-reset && dotenv -e .env.local -- npx prisma db seed"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
@@ -41,7 +42,11 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@apollo/server": "^4.9.0",
+    "@as-integrations/next": "^2.0.1",
+    "@graphql-authz/apollo-server-plugin": "^3.1.0",
     "@pothos/core": "^3.30.0",
+    "@pothos/plugin-authz": "^3.5.8",
     "@pothos/plugin-prisma": "^3.52.0",
     "@types/bcrypt": "^5.0.0",
     "@types/lodash": "^4.14.195",

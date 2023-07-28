@@ -125,7 +125,6 @@ model HiringRole {
   evaluations              Evaluation[]
   tasks                    TaskMember[]
   follows                  Follow[]
-  offerId                  Int
 }
 
 model Role {

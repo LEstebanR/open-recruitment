@@ -31,7 +31,6 @@ export const HiringRoleObject = definePrismaObject('HiringRole', {
     evaluations: t.relation('evaluations', HiringRoleEvaluationsFieldObject(t)),
     tasks: t.relation('tasks', HiringRoleTasksFieldObject(t)),
     follows: t.relation('follows', HiringRoleFollowsFieldObject(t)),
-    offerId: t.exposeInt('offerId', HiringRoleOfferIdFieldObject),
   }),
 });
 
@@ -326,8 +325,3 @@ export const HiringRoleFollowsFieldObject = defineRelationFunction('HiringRole',
     }),
   }),
 );
-
-export const HiringRoleOfferIdFieldObject = defineExposeObject('Int', {
-  description: undefined,
-  nullable: false,
-});

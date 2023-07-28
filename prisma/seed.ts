@@ -4,8 +4,8 @@ import { hash } from 'bcrypt'
 const prisma = new PrismaClient()
 
 async function main() {
-  const alice = await prisma.user.upsert({
-    where: { email: 'alice@prisma.io' },
+  const user1 = await prisma.user.upsert({
+    where: { email: 'admin@admin.ad' },
     update: {},
     create: {
       id: '12345',
@@ -27,19 +27,140 @@ async function main() {
       userRole: 'SUPERADMIN',
     },
   })
-  console.log({ alice })
+  console.log({ user1 })
+
+  const user2 = await prisma.user.upsert({
+    where: { email: 'peter@admin.ad' },
+    update: {},
+    create: {
+      id: '23456',
+      email: 'peter@admin.ad',
+      password: await hash('admin', 12),
+      name: 'Peter',
+      phone: '12345672',
+      firstName: 'Peter',
+      lastName: 'Johnson',
+      preferredLanguage: 'en',
+      timeformat24: true,
+      timezone: '5',
+      weekStartDate: 'monday',
+      featureDiscovery: ['asdf1'],
+      emailProvider: ['email1'],
+      theme: 'light',
+      notifications: { 'asdf': '1234' },
+      updatedAt: new Date(),
+      userRole: 'SUPERADMIN',
+    },
+  })
+  console.log({ user2 })
 
   const company1 = await prisma.company.upsert({
     where: { id: 1 },
     update: {},
     create: {
+      id: 1,
       name: 'Testing Company Co',
       ownerId: '12345',
     },
   })
   console.log({ company1 })
 
-  const alicePhoto = '1' || await prisma.attachment.upsert({
+  const company2 = await prisma.company.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      name: 'Company Test 2',
+      ownerId: '23456',
+    },
+  })
+  console.log({ company2 })
+
+  const company3 = await prisma.company.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      id: 3,
+      name: 'Test Company 3',
+      ownerId: '23456',
+    },
+  })
+  console.log({ company3 })
+
+  const defaultRoles = async (companyId: number) => {
+    const role1 = await prisma.role.upsert({
+      where: { id: companyId * 1000 + 1 },
+      update: {},
+      create: {
+        id: companyId * 1000 + 1,
+        name: 'Administrator',
+        abilities: ['all'],
+        companyId: companyId,
+      },
+    })
+    const role2 = await prisma.role.upsert({
+      where: { id: companyId * 1000 + 2 },
+      update: {},
+      create: {
+        id: companyId * 1000 + 2,
+        name: 'Recruiter',
+        abilities: ['recruiter'],
+        companyId: companyId,
+      },
+    })
+    const role3 = await prisma.role.upsert({
+      where: { id: companyId * 1000 + 3 },
+      update: {},
+      create: {
+        id: companyId * 1000 + 3,
+        name: 'Viewer',
+        abilities: ['viewer'],
+        companyId: companyId,
+      },
+    })
+  }
+
+  for (let company of [company1, company2, company3]) {
+    await defaultRoles(company.id)
+  }
+
+  const hiringRole1 = await prisma.hiringRole.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      userId: user1.id,
+      roleId: company1.id * 1000 + 1,
+    },
+  })
+
+  const hiringRole2 = await prisma.hiringRole.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      userId: user1.id,
+      roleId: company2.id * 1000 + 2,
+    },
+  })
+
+  const hiringRole3 = await prisma.hiringRole.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      userId: user1.id,
+      roleId: company3.id * 1000 + 3,
+    },
+  })
+
+  const hiringRole4 = await prisma.hiringRole.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      userId: user2.id,
+      roleId: company1.id * 1000 + 1,
+    },
+  })
+
+  const adminPhoto = '1' || await prisma.attachment.upsert({
     where: { id: 1 },
     update: {},
     create: {

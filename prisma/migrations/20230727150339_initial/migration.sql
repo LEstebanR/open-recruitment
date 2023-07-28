@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "UserRoles" AS ENUM ('SUPERADMIN', 'DEFAULT');
+
+-- CreateEnum
 CREATE TYPE "OfferPersonalItems" AS ENUM ('REQUIRED', 'OPTIONAL', 'NONE');
 
 -- CreateEnum
@@ -29,6 +32,7 @@ CREATE TABLE "User" (
     "notifications" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userRole" "UserRoles" NOT NULL DEFAULT 'DEFAULT',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -89,7 +93,6 @@ CREATE TABLE "HiringRole" (
     "extraAbilities" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "offerId" INTEGER NOT NULL,
 
     CONSTRAINT "HiringRole_pkey" PRIMARY KEY ("id")
 );

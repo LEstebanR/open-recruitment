@@ -19,8 +19,7 @@ export {
   HiringRoleHiredCandidatesFieldObject,
   HiringRoleEvaluationsFieldObject,
   HiringRoleTasksFieldObject,
-  HiringRoleFollowsFieldObject,
-  HiringRoleOfferIdFieldObject
+  HiringRoleFollowsFieldObject
 } from './object.base';
 export {
   createManyHiringRoleMutation,

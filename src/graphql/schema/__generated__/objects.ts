@@ -207,7 +207,6 @@ export {
   HiringRoleEvaluationsFieldObject,
   HiringRoleTasksFieldObject,
   HiringRoleFollowsFieldObject,
-  HiringRoleOfferIdFieldObject,
   createManyHiringRoleMutation,
   createOneHiringRoleMutation,
   deleteManyHiringRoleMutation,
