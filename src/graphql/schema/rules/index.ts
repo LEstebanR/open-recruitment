@@ -1,1 +1,0 @@
-export { IsAuthenticated, IsAuthenticated2 } from './user'

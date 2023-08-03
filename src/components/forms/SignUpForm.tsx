@@ -11,7 +11,7 @@ const SignupMutation = gql`
   mutation createUserAndCompany($data: UserSignUpInput!){
     signUpUser (data:$data) {
       id
-      emailAddress
+      email
       companies {
         id
       }

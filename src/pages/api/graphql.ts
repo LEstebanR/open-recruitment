@@ -3,8 +3,8 @@ import { ApolloServer } from '@apollo/server'
 import { startServerAndCreateNextHandler } from '@as-integrations/next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
-import { schema } from '@/graphql/schema'
-import * as rules from '@/graphql/schema/rules'
+import { schema } from '@/lib/graphql/schema'
+import * as rules from '@/lib/graphql/schema/rules'
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
@@ -12,6 +12,8 @@ import {
 
 export interface IContext {
   abc: string;
+  schema: any;
+  isAdminRequest?: boolean;
   session: {
     user: {
       id: string;
@@ -69,10 +71,13 @@ const server = new ApolloServer({
 
 export default startServerAndCreateNextHandler(server,
   {
-    context: async (req, res) => (
-      {
-        abc: '2',
-        session: await getServerSession(req, res, authOptions),
-      } as IContext
-    ),
+    context: async (req, res): Promise<IContext> => {
+      return (
+        {
+          abc: '2',
+          schema: schema,
+          session: await getServerSession(req, res, authOptions),
+        }
+      )
+    },
   })

@@ -20,7 +20,7 @@ async function main() {
       timezone: '5',
       weekStartDate: 'monday',
       featureDiscovery: ['asdf1'],
-      emailProvider: ['email1'],
+      emailProviders: ['email1'],
       theme: 'light',
       notifications: { 'asdf': '1234' },
       updatedAt: new Date(),
@@ -45,7 +45,7 @@ async function main() {
       timezone: '5',
       weekStartDate: 'monday',
       featureDiscovery: ['asdf1'],
-      emailProvider: ['email1'],
+      emailProviders: ['email1'],
       theme: 'light',
       notifications: { 'asdf': '1234' },
       updatedAt: new Date(),
@@ -132,6 +132,7 @@ async function main() {
     create: {
       userId: user1.id,
       roleId: parseInt(company1.id) * 1000 + 1,
+      companyId: company1.id,
     },
   })
 
@@ -141,6 +142,7 @@ async function main() {
     create: {
       userId: user1.id,
       roleId: parseInt(company2.id) * 1000 + 2,
+      companyId: company2.id,
     },
   })
 
@@ -150,6 +152,7 @@ async function main() {
     create: {
       userId: user1.id,
       roleId: parseInt(company3.id) * 1000 + 3,
+      companyId: company3.id,
     },
   })
 
@@ -159,6 +162,7 @@ async function main() {
     create: {
       userId: user2.id,
       roleId: parseInt(company1.id) * 1000 + 1,
+      companyId: company1.id,
     },
   })
 

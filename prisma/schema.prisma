@@ -10,13 +10,13 @@ generator client {
 generator pothos {
   provider     = "prisma-pothos-types"
   clientOutput = ".prisma/client"
-  output       = "../src/prisma/types/objects.d.ts"
+  output       = "../src/lib/prisma/types/objects.d.ts"
 }
 
 generator pothosCrud {
   // Suggested codegen
   provider            = "prisma-generator-pothos-codegen"
-  generatorConfigPath = "../src/graphql/schema/config.js"
+  generatorConfigPath = "../src/lib/graphql/schema/config.js"
 }
 
 model User {
@@ -37,15 +37,15 @@ model User {
   photo             Attachment?  @relation("profilePhoto", fields: [photoId], references: [id])
   photoId           Int?         @unique
   featureDiscovery  String[]
-  emailProvider     String[] // Test actual Integrations
+  emailProviders    String[] // Test actual Integrations
   theme             String?
   notifications     Json?
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   accounts          Account[]
   sessions          Session[]
-  hiringRole        HiringRole[]
-  companies         Company[]    @relation("owner")
+  hiringRoles       HiringRole[]
+  companiesOwned    Company[]    @relation("owner")
   userRole          UserRoles    @default(DEFAULT)
 }
 
@@ -110,6 +110,8 @@ model HiringRole {
   userId                   String
   role                     Role                       @relation(fields: [roleId], references: [id])
   roleId                   Int
+  company                  Company                    @relation(fields: [companyId], references: [id])
+  companyId                String
   attachments              Attachment[]
   extraAbilities           String[]
   auditLogs                AuditLog[]
@@ -125,6 +127,9 @@ model HiringRole {
   evaluations              Evaluation[]
   tasks                    TaskMember[]
   follows                  Follow[]
+
+  // Ensure that the user only have one hiringRole in a Company
+  @@unique([userId, companyId])
 }
 
 model Role {
@@ -171,6 +176,7 @@ model Company {
   tasks                 Task[]
   owner                 User               @relation("owner", fields: [ownerId], references: [id])
   ownerId               String
+  hiringRoles           HiringRole[]
 }
 
 model SubscriptionData {

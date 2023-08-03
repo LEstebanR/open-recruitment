@@ -2,9 +2,11 @@ import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { prisma } from '@/prisma'
+import { prisma } from '@/lib/prisma'
 import { JWT } from 'next-auth/jwt'
 import { AdapterUser } from 'next-auth/adapters'
+import { userBelongsToCompany } from '@/utils/backend'
+import { omit } from 'lodash'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -64,10 +66,24 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT, user: (AdapterUser | User) & { userRole?: string } }) {
+    async jwt({ token, user, trigger, session }: {
+      token: JWT,
+      user: (AdapterUser | User) & { userRole?: string },
+      trigger?: string,
+      session?: any
+    }) {
       if (user) {
         token.userRole = user?.userRole
       }
+
+      if (trigger === 'update' && session.companySelected) {
+        if (token.email && await userBelongsToCompany(token.email, session.companySelected.toString())) {
+          token.companySelected = session.companySelected.toString()
+        } else {
+          token = omit(token, 'companySelected')
+        }
+      }
+
       return token
     },
     async session({ session, token }) {
@@ -76,6 +92,7 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           userRole: token.userRole,
+          companySelected: token.companySelected,
         },
       }
     },

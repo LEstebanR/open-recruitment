@@ -14,6 +14,22 @@ npm i
 
 ```
 
+-  Create .env.local file and add the following variables:
+
+```bash
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+DB_HOST=
+DB_HOST_PORT=
+DB_CONTAINER_PORT=
+DB_POSTGRES_USER=
+DB_POSTGRES_PASSWORD=
+DB_POSTGRES_DB=
+DB_URL=postgresql://${DB_POSTGRES_USER}:${DB_POSTGRES_PASSWORD}@${DB_HOST}:${DB_HOST_PORT}/${DB_POSTGRES_DB}
+```
+
 - Run the development server:
 
 ```bash
@@ -27,7 +43,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - start container services (you need have docker installed)
 
 ```bash
-docker-compose up
+docker-compose  --env-file .env.local up -d
 ```
 
 - generate Prisma client
@@ -40,6 +56,10 @@ npx prisma generate
 
 ```bash
   npx prisma migrate dev
+```
+or (Using .env.local)
+```bash
+  npm run prismaMigrate
 ```
 
 - open prisma studio

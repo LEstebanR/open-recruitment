@@ -4,7 +4,7 @@ import { createYoga } from 'graphql-yoga'
 import type { Session } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from './auth/[...nextauth]'
-import { schema } from '@/graphql/schema'
+import { schema } from '@/lib/graphql/schema'
 
 export const config = {
   api: {

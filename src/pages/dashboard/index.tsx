@@ -3,7 +3,7 @@ import PrivateRoute from '@/components/layout/PrivateRoute'
 import { useSession } from 'next-auth/react'
 
 const Home = () => {
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
 
   useEffect(() => {
     console.log(session)
@@ -11,6 +11,10 @@ const Home = () => {
   }, [session, status])
   return (
     <PrivateRoute>
+      <button onClick={async () => {
+        await update({ companySelected: 2 })
+      }}>Update Company
+      </button>
       <p>Dashboard</p>
     </PrivateRoute>
   )
