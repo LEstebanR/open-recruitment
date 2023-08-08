@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { JWT } from 'next-auth/jwt'
 import { AdapterUser } from 'next-auth/adapters'
 import { userBelongsToCompany } from '@/utils/backend'
+import { getURL } from '@/utils/dual'
 import { omit } from 'lodash'
 
 export const authOptions: NextAuthOptions = {
@@ -23,7 +24,7 @@ export const authOptions: NextAuthOptions = {
       },
       authorize: async function(credentials) {
         const user = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/user/check-credentials`,
+          getURL('/api/user/check-credentials'),
           {
             method: 'POST',
             headers: {

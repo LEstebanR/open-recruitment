@@ -17,7 +17,7 @@ npm i
 -  Create .env.local file and add the following variables:
 
 ```bash
-NEXTAUTH_URL=
+NEXT_PUBLIC_SITE_URL=
 NEXTAUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
