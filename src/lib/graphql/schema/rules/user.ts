@@ -6,8 +6,7 @@ export const IsAuthenticated = preExecRule()((context: IContext) => {
 })
 
 export const IsAuthenticated2 = preExecRule()((context: IContext) => {
-// context.session?.user?.userRole === 'SUPERADMIN'
-  return false
+  return false && context.session?.user?.userRole === 'SUPERADMIN'
 })
 
 export const IsAdminRequest = preExecRule()((context: IContext) => {

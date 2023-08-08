@@ -9,7 +9,7 @@ export const me = defineQuery((t) => ({
       authz: {
         rules: ['UserBelongsToCompany'],
       },
-      resolve: async (query, root, args, ctx, info) => {
+      resolve: async (query, root, args, ctx) => {
         return prisma.user.findUniqueOrThrow({
           // the `query` argument will add in `include`s or `select`s to
           // resolve as much of the request in a single query as possible

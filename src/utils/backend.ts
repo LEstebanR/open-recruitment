@@ -21,7 +21,7 @@ export const getUserCompanies = async (userEmail: string): Promise<string[]> => 
 
     const user = data?.me
 
-    return user.hiringRoles?.map((hiringRole: any) => hiringRole.company.id) ?? []
+    return user.hiringRoles?.map((hiringRole: any) => hiringRole.company.id) ?? [] //eslint-disable-line
 
   } catch (error) {
     console.error('Error fetching user companies:', error)
@@ -30,8 +30,11 @@ export const getUserCompanies = async (userEmail: string): Promise<string[]> => 
   return []
 }
 
-export const userBelongsToCompany = async (userEmail: string, companyId: string): Promise<boolean> => {
-  const userCompanies = await getUserCompanies(userEmail)
+export const userBelongsToCompany = async (userEmail: string | undefined, companyId: string | undefined): Promise<boolean> => {
+  const userCompanies = userEmail ? await getUserCompanies(userEmail) : []
 
-  return userCompanies.includes(companyId)
+  if (companyId)
+    return userCompanies.includes(companyId)
+
+  return false
 }

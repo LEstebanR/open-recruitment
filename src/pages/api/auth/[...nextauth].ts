@@ -71,7 +71,7 @@ export const authOptions: NextAuthOptions = {
       token: JWT,
       user: (AdapterUser | User) & { userRole?: string },
       trigger?: string,
-      session?: any
+      session?: any //eslint-disable-line
     }) {
       if (user) {
         token.userRole = user?.userRole

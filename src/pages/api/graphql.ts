@@ -12,7 +12,6 @@ import {
 
 export interface IContext {
   abc: string;
-  schema: any;
   isAdminRequest?: boolean;
   session: {
     user: {
@@ -20,6 +19,7 @@ export interface IContext {
       name: string;
       email: string;
       userRole?: string;
+      companySelected?: string;
     }
     expires: string;
   } | null;
@@ -75,7 +75,6 @@ export default startServerAndCreateNextHandler(server,
       return (
         {
           abc: '2',
-          schema: schema,
           session: await getServerSession(req, res, authOptions),
         }
       )

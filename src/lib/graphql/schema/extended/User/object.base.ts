@@ -1,11 +1,12 @@
 import { definePrismaObject } from '../../__generated__/utils'
 import * as User from '../../__generated__/User'
+import { omit } from 'lodash'
 
 export const UserObject = definePrismaObject('User', {
   ...User.UserObject,
   fields: (t) => {
     // Type-safely omit and rename fields
-    const { password, ...fields } = User.UserObject.fields(t)
+    const fields = omit(User.UserObject.fields(t), 'password')
 
     return {
       ...fields,

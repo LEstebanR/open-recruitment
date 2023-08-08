@@ -1,5 +1,6 @@
 import { me } from './me'
 
-export default {
+const utils = {
   me,
 }
+export default utils
