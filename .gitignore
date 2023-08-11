@@ -43,3 +43,5 @@ cypress/videos/
 
 # Postgres
 /data 
+
+/src/lib/graphql/schema/__generated__/*
