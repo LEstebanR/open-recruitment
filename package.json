@@ -16,7 +16,7 @@
     "prismaDBReset": "dotenv -e .env.local -- npx prisma db push --force-reset && dotenv -e .env.local -- npx prisma db seed",
     "prismaStudio": "dotenv -e .env.local -- npx prisma studio",
     "vercelBuildReset": "npx prisma migrate reset --force && npx prisma generate && next build",
-    "vercelBuild": "npx prisma generate && npx prisma migrate diff && next build"
+    "vercelBuild": "npx prisma generate && npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/20230803070824_initial/migration.sql&& next build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
