@@ -838,3 +838,9 @@ ALTER TABLE "Follow" ADD CONSTRAINT "Follow_talentPoolId_fkey" FOREIGN KEY ("tal
 
 -- AddForeignKey
 ALTER TABLE "Follow" ADD CONSTRAINT "Follow_teamMemberId_fkey" FOREIGN KEY ("teamMemberId") REFERENCES "HiringRole"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+SELECT pg_terminate_backend(PSA.pid)
+FROM pg_locks AS PL
+    INNER JOIN pg_stat_activity AS PSA ON PSA.pid = PL.pid
+WHERE PSA.state LIKE 'idle'
+    AND PL.objid IN (72707369);
