@@ -44,7 +44,7 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
   const filteredButtons = getChildrenOnDisplayName(children, 'BurgerMenu.Buttons')
 
   return (
-    <Popover className={`${!!enableOnDesktop ? '' : 'sm:hidden'}`}>
+    <Popover className={`${enableOnDesktop ? '' : 'sm:hidden'}`}>
       {({ open, close }) => (
         <>
           <Popover.Button
@@ -79,9 +79,9 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
                   exit={{
                     opacity: 0,
                     y: -32,
-                    transition: { duration: 0.2 },
+                    transition: { duration: 0.5 },
                   }}
-                  className='absolute inset-x-0 top-0 z-0 origin-top rounded-b-2xl bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur'
+                  className='border absolute sm:top-16  z-0 rounded-b-2xl bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur md:w-72 md:mx-auto md:rounded-2xl md:shadow-2xl md:shadow-gray-900/20 md:backdrop-blur md:right-2 md:origin-top-right origin-top-left inset-x-0 md:inset-x-auto '
                 >
                   <MobileNavLinks links={links} />
                   <div className='mt-8 flex flex-col gap-4'>

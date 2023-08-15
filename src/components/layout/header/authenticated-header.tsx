@@ -18,7 +18,7 @@ const navOptions: [string, string][] = [
 
 export function AuthenticatedHeader() {
   return (
-    <div className='flex justify-between md:px-8 p-1 items-center max-w-screen'>
+    <div className='flex justify-between md:px-8 h-14 items-center max-w-screen z-10'>
       <div className='flex items-center gap-8'>
         <Logo />
         <div className='md:flex gap-2 hidden'>
