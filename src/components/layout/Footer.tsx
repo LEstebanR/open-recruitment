@@ -10,10 +10,10 @@ const Footer = () => {
   const router: NextRouter = useRouter()
   const currentPath = router.pathname
   const navOptions: [string, string][] = [
-    ['Features', '/#features'],
-    ['Reviews', '/#reviews'],
-    ['Pricing', '/#pricing'],
-    ['FAQs', '/#faqs'],
+    ['/#features', 'Features'],
+    ['/#reviews', 'Reviews'],
+    ['/#pricing', 'Pricing'],
+    ['/#faqs', 'FAQs'],
   ]
 
   return (

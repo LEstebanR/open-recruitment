@@ -14,7 +14,7 @@ npm i
 
 ```
 
--  Create .env.local file and add the following variables:
+- Create .env.local file and add the following variables:
 
 ```bash
 NEXT_PUBLIC_URL_PROTOCOL=
@@ -29,6 +29,7 @@ DB_POSTGRES_USER=
 DB_POSTGRES_PASSWORD=
 DB_POSTGRES_DB=
 DATABASE_URL=postgresql://${DB_POSTGRES_USER}:${DB_POSTGRES_PASSWORD}@${DB_HOST}:${DB_HOST_PORT}/${DB_POSTGRES_DB}
+POSTGRES_URL_NON_POOLING=${POSTGRES_PRISMA_URL}?connection_limit=1
 NEXTAUTH_URL=${NEXT_PUBLIC_URL_PROTOCOL}://${NEXT_PUBLIC_VERCEL_URL}
 ```
 
@@ -59,7 +60,9 @@ npx prisma generate
 ```bash
   npx prisma migrate dev
 ```
+
 or (Using .env.local)
+
 ```bash
   npm run prismaMigrate
 ```

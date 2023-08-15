@@ -2,18 +2,15 @@ import React from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
+import { NavLinks } from './menu/mobile-nav-links'
 
-interface NavLinkProps {
-  links: [string, string][]
-}
-
-export function NavLinks({ links }: NavLinkProps) {
+export function NavLinks({ links }: NavLinks) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <div className="flex gap-8" onMouseLeave={() => setHoveredIndex(null)}>
-      {links.map(([label, href], index) => (
-        <Link key={label} href={href} passHref>
+    <nav className="flex gap-8" onMouseLeave={() => setHoveredIndex(null)}>
+      {links.map(([href, text], index) => (
+        <Link key={text} href={href} passHref>
           <p
             className="relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-gray-700 transition-colors delay-150 hover:text-gray-900 hover:delay-[0ms]"
             onMouseEnter={() => setHoveredIndex(index)}
@@ -32,10 +29,10 @@ export function NavLinks({ links }: NavLinkProps) {
                 />
               )}
             </AnimatePresence>
-            <span className="relative z-10">{label}</span>
+            <span className="relative z-10">{text}</span>
           </p>
         </Link>
       ))}
-    </div>
+    </nav>
   )
 }
