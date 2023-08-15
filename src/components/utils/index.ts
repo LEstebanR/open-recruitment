@@ -1,0 +1,22 @@
+import React, { ReactNode } from 'react'
+
+export function extractType(node: ReactNode): Function | string {
+  return ((node as unknown) as React.ReactElement).type
+}
+
+export function extractDisplayName(type: React.FunctionComponent): string {
+  return type.displayName || type.name || 'Unknown'
+}
+
+export const getChildrenOnDisplayName = (children: ReactNode, displayName: string) => {
+  return React.Children.map(children, (child) => {
+      if (typeof child === displayName) return child
+
+      const type = extractType(child)
+      const childDisplayName = (typeof type === 'function') ? extractDisplayName((type as unknown) as React.FunctionComponent) : ''
+
+      return childDisplayName === displayName ? child : null
+    },
+  )
+}
+
