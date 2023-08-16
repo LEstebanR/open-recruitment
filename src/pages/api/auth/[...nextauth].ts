@@ -1,10 +1,8 @@
-import NextAuth, { NextAuthOptions, User } from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '@/lib/prisma'
-import { JWT } from 'next-auth/jwt'
-import { AdapterUser } from 'next-auth/adapters'
 import { userBelongsToCompany } from '@/utils/backend'
 import { getURL } from '@/utils/dual'
 import { omit } from 'lodash'
@@ -64,23 +62,13 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({
-      token,
-      user,
-      trigger,
-      session,
-    }: {
-      token: JWT
-      user: (AdapterUser | User) & { photo?: { path: string }; userRole?: string }
-      trigger?: string
-      session?: any //eslint-disable-line
-    }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.userRole = user?.userRole
         token.image = user?.photo?.path
       }
 
-      if (trigger === 'update' && session.companySelected) {
+      if (trigger === 'update' && session?.companySelected) {
         if (
           token.email &&
           (await userBelongsToCompany(token.email, session.companySelected.toString()))
@@ -98,6 +86,7 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
+          image: token.image ? token.image : session.user?.image,
           userRole: token.userRole,
           companySelected: token.companySelected,
         },

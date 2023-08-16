@@ -110,7 +110,7 @@ export default interface PrismaTypes {
                 Name: "Candidate";
             };
             uploader: {
-                Shape: HiringRole;
+                Shape: HiringRole | null;
                 Name: "HiringRole";
             };
             offerFiles: {

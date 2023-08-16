@@ -62,14 +62,14 @@ export const AttachmentCandidateFieldObject = defineRelationObject('Attachment',
 
 export const AttachmentUploaderFieldObject = defineRelationObject('Attachment', 'uploader', {
   description: undefined,
-  nullable: false,
+  nullable: true,
   args: undefined,
   query: undefined,
 });
 
 export const AttachmentUploaderIdFieldObject = defineExposeObject('Int', {
   description: undefined,
-  nullable: false,
+  nullable: true,
 });
 
 export const AttachmentCreatedAtFieldObject = defineFieldObject('Attachment', {

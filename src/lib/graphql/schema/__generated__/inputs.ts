@@ -614,7 +614,7 @@ export const AttachmentWhereInputFields = (t: any) => ({
   contentType: t.field({"required":false,"type":StringFilter}),
   filename: t.field({"required":false,"type":StringFilter}),
   path: t.field({"required":false,"type":StringFilter}),
-  uploaderId: t.field({"required":false,"type":IntFilter}),
+  uploaderId: t.field({"required":false,"type":IntNullableFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
   userProfilePhoto: t.field({"required":false,"type":UserWhereInput}),
@@ -678,7 +678,7 @@ export const AttachmentScalarWhereWithAggregatesInputFields = (t: any) => ({
   contentType: t.field({"required":false,"type":StringWithAggregatesFilter}),
   filename: t.field({"required":false,"type":StringWithAggregatesFilter}),
   path: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  uploaderId: t.field({"required":false,"type":IntWithAggregatesFilter}),
+  uploaderId: t.field({"required":false,"type":IntNullableWithAggregatesFilter}),
   createdAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeWithAggregatesFilter}),
 });
@@ -3799,7 +3799,7 @@ export const AttachmentCreateInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTime}),
   userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  uploader: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
 });
@@ -3815,7 +3815,7 @@ export const AttachmentUpdateInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
 });
@@ -3828,7 +3828,7 @@ export const AttachmentCreateManyInputFields = (t: any) => ({
   contentType: t.string({"required":true}),
   filename: t.string({"required":true}),
   path: t.string({"required":true}),
-  uploaderId: t.int({"required":true}),
+  uploaderId: t.int({"required":false}),
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
 });
@@ -9548,15 +9548,17 @@ export const CandidateUpdateOneWithoutCvNestedInput = builder.inputRef<PrismaUpd
   fields: CandidateUpdateOneWithoutCvNestedInputFields,
 });
 
-export const HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInputFields = (t: any) => ({
+export const HiringRoleUpdateOneWithoutAttachmentsNestedInputFields = (t: any) => ({
   create: t.field({"required":false,"type":HiringRoleCreateWithoutAttachmentsInput}),
   connectOrCreate: t.field({"required":false,"type":HiringRoleCreateOrConnectWithoutAttachmentsInput}),
   upsert: t.field({"required":false,"type":HiringRoleUpsertWithoutAttachmentsInput}),
+  disconnect: t.boolean({"required":false}),
+  delete: t.boolean({"required":false}),
   connect: t.field({"required":false,"type":HiringRoleWhereUniqueInput}),
   update: t.field({"required":false,"type":HiringRoleUpdateWithoutAttachmentsInput}),
 });
-export const HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput>>('HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput').implement({
-  fields: HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInputFields,
+export const HiringRoleUpdateOneWithoutAttachmentsNestedInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.HiringRoleUpdateOneWithoutAttachmentsNestedInput>>('HiringRoleUpdateOneWithoutAttachmentsNestedInput').implement({
+  fields: HiringRoleUpdateOneWithoutAttachmentsNestedInputFields,
 });
 
 export const OfferFileUpdateManyWithoutAttachmentNestedInputFields = (t: any) => ({
@@ -13579,7 +13581,7 @@ export const AttachmentCreateWithoutUserProfilePhotoInputFields = (t: any) => ({
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  uploader: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
 });
@@ -13758,7 +13760,7 @@ export const AttachmentUpdateWithoutUserProfilePhotoInputFields = (t: any) => ({
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
 });
@@ -15061,7 +15063,7 @@ export const AttachmentScalarWhereInputFields = (t: any) => ({
   contentType: t.field({"required":false,"type":StringFilter}),
   filename: t.field({"required":false,"type":StringFilter}),
   path: t.field({"required":false,"type":StringFilter}),
-  uploaderId: t.field({"required":false,"type":IntFilter}),
+  uploaderId: t.field({"required":false,"type":IntNullableFilter}),
   createdAt: t.field({"required":false,"type":DateTimeFilter}),
   updatedAt: t.field({"required":false,"type":DateTimeFilter}),
 });
@@ -19736,7 +19738,7 @@ export const AttachmentCreateWithoutOfferFilesInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTime}),
   userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  uploader: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
 });
 export const AttachmentCreateWithoutOfferFilesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateWithoutOfferFilesInput>>('AttachmentCreateWithoutOfferFilesInput').implement({
@@ -19819,7 +19821,7 @@ export const AttachmentUpdateWithoutOfferFilesInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAttachmentsNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
 });
 export const AttachmentUpdateWithoutOfferFilesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateWithoutOfferFilesInput>>('AttachmentUpdateWithoutOfferFilesInput').implement({
@@ -20624,7 +20626,7 @@ export const AttachmentCreateWithoutTalentPoolFilesInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTime}),
   userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
   candidate: t.field({"required":false,"type":CandidateCreateNestedOneWithoutCvInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  uploader: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
 });
 export const AttachmentCreateWithoutTalentPoolFilesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentCreateWithoutTalentPoolFilesInput>>('AttachmentCreateWithoutTalentPoolFilesInput').implement({
@@ -20673,7 +20675,7 @@ export const AttachmentUpdateWithoutTalentPoolFilesInputFields = (t: any) => ({
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
   candidate: t.field({"required":false,"type":CandidateUpdateOneWithoutCvNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
 });
 export const AttachmentUpdateWithoutTalentPoolFilesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.AttachmentUpdateWithoutTalentPoolFilesInput>>('AttachmentUpdateWithoutTalentPoolFilesInput').implement({
@@ -21750,7 +21752,7 @@ export const AttachmentCreateWithoutCandidateInputFields = (t: any) => ({
   createdAt: t.field({"required":false,"type":DateTime}),
   updatedAt: t.field({"required":false,"type":DateTime}),
   userProfilePhoto: t.field({"required":false,"type":UserCreateNestedOneWithoutPhotoInput}),
-  uploader: t.field({"required":true,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
+  uploader: t.field({"required":false,"type":HiringRoleCreateNestedOneWithoutAttachmentsInput}),
   offerFiles: t.field({"required":false,"type":OfferFileCreateNestedManyWithoutAttachmentInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileCreateNestedManyWithoutAttachmentInput}),
 });
@@ -22124,7 +22126,7 @@ export const AttachmentUpdateWithoutCandidateInputFields = (t: any) => ({
   createdAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   updatedAt: t.field({"required":false,"type":DateTimeFieldUpdateOperationsInput}),
   userProfilePhoto: t.field({"required":false,"type":UserUpdateOneWithoutPhotoNestedInput}),
-  uploader: t.field({"required":false,"type":HiringRoleUpdateOneRequiredWithoutAttachmentsNestedInput}),
+  uploader: t.field({"required":false,"type":HiringRoleUpdateOneWithoutAttachmentsNestedInput}),
   offerFiles: t.field({"required":false,"type":OfferFileUpdateManyWithoutAttachmentNestedInput}),
   talentPoolFiles: t.field({"required":false,"type":TalentPoolFileUpdateManyWithoutAttachmentNestedInput}),
 });
