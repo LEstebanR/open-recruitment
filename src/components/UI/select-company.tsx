@@ -8,21 +8,22 @@ interface Company {
   name: string
 }
 
-export function SelectCompany() {
-  const { data: session, update } = useSession()
-  const GET_USER_COMPANIES = gql`
-    query getCurrentUserCompanies {
-      me {
-        hiringRoles {
-          company {
-            id
-            name
-          }
+const GET_USER_COMPANIES = gql`
+  query getCurrentUserCompanies {
+    me {
+      hiringRoles {
+        company {
+          id
+          name
         }
       }
     }
-  `
-  const { loading, error, data: query } = useQuery(GET_USER_COMPANIES)
+  }
+`
+
+export function SelectCompany() {
+  const { data: session, update } = useSession()
+  const { data: query } = useQuery(GET_USER_COMPANIES)
   const [selectedCompanyId, setSelectedCompanyId] = React.useState<string>(() => {
     if (session?.user?.selectedCompany) return session?.user?.selectedCompany
     return 'placeholder'
