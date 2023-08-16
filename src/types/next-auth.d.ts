@@ -2,13 +2,12 @@ import { DefaultSession } from 'next-auth'
 
 declare module 'next-auth/jwt' {
   interface JWT extends JWT {
-    companySelected?: string
+    selectedCompany?: string
     userRole?: string
   }
 }
 
 declare module 'next-auth' {
-
   interface User extends User {
     userRole?: string
     photo?: {
@@ -19,7 +18,7 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       userRole?: string
-      companySelected?: string
+      selectedCompany?: string
     } & defaultSession['user']
   }
 }

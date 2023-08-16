@@ -11,9 +11,12 @@ const Home = () => {
   }, [session, status])
   return (
     <PrivateRoute>
-      <button onClick={async () => {
-        await update({ companySelected: 2 })
-      }}>Update Company
+      <button
+        onClick={async () => {
+          await update({ companySelected: 1 })
+        }}
+      >
+        Update Company
       </button>
       <p>Dashboard</p>
     </PrivateRoute>

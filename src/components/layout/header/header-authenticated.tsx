@@ -1,5 +1,5 @@
 import React from 'react'
-import { SelectCompany } from '@/components/UI/Fields'
+import { SelectCompany } from '@/components/UI/select-company'
 import { Logo } from '@/components/UI/Logo'
 import Chip from '@/components/UI/Chip'
 import { user } from '@/utils/mockdata'
@@ -23,7 +23,7 @@ export function AuthenticatedHeader() {
       <div className="flex items-center gap-8 px-2">
         <Logo />
         <div className="md:flex gap-2 hidden">
-          <SelectCompany companies={user.companies} />
+          <SelectCompany />
           <Chip>{user.plan}</Chip>
         </div>
       </div>

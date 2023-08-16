@@ -64,22 +64,13 @@ interface UploadFileProps {
 
 function Label({ id, children }: LabelProps) {
   return (
-    <label
-      htmlFor={id}
-      className="mb-2 block text-sm font-semibold text-gray-900"
-    >
+    <label htmlFor={id} className="mb-2 block text-sm font-semibold text-gray-900">
       {children}
     </label>
   )
 }
 
-export function TextField({
-  id,
-  label,
-  type = 'text',
-  className,
-  ...props
-}: TextFieldProps) {
+export function TextField({ id, label, type = 'text', className, ...props }: TextFieldProps) {
   return (
     <div className={className}>
       {label && <Label id={id}>{label}</Label>}
@@ -88,12 +79,7 @@ export function TextField({
   )
 }
 
-export function SelectField({
-  id,
-  label,
-  className,
-  ...props
-}: SelectFieldProps) {
+export function SelectField({ id, label, className, ...props }: SelectFieldProps) {
   return (
     <div className={className}>
       {label && <Label id={id}>{label}</Label>}
@@ -108,12 +94,7 @@ export function SelectField({
   )
 }
 
-export function PhoneField({
-  id,
-  label,
-  className,
-  ...props
-}: PhoneFieldProps) {
+export function PhoneField({ id, label, className, ...props }: PhoneFieldProps) {
   const containerStyles = {
     border: '1px solid #e2e8f0',
     borderRadius: '0.375rem',
@@ -198,24 +179,11 @@ export function LanguageSelect({ languages }: { languages: option[] }) {
   )
 }
 
-export function TimezoneSelect({
-  id,
-  className,
-}: {
-  id: string
-  className?: string
-}) {
+export function TimezoneSelect({ id, className }: { id: string; className?: string }) {
   const timeZones = [
     { value: '+1', label: 'GMT +1' },
     { value: '+2', label: 'GMT +2' },
   ]
 
-  return (
-    <SelectField
-      id={id}
-      className={className}
-      options={timeZones}
-      label="Select Time Zone"
-    />
-  )
+  return <SelectField id={id} className={className} options={timeZones} label="Select Time Zone" />
 }

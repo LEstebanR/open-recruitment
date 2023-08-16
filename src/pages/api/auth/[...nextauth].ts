@@ -68,14 +68,14 @@ export const authOptions: NextAuthOptions = {
         token.image = user?.photo?.path
       }
 
-      if (trigger === 'update' && session?.companySelected) {
+      if (trigger === 'update' && session?.selectedCompany) {
         if (
           token.email &&
-          (await userBelongsToCompany(token.email, session.companySelected.toString()))
+          (await userBelongsToCompany(token.email, session.selectedCompany.toString()))
         ) {
-          token.companySelected = session.companySelected.toString()
+          token.selectedCompany = session.selectedCompany.toString()
         } else {
-          token = omit(token, 'companySelected')
+          token = omit(token, 'selectedCompany')
         }
       }
 
@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           image: token.image ? token.image : session.user?.image,
           userRole: token.userRole,
-          companySelected: token.companySelected,
+          selectedCompany: token.selectedCompany,
         },
       }
     },
