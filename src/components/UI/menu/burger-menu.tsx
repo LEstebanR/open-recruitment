@@ -4,25 +4,23 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { MobileNavLinks, NavLinks } from './mobile-nav-links'
 import { getChildrenOnDisplayName } from '@/components/utils'
 
-function Icon({ children, open }: { children: ReactNode | ((open: boolean) => ReactNode), open?: boolean }) {
+function Icon({
+  children,
+  open,
+}: {
+  children: ReactNode | ((open: boolean) => ReactNode)
+  open?: boolean
+}) {
   let icon = children
   if (typeof children === 'function' && open !== undefined) {
     icon = children(open)
   }
 
-  return (
-    <>
-      {icon}
-    </>
-  )
+  return <>{icon}</>
 }
 
 function Buttons({ children }: { children: ReactNode }) {
-  return (
-    <>
-      {children}
-    </>
-  )
+  return <>{children}</>
 }
 
 Icon.displayName = 'BurgerMenu.Icon'
@@ -30,7 +28,11 @@ Buttons.displayName = 'BurgerMenu.Buttons'
 BurgerMenu.Icon = Icon
 BurgerMenu.Buttons = Buttons
 
-type BurgerMenuPropsType = NavLinks & { children?: ReactNode, overlay?: boolean, enableOnDesktop?: boolean }
+type BurgerMenuPropsType = NavLinks & {
+  children?: ReactNode
+  overlay?: boolean
+  enableOnDesktop?: boolean
+}
 
 type BurgerMenuSubComponents = {
   Icon?: typeof Icon
@@ -45,13 +47,13 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
 
   return (
     <Popover className={`${enableOnDesktop ? '' : 'sm:hidden'}`}>
-      {({ open, close }) => (
+      {({ open }) => (
         <>
           <Popover.Button
-            className='relative z-10 inline-flex items-center rounded-lg stroke-gray-900 p-2 hover:bg-gray-200/50 hover:stroke-gray-600 active:stroke-gray-900 [&:not(:focus-visible)]:focus:outline-none'
-            aria-label='Toggle site navigation'
+            className="relative z-10 inline-flex items-center rounded-lg stroke-gray-900 p-2 hover:bg-gray-200/50 hover:stroke-gray-600 active:stroke-gray-900 "
+            aria-label="Toggle site navigation"
           >
-            {filteredIcons?.map(icon => {
+            {filteredIcons?.map((icon) => {
               if (isValidElement(icon))
                 return React.cloneElement(icon as ReactElement<{ open: boolean }>, { open })
               return icon
@@ -61,16 +63,16 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
           <AnimatePresence initial={false}>
             {open && (
               <>
-                {overlay &&
+                {overlay && (
                   <Popover.Overlay
                     static
                     as={motion.div}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className='fixed inset-0 z-0 bg-gray-300/60 backdrop-blur'
+                    className="fixed inset-0 z-0 bg-gray-300/60 backdrop-blur"
                   />
-                }
+                )}
                 <Popover.Panel
                   static
                   as={motion.div}
@@ -81,12 +83,10 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
                     y: -32,
                     transition: { duration: 0.5 },
                   }}
-                  className='border absolute sm:top-16  z-0 rounded-b-2xl bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur md:w-72 md:mx-auto md:rounded-2xl md:shadow-2xl md:shadow-gray-900/20 md:backdrop-blur md:right-2 md:origin-top-right origin-top-left inset-x-0 md:inset-x-auto '
+                  className="border absolute top-0 pt-16 sm:top-16 sm:pt-4  z-0 rounded-b-2xl bg-gray-50 px-6 pb-6 shadow-2xl shadow-gray-900/20 backdrop-blur md:w-72 md:mx-auto md:rounded-2xl md:shadow-2xl md:shadow-gray-900/20 md:backdrop-blur md:right-2 md:origin-top-right sm:origin-top-left inset-x-0 md:inset-x-auto "
                 >
                   <MobileNavLinks links={links} />
-                  <div className='mt-8 flex flex-col gap-4'>
-                    {filteredButtons}
-                  </div>
+                  <div className="mt-4 flex flex-col gap-4">{filteredButtons}</div>
                 </Popover.Panel>
               </>
             )}

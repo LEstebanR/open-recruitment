@@ -22,20 +22,17 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      authorize: async function(credentials) {
-        const user = await fetch(
-          getURL('/api/user/check-credentials'),
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              accept: 'application/json',
-            },
-            body: Object.entries(credentials ?? [])
-              .map((e) => e.join('='))
-              .join('&'),
+      authorize: async function (credentials) {
+        const user = await fetch(getURL('/api/user/check-credentials'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            accept: 'application/json',
           },
-        )
+          body: Object.entries(credentials ?? [])
+            .map((e) => e.join('='))
+            .join('&'),
+        })
           .then((res) => res.json())
           .catch((err) => {
             console.log(err)
@@ -67,18 +64,27 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user, trigger, session }: {
-      token: JWT,
-      user: (AdapterUser | User) & { userRole?: string },
-      trigger?: string,
+    async jwt({
+      token,
+      user,
+      trigger,
+      session,
+    }: {
+      token: JWT
+      user: (AdapterUser | User) & { photo?: { path: string }; userRole?: string }
+      trigger?: string
       session?: any //eslint-disable-line
     }) {
       if (user) {
         token.userRole = user?.userRole
+        token.image = user?.photo?.path
       }
 
       if (trigger === 'update' && session.companySelected) {
-        if (token.email && await userBelongsToCompany(token.email, session.companySelected.toString())) {
+        if (
+          token.email &&
+          (await userBelongsToCompany(token.email, session.companySelected.toString()))
+        ) {
           token.companySelected = session.companySelected.toString()
         } else {
           token = omit(token, 'companySelected')
@@ -98,6 +104,5 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
-
 }
 export default NextAuth(authOptions)

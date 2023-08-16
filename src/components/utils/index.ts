@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function extractType(node: ReactNode): Function | string {
   return ((node as unknown) as React.ReactElement).type
 }
