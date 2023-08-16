@@ -11,18 +11,18 @@ import {
 } from '@apollo/server/plugin/landingPage/default'
 
 export interface IContext {
-  abc: string;
-  isAdminRequest?: boolean;
+  abc: string
+  isAdminRequest?: boolean
   session: {
     user: {
-      id: string;
-      name: string;
-      email: string;
-      userRole?: string;
-      companySelected?: string;
+      id: string
+      name: string
+      email: string
+      userRole?: string
+      selectedCompany?: string
     }
-    expires: string;
-  } | null;
+    expires: string
+  } | null
 }
 
 /* authz rules
@@ -55,7 +55,6 @@ const CanPublishPost = preExecRule()(
   },
 )*/
 
-
 const server = new ApolloServer({
   schema,
   // authz apollo plugin
@@ -63,20 +62,17 @@ const server = new ApolloServer({
     authZApolloPlugin({ rules: rules }),
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({
-        includeCookies: true,
-      })
+          includeCookies: true,
+        })
       : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
   ],
 })
 
-export default startServerAndCreateNextHandler(server,
-  {
-    context: async (req, res): Promise<IContext> => {
-      return (
-        {
-          abc: '2',
-          session: await getServerSession(req, res, authOptions),
-        }
-      )
-    },
-  })
+export default startServerAndCreateNextHandler(server, {
+  context: async (req, res): Promise<IContext> => {
+    return {
+      abc: '2',
+      session: await getServerSession(req, res, authOptions),
+    }
+  },
+})

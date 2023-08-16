@@ -13,7 +13,7 @@ const Home = () => {
     <PrivateRoute>
       <button
         onClick={async () => {
-          await update({ companySelected: 1 })
+          await update({ selectedCompany: 1 })
         }}
       >
         Update Company
