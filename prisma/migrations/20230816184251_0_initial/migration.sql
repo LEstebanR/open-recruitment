@@ -78,7 +78,7 @@ CREATE TABLE "Attachment" (
     "contentType" TEXT NOT NULL,
     "filename" TEXT NOT NULL,
     "path" TEXT NOT NULL,
-    "uploaderId" INTEGER NOT NULL,
+    "uploaderId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -612,7 +612,7 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_uploaderId_fkey" FOREIGN KEY ("uploaderId") REFERENCES "HiringRole"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Attachment" ADD CONSTRAINT "Attachment_uploaderId_fkey" FOREIGN KEY ("uploaderId") REFERENCES "HiringRole"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "HiringRole" ADD CONSTRAINT "HiringRole_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -838,9 +838,3 @@ ALTER TABLE "Follow" ADD CONSTRAINT "Follow_talentPoolId_fkey" FOREIGN KEY ("tal
 
 -- AddForeignKey
 ALTER TABLE "Follow" ADD CONSTRAINT "Follow_teamMemberId_fkey" FOREIGN KEY ("teamMemberId") REFERENCES "HiringRole"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
-SELECT pg_terminate_backend(PSA.pid)
-FROM pg_locks AS PL
-    INNER JOIN pg_stat_activity AS PSA ON PSA.pid = PL.pid
-WHERE PSA.state LIKE 'idle'
-    AND PL.objid IN (72707369);
