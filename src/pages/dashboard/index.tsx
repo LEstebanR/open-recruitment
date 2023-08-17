@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { getSession, useSession } from 'next-auth/react'
-import SideMenu from '@/components/layout/SideMenu'
 import { GoPersonFill } from 'react-icons/go'
+import type { NextPageWithLayout } from '../_app'
+import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
+
 
 const MENU_ITEMS = [
   {
@@ -22,7 +24,7 @@ const MENU_ITEMS = [
   },
 ]
 
-const Home = () => {
+const Dashboard: NextPageWithLayout = () => {
   const { data: session, status, update } = useSession()
 
   useEffect(() => {
@@ -30,26 +32,23 @@ const Home = () => {
     console.log(status)
   }, [session, status])
   return (
-    <div className='h-full w-full flex justify-center items-center'>
-      <SideMenu items={MENU_ITEMS} />
-      <div className='p-4 grow h-full flex flex-col items-center justify-start gap-2 border'>
-        <button
-          onClick={async () => {
-            const session = await getSession()
-            console.log(session)
-          }}
-        >
-          Get Session
-        </button>
-        <p>Dashboard</p>
-      </div>
-    </div>
+    <LayoutSideMenu>
+      <button
+        onClick={async () => {
+          const session = await getSession()
+          console.log(session)
+        }}
+      >
+        Get Session
+      </button>
+      <p>Dashboard</p>
+    </LayoutSideMenu>
   )
 }
 
-Home.auth = true
+Dashboard.auth = true
 
-export default Home
+export default Dashboard
 
 /*export async function getServerSideProps(context: GetServerSidePropsContext) {
   let session = await getServerSession(context.req, context.res, authOptions)

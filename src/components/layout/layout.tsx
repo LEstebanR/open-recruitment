@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react'
 import Footer from './footer'
-import Sidebar from './Sidebar'
-import { Header } from './Header'
+import { Header } from './header'
 import { useSession } from 'next-auth/react'
+import { Aside } from '@/components/layout/aside'
+import { Main } from '@/components/layout/main'
 
 interface Props {
   children: ReactNode
@@ -10,27 +11,15 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   const { data: session } = useSession()
+  const classes = session ? 'flex flex-wrap h-screen w-screen overflow-hidden' : ''
 
   return (
-    <div className='flex flex-col items-center min-h-screen '>
+    <div className={`${classes}`}>
       <Header />
-      <main className='flex-grow flex flex-col items-center'>
-        {session &&
-          <div className='flex justify-around w-screen flex-grow'>
-            <div className='w-8 flex-grow hidden sm:block'>
-              <Sidebar />
-            </div>
-            <div className='w-11/12 flex justify-center bg-white rounded-lg flex-grow'>
-              {children}
-            </div>
-          </div>
-        }
-        {!session &&
-          <div className='flex-grow flex items-center flex-col justify-center'>
-            {children}
-          </div>
-        }
-      </main>
+      <Aside />
+      <Main>
+        {children}
+      </Main>
       <Footer />
     </div>
   )

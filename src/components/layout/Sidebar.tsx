@@ -55,7 +55,7 @@ const roots = [
 const Sidebar: React.FC = () => {
   return (
     <div className="flex flex-col justify-between items-center h-full py-4">
-      <ul className="flex flex-col gap-8">
+      <ul className="flex flex-col gap-4">
         {roots.map((item) => (
           <li key={item.name}>
             <Link

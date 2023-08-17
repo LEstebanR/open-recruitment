@@ -1,5 +1,4 @@
-import React from 'react'
-import PrivateRoute from '@/components/layout/PrivateRoute'
+import React, { ReactElement } from 'react'
 import { user } from '@/utils/mockdata'
 import Avatar from '@/components/UI/Avatar'
 import { Button } from '@/components/UI/Button'
@@ -11,14 +10,8 @@ import Security from '@/components/user/Security'
 import Appearance from '@/components/user/Appearance'
 import EditProfileModal from '@/components/modals/EditProfileModal'
 import UpdatePasswordModal from '@/components/modals/UpdatePasswordModal'
-import {
-  GoMail,
-  GoOrganization,
-  GoCalendar,
-  GoLock,
-  GoGear,
-  GoKey,
-} from 'react-icons/go'
+import { GoCalendar, GoGear, GoKey, GoLock, GoMail, GoOrganization } from 'react-icons/go'
+import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 
 const tabs = [
   {
@@ -54,31 +47,31 @@ const Profile = () => {
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     React.useState(false)
   return (
-    <PrivateRoute>
-      <div className="flex flex-col lg:flex-row md:gap-8 gap-2  w-full  justify-between items-center  ">
-        <div className="flex items-end gap-4">
+    <>
+      <div className='flex flex-col lg:flex-row md:gap-8 gap-2  w-full  justify-between items-center  '>
+        <div className='flex items-end gap-4'>
           <Avatar src={user.avatar} name={user.name} />
-          <div className="flex flex-col ">
-            <h1 className="text-2xl font-bold">{user.name}</h1>
-            <p className="text-gray-500">{user.tel}</p>
+          <div className='flex flex-col '>
+            <h1 className='text-2xl font-bold'>{user.name}</h1>
+            <p className='text-gray-500'>{user.tel}</p>
           </div>
           <div>
-            <p className="text-gray-500">{user.email}</p>
-            <p className="text-gray-500">{user.role}</p>
+            <p className='text-gray-500'>{user.email}</p>
+            <p className='text-gray-500'>{user.role}</p>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className='flex gap-2'>
           <Button
-            variant="outline"
+            variant='outline'
             icon={<GoGear />}
             onClick={() => setIsEditProfileModalOpen(true)}
           >
             Edit profile
           </Button>
           <Button
-            variant="outline"
-            size="large"
+            variant='outline'
+            size='large'
             icon={<GoKey />}
             onClick={() => setIsChangePasswordModalOpen(true)}
           >
@@ -95,8 +88,13 @@ const Profile = () => {
         </div>
       </div>
       <TabsContainer tabs={tabs} />
-    </PrivateRoute>
+    </>
   )
 }
 
+Profile.auth = true
+
+Profile.getLayout = function getLayout(page: ReactElement) {
+  return <LayoutSideMenu>{page}</LayoutSideMenu>
+}
 export default Profile

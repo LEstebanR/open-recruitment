@@ -38,6 +38,14 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      height: {
+        'header': '3.5rem',
+        'main': 'calc(100vh - theme(height.header))',
+      },
+      width:{
+        'sidebar': '4rem',
+        'main': 'calc(100vw - theme(width.sidebar))',
+      }
     },
   },
   plugins: [],

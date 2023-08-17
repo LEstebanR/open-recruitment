@@ -5,10 +5,7 @@ import { useSession } from 'next-auth/react'
 
 export const Header: React.FC = () => {
   const { data: session } = useSession()
+  const HeaderComponent = session ? AuthenticatedHeader : LandingHeader
 
-  return (
-    <header className='w-screen'>
-      {session ? <AuthenticatedHeader /> : <LandingHeader />}
-    </header>
-  )
+  return (<HeaderComponent />)
 }

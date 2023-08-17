@@ -20,28 +20,30 @@ export function LandingHeader() {
   const isSignUp = currentPath === '/signup'
 
   return (
-    <Container>
-      <div className="flex justify-between py-4">
-        <div className="relative  flex items-center gap-16">
-          <Logo />
-          <div className="hidden sm:flex lg:gap-10">
-            <NavLinks links={navOptions} />
+    <header className='w-full'>
+      <Container>
+        <div className='flex justify-between py-4'>
+          <div className='relative  flex items-center gap-16'>
+            <Logo />
+            <div className='hidden sm:flex lg:gap-10'>
+              <NavLinks links={navOptions} />
+            </div>
+          </div>
+          <div className='flex items-center md:gap-4'>
+            <LandingMenu links={navOptions} isLogin={isLogin} isSignUp={isSignUp} />
+            {!isLogin && (
+              <Button href='/login' variant='outline' size='medium' className='hidden sm:block'>
+                Log in
+              </Button>
+            )}
+            {!isSignUp && (
+              <Button href='/signup' className='hidden sm:block' size='medium'>
+                Sign Up
+              </Button>
+            )}
           </div>
         </div>
-        <div className="flex items-center md:gap-4">
-          <LandingMenu links={navOptions} isLogin={isLogin} isSignUp={isSignUp} />
-          {!isLogin && (
-            <Button href="/login" variant="outline" size="medium" className="hidden sm:block">
-              Log in
-            </Button>
-          )}
-          {!isSignUp && (
-            <Button href="/signup" className="hidden sm:block" size="medium">
-              Sign Up
-            </Button>
-          )}
-        </div>
-      </div>
-    </Container>
+      </Container>
+    </header>
   )
 }
