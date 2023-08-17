@@ -53,3 +53,5 @@ const PrivateRoute: React.FC<Props> = ({ children }) => {
 }
 
 export default PrivateRoute
+
+

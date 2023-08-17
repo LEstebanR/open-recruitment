@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      authorize: async function (credentials) {
+      authorize: async function(credentials) {
         const user = await fetch(getURL('/api/user/check-credentials'), {
           method: 'POST',
           headers: {
@@ -86,9 +86,9 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          image: token.image ? token.image : session.user?.image,
-          userRole: token.userRole,
-          selectedCompany: token.selectedCompany,
+          image: token.image ? token.image : session.user?.image ?? null,
+          userRole: token.userRole ?? null,
+          selectedCompany: token.selectedCompany ?? null,
         },
       }
     },

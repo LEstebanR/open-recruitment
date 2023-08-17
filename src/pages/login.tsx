@@ -1,12 +1,16 @@
 import LoginForm from '@/components/forms/LoginForm'
 import React from 'react'
-import { getProviders } from 'next-auth/react'
+import { getProviders, useSession } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth/next'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 
 export default function LoginPage({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  return <LoginForm providers={providers} />
+  const { status } = useSession()
+
+  return (<>
+    {status !== 'authenticated' && <LoginForm providers={providers} />}
+  </>)
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

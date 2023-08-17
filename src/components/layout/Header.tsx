@@ -1,14 +1,14 @@
 import React from 'react'
-import { useIsAuthenticated } from '@/utils/auth'
 import { AuthenticatedHeader } from './header/header-authenticated'
 import { LandingHeader } from './header/header-landing'
+import { useSession } from 'next-auth/react'
 
 export const Header: React.FC = () => {
-  const { isAuthenticated } = useIsAuthenticated()
+  const { data: session } = useSession()
 
   return (
-    <header className="w-screen">
-      {isAuthenticated ? <AuthenticatedHeader /> : <LandingHeader />}
+    <header className='w-screen'>
+      {session ? <AuthenticatedHeader /> : <LandingHeader />}
     </header>
   )
 }
