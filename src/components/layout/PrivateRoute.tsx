@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isAuthenticated } from '@/utils/auth'
-import Alert from '@/utils/Alert'
+import Alert from '@/components/alert'
 import SideMenu from './SideMenu'
 import { GoPersonFill } from 'react-icons/go'
 

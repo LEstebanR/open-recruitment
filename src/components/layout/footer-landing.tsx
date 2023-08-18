@@ -6,7 +6,7 @@ import JoinNewsletter from '../JoinNewsletter'
 import { NextRouter, useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-const Footer = () => {
+const FooterLanding = () => {
   const { data: session } = useSession()
   const router: NextRouter = useRouter()
   const currentPath = router.pathname
@@ -53,4 +53,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default FooterLanding

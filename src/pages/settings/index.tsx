@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { GoBell, GoPerson } from 'react-icons/go'
 
-const Home = () => {
+const Page = () => {
   return (
     <>
       <div className='flex flex-col justify-start w-full p-4 gap-2'>
@@ -31,5 +31,5 @@ const Home = () => {
   )
 }
 
-Home.Auth = true
-export default Home
+Page.auth = {}
+export default Page

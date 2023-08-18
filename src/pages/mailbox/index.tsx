@@ -1,11 +1,11 @@
 import React from 'react'
-import PrivateRoute from '@/components/layout/PrivateRoute'
-const Home = () => {
+
+const Page = () => {
   return (
-    <PrivateRoute>
-      <p>Mailbox</p>
-    </PrivateRoute>
+    <p>Mailbox</p>
   )
 }
 
-export default Home
+Page.auth = {}
+
+export default Page

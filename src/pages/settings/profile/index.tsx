@@ -12,6 +12,7 @@ import EditProfileModal from '@/components/modals/EditProfileModal'
 import UpdatePasswordModal from '@/components/modals/UpdatePasswordModal'
 import { GoCalendar, GoGear, GoKey, GoLock, GoMail, GoOrganization } from 'react-icons/go'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
+import LayoutAuthenticated from '@/components/layout/layout-authenticated'
 
 const tabs = [
   {
@@ -92,9 +93,13 @@ const Profile = () => {
   )
 }
 
-Profile.auth = true
+Profile.auth = {}
 
 Profile.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutSideMenu>{page}</LayoutSideMenu>
+  return (
+    <LayoutAuthenticated>
+      <LayoutSideMenu>{page}</LayoutSideMenu>
+    </LayoutAuthenticated>
+  )
 }
 export default Profile

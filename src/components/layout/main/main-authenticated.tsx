@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-export const AuthenticatedMain: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const MainAuthenticated: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <main className='flex flex-grow h-main w-main overflow-hidden'>
       <div

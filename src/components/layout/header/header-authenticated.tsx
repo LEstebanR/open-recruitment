@@ -3,7 +3,7 @@ import { SelectCompany } from '@/components/UI/select-company'
 import { Logo } from '@/components/UI/Logo'
 import Chip from '@/components/UI/Chip'
 import { user } from '@/utils/mockdata'
-import { UserMenu } from '@/components/layout/header/menu-user'
+import { MenuUser } from '@/components/layout/header/menu-user'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 
 const navOptions: [string, string][] = [
@@ -17,7 +17,7 @@ const navOptions: [string, string][] = [
   ['/settings', 'Settings'],
 ]
 
-export function AuthenticatedHeader() {
+export function HeaderAuthenticated() {
   return (
     <header className='w-full h-header'>
       <div className='flex justify-between h-14 px-2 items-center max-w-screen z-10'>
@@ -30,7 +30,7 @@ export function AuthenticatedHeader() {
         </div>
         <div className='flex items-center md:gap-8'>
           <IoMdNotificationsOutline className='h-8 w-8' />
-          <UserMenu links={navOptions} />
+          <MenuUser links={navOptions} />
         </div>
       </div>
     </header>

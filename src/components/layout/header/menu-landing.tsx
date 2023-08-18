@@ -4,7 +4,7 @@ import { BurgerMenu } from '@/components/UI/menu/burger-menu'
 import { NavLinks } from '@/components/UI/menu/mobile-nav-links'
 import { HiChevronUp, HiMenu } from 'react-icons/hi'
 
-export function LandingMenu({
+export function MenuLanding({
   links,
   isLogin,
   isSignUp,

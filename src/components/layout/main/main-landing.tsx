@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-export const LandingMain: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const MainLanding: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <main className='flex flex-grow h-main w-full'>
       <div

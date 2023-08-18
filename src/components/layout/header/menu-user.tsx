@@ -6,7 +6,7 @@ import { BurgerMenu } from '@/components/UI/menu/burger-menu'
 import { NavLinks } from '@/components/UI/menu/mobile-nav-links'
 import { HiChevronUp } from 'react-icons/hi'
 
-export function UserMenu({ links }: NavLinks) {
+export function MenuUser({ links }: NavLinks) {
   const { data: session, status, update } = useSession()
 
   return (

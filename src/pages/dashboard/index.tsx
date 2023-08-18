@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react'
-import { getSession, useSession } from 'next-auth/react'
+import React from 'react'
+import { getSession } from 'next-auth/react'
 import { GoPersonFill } from 'react-icons/go'
 import type { NextPageWithLayout } from '../_app'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
+import { GetServerSidePropsContext } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
+import LayoutAuthenticated from '@/components/layout/layout-authenticated'
+import { useRedirectionFlag } from '@/hooks/redirection'
 
 
 const MENU_ITEMS = [
@@ -25,12 +30,8 @@ const MENU_ITEMS = [
 ]
 
 const Dashboard: NextPageWithLayout = () => {
-  const { data: session, status, update } = useSession()
+  useRedirectionFlag()
 
-  useEffect(() => {
-    console.log(session)
-    console.log(status)
-  }, [session, status])
   return (
     <LayoutSideMenu>
       <button
@@ -46,12 +47,15 @@ const Dashboard: NextPageWithLayout = () => {
   )
 }
 
-Dashboard.auth = true
+Dashboard.auth = {
+  permission: 'SUPERADMIN',
+  loading: <LayoutAuthenticated>Dashboard Loading</LayoutAuthenticated>,
+}
 
 export default Dashboard
 
-/*export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   let session = await getServerSession(context.req, context.res, authOptions)
 
   return { props: { session } }
-}*/
+}

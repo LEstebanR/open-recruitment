@@ -4,7 +4,7 @@ import { PhoneField, SelectField, TextField } from '../UI/Fields'
 import Link from 'next/link'
 import BackgroundIllustration from '../layout/BackgroundIlustration'
 import { gql, useMutation } from '@apollo/client'
-import Alert from '@/utils/Alert'
+import Alert from '@/components/alert'
 import { signIn } from 'next-auth/react'
 
 const SIGNUP_MUTATION = gql`

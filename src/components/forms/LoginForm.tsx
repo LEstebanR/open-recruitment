@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react'
 import { InferGetServerSidePropsType } from 'next'
 import { getServerSideProps } from '@/pages/login'
 import { useRouter } from 'next/router'
-import Alert from '@/utils/Alert'
+import Alert from '@/components/alert'
 
 const LoginForm = ({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [email, setEmail] = useState('')

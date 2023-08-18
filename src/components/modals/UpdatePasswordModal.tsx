@@ -3,7 +3,7 @@ import ModalContainner from './ModalContainner'
 import UserCard from '../UI/cards/UserCard'
 import { TextField } from '../UI/Fields'
 import { Button } from '../UI/Button'
-import Alert from '@/utils/Alert'
+import Alert from '@/components/alert'
 
 type props = {
   isOpen: boolean

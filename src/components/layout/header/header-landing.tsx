@@ -4,7 +4,7 @@ import { NavLinks } from '@/components/UI/NavLinks'
 import { Container } from '@/components/UI/Container'
 import { NextRouter, useRouter } from 'next/router'
 import { Button } from '@/components/UI/Button'
-import { LandingMenu } from './menu-landing'
+import { MenuLanding } from './menu-landing'
 
 const navOptions: [string, string][] = [
   ['#features', 'Features'],
@@ -13,7 +13,7 @@ const navOptions: [string, string][] = [
   ['#faqs', 'FAQs'],
 ]
 
-export function LandingHeader() {
+export function HeaderLanding() {
   const router: NextRouter = useRouter()
   const currentPath = router.pathname
   const isLogin = currentPath === '/login'
@@ -30,7 +30,7 @@ export function LandingHeader() {
             </div>
           </div>
           <div className='flex items-center md:gap-4'>
-            <LandingMenu links={navOptions} isLogin={isLogin} isSignUp={isSignUp} />
+            <MenuLanding links={navOptions} isLogin={isLogin} isSignUp={isSignUp} />
             {!isLogin && (
               <Button href='/login' variant='outline' size='medium' className='hidden sm:block'>
                 Log in

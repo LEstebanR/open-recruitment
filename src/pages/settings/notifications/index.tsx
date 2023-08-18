@@ -1,12 +1,11 @@
 import React from 'react'
-import PrivateRoute from '@/components/layout/PrivateRoute'
 
 const Notifications = () => {
   return (
-    <PrivateRoute>
-      <p>Notifications</p>
-    </PrivateRoute>
+    <p>Notifications</p>
   )
 }
+
+Notifications.auth = {}
 
 export default Notifications
