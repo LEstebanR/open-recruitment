@@ -14,14 +14,14 @@ const TabsContainer: React.FC<props> = ({ tabs }) => {
   const [activeTab, setActiveTab] = React.useState(tabs[0].name)
   return (
     <div className='md:block md:w-full my-2'>
-      <ul className='hidden border-b md:flex justify-start'>
+      <ul className='hidden border-b md:flex justify-start flex-wrap mb-2'>
         {tabs.map((tab: tab, index: number) => (
           <li
             key={index}
             className={`${tab.name === activeTab ? 'border-b-2 ' : null}`}
           >
             <button
-              className={`py-2 md:px-8 text-center uppercase ${
+              className={`py-2 md:px-4 text-center capitalize ${
                 tab.name === activeTab ? 'font-bold ' : null
               }`}
               onClick={() => setActiveTab(tab.name)}

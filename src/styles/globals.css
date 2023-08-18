@@ -9,11 +9,11 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  /* :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 18, 18, 18;
-    --background-end-rgb: 18, 18, 18;
-  } */
+    /* :root {
+      --foreground-rgb: 255, 255, 255;
+      --background-start-rgb: 18, 18, 18;
+      --background-end-rgb: 18, 18, 18;
+    } */
 }
 
 body {
@@ -23,4 +23,26 @@ body {
             transparent,
             rgb(var(--background-end-rgb))
     ) rgb(var(--background-start-rgb));
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: theme('colors.gray.100');
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: theme('colors.gray.300');
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.gray.400');
 }

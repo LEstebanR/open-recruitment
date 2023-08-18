@@ -33,7 +33,7 @@ const Dashboard: NextPageWithLayout = () => {
   useRedirectionFlag()
 
   return (
-    <LayoutSideMenu>
+    <>
       <button
         onClick={async () => {
           const session = await getSession()
@@ -43,7 +43,7 @@ const Dashboard: NextPageWithLayout = () => {
         Get Session
       </button>
       <p>Dashboard</p>
-    </LayoutSideMenu>
+    </>
   )
 }
 
