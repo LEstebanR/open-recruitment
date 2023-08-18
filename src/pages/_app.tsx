@@ -9,7 +9,6 @@ import client from '@/lib/apollo-client'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Alert from '@/components/alert'
-import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -27,7 +26,7 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
   const Layout = Component.auth ? LayoutAuthenticated : LayoutLanding
-  const getLayout = Component.getLayout ?? ((page) => <Layout><LayoutSideMenu>{page}</LayoutSideMenu></Layout>)
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return (
     <ApolloProvider client={client}>

@@ -95,7 +95,7 @@ const Profile = () => {
 
 Profile.auth = {}
 
-Profile.getLayout2 = function getLayout(page: ReactElement) {
+Profile.getLayout = function getLayout(page: ReactElement) {
   return (
     <LayoutAuthenticated>
       <LayoutSideMenu>{page}</LayoutSideMenu>
