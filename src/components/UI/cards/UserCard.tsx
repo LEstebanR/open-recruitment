@@ -4,7 +4,7 @@ import Avatar from '../Avatar'
 
 const UserCard = () => {
   return (
-    <div className="flex gap-2 p-2 my-2 border rounded-xl">
+    <div className="my-2 flex gap-2 rounded-xl border p-2">
       <Avatar src={user.avatar} name={user.name} />
       <div>
         <h2 className="text-xl font-bold">{user.name}</h2>

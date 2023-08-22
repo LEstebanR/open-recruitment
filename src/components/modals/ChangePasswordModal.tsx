@@ -10,12 +10,8 @@ type props = {
 
 const ChangePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
   return (
-    <ModalContainner
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      title="Change Password"
-    >
-      <div className="flex flex-col gap-4 mt-4">
+    <ModalContainner isOpen={isOpen} setIsOpen={setIsOpen} title="Change Password">
+      <div className="mt-4 flex flex-col gap-4">
         <p>Choose a new password</p>
         <TextField
           label="New Password"
@@ -35,13 +31,8 @@ const ChangePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
         />
       </div>
 
-      <div className="flex gap-2 justify-end mt-4">
-        <Button
-          variant="noborder"
-          color="primary"
-          size="small"
-          onClick={() => setIsOpen(false)}
-        >
+      <div className="mt-4 flex justify-end gap-2">
+        <Button variant="noborder" color="primary" size="small" onClick={() => setIsOpen(false)}>
           Cancel
         </Button>
         <Button variant="solid" color="gray" size="small">

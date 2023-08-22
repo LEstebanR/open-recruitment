@@ -19,17 +19,17 @@ const navOptions: [string, string][] = [
 
 export function HeaderAuthenticated() {
   return (
-    <header className='w-full h-header'>
-      <div className='flex justify-between h-14 px-2 items-center max-w-screen z-10'>
-        <div className='flex items-center gap-3 sm:gap-8'>
+    <header className="h-header w-full">
+      <div className="z-10 flex h-14 items-center justify-between px-2">
+        <div className="flex items-center gap-3 sm:gap-8">
           <Logo />
-          <div className='flex gap-1 sm:gap-2'>
+          <div className="flex gap-1 sm:gap-2">
             <SelectCompany />
             <Chip>{user.plan}</Chip>
           </div>
         </div>
-        <div className='flex items-center md:gap-8'>
-          <IoMdNotificationsOutline className='h-8 w-8' />
+        <div className="flex items-center md:gap-8">
+          <IoMdNotificationsOutline className="h-8 w-8" />
           <MenuUser links={navOptions} />
         </div>
       </div>

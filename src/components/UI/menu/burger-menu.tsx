@@ -83,7 +83,7 @@ export function BurgerMenu(props: BurgerMenuPropsType & BurgerMenuSubComponents)
                     y: -32,
                     transition: { duration: 0.5 },
                   }}
-                  className="border absolute top-0 pt-16 sm:top-16 sm:pt-4  z-0 rounded-b-2xl bg-gray-50 px-6 pb-6 shadow-2xl shadow-gray-900/20 backdrop-blur md:w-72 md:mx-auto md:rounded-2xl md:shadow-2xl md:shadow-gray-900/20 md:backdrop-blur md:right-2 md:origin-top-right sm:origin-top-left inset-x-0 md:inset-x-auto "
+                  className="absolute inset-x-0 top-0 z-0 rounded-b-2xl border  bg-gray-50 px-6 pb-6 pt-16 shadow-2xl shadow-gray-900/20 backdrop-blur sm:top-16 sm:origin-top-left sm:pt-4 md:inset-x-auto md:right-2 md:mx-auto md:w-72 md:origin-top-right md:rounded-2xl md:shadow-2xl md:shadow-gray-900/20 md:backdrop-blur "
                 >
                   <MobileNavLinks links={links} />
                   <div className="mt-4 flex flex-col gap-4">{filteredButtons}</div>

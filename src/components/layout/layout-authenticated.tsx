@@ -9,12 +9,10 @@ interface Props {
 
 const LayoutAuthenticated: React.FC<Props> = ({ children }) => {
   return (
-    <div className={`flex flex-wrap h-screen w-screen overflow-hidden`}>
+    <div className={`flex h-screen w-screen flex-wrap overflow-hidden`}>
       <HeaderAuthenticated />
       <AsideAuthenticated />
-      <MainAuthenticated>
-        {children}
-      </MainAuthenticated>
+      <MainAuthenticated>{children}</MainAuthenticated>
     </div>
   )
 }

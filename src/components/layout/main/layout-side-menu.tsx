@@ -1,14 +1,13 @@
 import SideMenu from '@/components/layout/side-menu'
 import React, { ReactNode } from 'react'
-import { GoPersonFill } from 'react-icons/go'
 
 export const LayoutSideMenu: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div className="h-full w-full flex justify-center items-center">
-      <div className="w-submenu h-full overflow-y-auto overflow-x-hidden">
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="h-full w-submenu overflow-y-auto overflow-x-hidden">
         <SideMenu />
       </div>
-      <div className="w-panel h-full p-4 overflow-auto grow flex flex-col items-center justify-start gap-2 border">
+      <div className="flex h-full w-panel grow flex-col items-center justify-start gap-2 overflow-auto border p-4">
         {children}
       </div>
     </div>

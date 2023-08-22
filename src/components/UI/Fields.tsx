@@ -128,7 +128,7 @@ export function SelectCompany({ companies }: { companies: Company[] }) {
       <select
         id="company"
         name="company"
-        className="block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent"
+        className="block h-10 rounded-md bg-transparent  text-base focus:outline-none focus:ring-cyan-500"
         defaultValue="0"
       >
         {companies.map((company) => (
@@ -143,11 +143,11 @@ export function SelectCompany({ companies }: { companies: Company[] }) {
 
 export function UploadFile({ label, id }: UploadFileProps) {
   return (
-    <div className="flex items-center gap-2 w-full justify-between">
+    <div className="flex w-full items-center justify-between gap-2">
       <p>{label}</p>
       <label
         htmlFor={id}
-        className="flex  gap-2 cursor-pointer bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-md text-gray-800 font-medium"
+        className="flex  cursor-pointer gap-2 rounded-md bg-gray-200 px-3 py-2 font-medium text-gray-800 hover:bg-gray-300"
       >
         <GoUpload className="h-6 w-6" />
         <p>Select file</p>
@@ -166,7 +166,7 @@ export function LanguageSelect({ languages }: { languages: option[] }) {
       <select
         id="languaje"
         name="languaje"
-        className="block text-base focus:outline-none focus:ring-cyan-500  rounded-md h-10 bg-transparent"
+        className="block h-10 rounded-md bg-transparent  text-base focus:outline-none focus:ring-cyan-500"
         defaultValue="0"
       >
         {languages.map((language) => (

@@ -13,15 +13,12 @@ interface props {
 const TabsContainer: React.FC<props> = ({ tabs }) => {
   const [activeTab, setActiveTab] = React.useState(tabs[0].name)
   return (
-    <div className='md:block md:w-full my-2'>
-      <ul className='hidden border-b md:flex justify-start flex-wrap mb-2'>
+    <div className="my-2 md:block md:w-full">
+      <ul className="mb-2 hidden flex-wrap justify-start border-b md:flex">
         {tabs.map((tab: tab, index: number) => (
-          <li
-            key={index}
-            className={`${tab.name === activeTab ? 'border-b-2 ' : null}`}
-          >
+          <li key={index} className={`${tab.name === activeTab ? 'border-b-2 ' : null}`}>
             <button
-              className={`py-2 md:px-4 text-center capitalize ${
+              className={`py-2 text-center capitalize md:px-4 ${
                 tab.name === activeTab ? 'font-bold ' : null
               }`}
               onClick={() => setActiveTab(tab.name)}
@@ -31,19 +28,17 @@ const TabsContainer: React.FC<props> = ({ tabs }) => {
           </li>
         ))}
       </ul>
-      <div className='w-full'>
-        {tabs.filter((tab: tab) => tab.name === activeTab)[0].component}
-      </div>
-      <ul className='flex sm:hidden gap-4 justify-around rounded-t-xl fixed bottom-0 left-0 py-2 bg-gray-200 w-full '>
+      <div className="w-full">{tabs.filter((tab: tab) => tab.name === activeTab)[0].component}</div>
+      <ul className="fixed bottom-0 left-0 flex w-full justify-around gap-4 rounded-t-xl bg-gray-200 py-2 sm:hidden ">
         {tabs.map((tab: tab, index: number) => (
-          <li key={index} className='md:hidden text-2xl'>
+          <li key={index} className="text-2xl md:hidden">
             <button
-              className={`py-2 md:px-8 text-center uppercase ${
+              className={`py-2 text-center uppercase md:px-8 ${
                 tab.name === activeTab ? 'font-bold ' : null
               }`}
               onClick={() => setActiveTab(tab.name)}
             >
-              <span className='flex flex-col items-center'>{tab.icon}</span>
+              <span className="flex flex-col items-center">{tab.icon}</span>
             </button>
           </li>
         ))}

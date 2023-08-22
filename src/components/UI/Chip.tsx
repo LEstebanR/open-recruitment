@@ -7,7 +7,9 @@ interface Props {
 
 const Chip: React.FC<Props> = ({ children, className }) => {
   return (
-    <div className="hidden sm:inline-flex items-center px-2 rounded-lg text-sm font-base bg-gray-100 text-gray-800 ">
+    <div
+      className={`${className} hidden items-center rounded-lg bg-gray-100 px-2 text-sm text-gray-800 sm:inline-flex`}
+    >
       {children}
     </div>
   )

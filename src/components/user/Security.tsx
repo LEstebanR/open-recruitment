@@ -6,13 +6,12 @@ import UpdatePasswordModal from '../modals/UpdatePasswordModal'
 const Security = () => {
   const [openUpdatePassword, setOpenUpdatePassword] = React.useState(false)
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <div className="flex items-center justify-between">
         <span>
           <h2 className="text-xl font-bold">Delete account</h2>
           <p className="text-gray-500">
-            Once you delete your account, there is no going back. Please be
-            carefull.
+            Once you delete your account, there is no going back. Please be carefull.
           </p>
         </span>
         <div className="md:self-end">
@@ -33,10 +32,7 @@ const Security = () => {
           >
             Update
           </Button>
-          <UpdatePasswordModal
-            isOpen={openUpdatePassword}
-            setIsOpen={setOpenUpdatePassword}
-          />
+          <UpdatePasswordModal isOpen={openUpdatePassword} setIsOpen={setOpenUpdatePassword} />
         </div>
       </div>
     </div>

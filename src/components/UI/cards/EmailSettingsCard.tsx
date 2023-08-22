@@ -10,32 +10,25 @@ type emailProvider = {
   isConnected: boolean
 }
 
-const EmailSettingsCard: React.FC<emailProvider> = ({
-  name,
-  icon,
-  email,
-  isConnected,
-}) => {
+const EmailSettingsCard: React.FC<emailProvider> = ({ name, icon, email, isConnected }) => {
   return (
-    <div className="my-4 p-2 border flex gap-4 rounded-md border-l-4 border-l-primary-500 ">
+    <div className="my-4 flex gap-4 rounded-md border border-l-4 border-l-primary-500 p-2 ">
       <Image
         src={icon}
         alt={name}
         width={50}
         height={50}
-        className="border  rounded-md object-contain "
+        className="rounded-md  border object-contain "
       />
       <div className="flex flex-col justify-center">
-        <h3 className="text-sm md:text-xl font-bold">{name}</h3>
-        <p className="text-gray-500 text-xs md:text-sm">
-          {email ? email : '---'}
-        </p>
+        <h3 className="text-sm font-bold md:text-xl">{name}</h3>
+        <p className="text-xs text-gray-500 md:text-sm">{email ? email : '---'}</p>
       </div>
-      <div className="flex items-center ml-auto  w-40">
+      <div className="ml-auto flex w-40  items-center">
         {isConnected ? (
           <span className="flex items-center">
             <GoCheck className="text-gray-500" />
-            <p className="text-gray-500 font-bold">Connected</p>
+            <p className="font-bold text-gray-500">Connected</p>
           </span>
         ) : (
           <Button variant="outline" color="primary">

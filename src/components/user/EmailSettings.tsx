@@ -40,7 +40,7 @@ const EmailSettings = () => {
           Edit
         </Button>
       </span>
-      <p className="text-base text-gray-500 mb-2">
+      <p className="mb-2 text-base text-gray-500">
         Choose which email address you want to use when sending emails:
       </p>
       <div className="border p-2">

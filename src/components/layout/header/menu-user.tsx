@@ -7,14 +7,14 @@ import { NavLinks } from '@/components/UI/menu/mobile-nav-links'
 import { HiChevronUp } from 'react-icons/hi'
 
 export function MenuUser({ links }: NavLinks) {
-  const { data: session, status, update } = useSession()
+  const { data: session } = useSession()
 
   return (
     <BurgerMenu links={links} enableOnDesktop={true}>
       <BurgerMenu.Icon>
         {(open) => (
           <>
-            <HiChevronUp className={`${open ? '' : 'hidden'} sm:hidden h-6 w-6 m-2`} />
+            <HiChevronUp className={`${open ? '' : 'hidden'} m-2 h-6 w-6 sm:hidden`} />
             <Avatar
               className={open ? 'hidden sm:flex' : ''}
               src={session?.user?.image}
@@ -25,9 +25,9 @@ export function MenuUser({ links }: NavLinks) {
       </BurgerMenu.Icon>
       <BurgerMenu.Buttons>
         <Button
-          href='#'
-          variant='solid'
-          size='full'
+          href="#"
+          variant="solid"
+          size="full"
           onClick={() => {
             signOut({ redirect: true }).then(() => close())
           }}

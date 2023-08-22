@@ -32,66 +32,75 @@ const LoginForm = ({ providers }: InferGetServerSidePropsType<typeof getServerSi
   }
 
   return (
-    <div className='w-screen flex flex-col items-center'>
-      <BackgroundIllustration
-        className='hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block' />
-      <h1 className='text-2xl font-semibold text-gray-900 text-center'>Sign in to your account</h1>
-      <p className='text-gray-600 mt-2 '>
+    <div className="flex w-screen flex-col items-center">
+      <BackgroundIllustration className="absolute -top-7 left-1/2 -z-10 hidden h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:block sm:h-auto" />
+      <h1 className="text-center text-2xl font-semibold text-gray-900">Sign in to your account</h1>
+      <p className="mt-2 text-gray-600 ">
         Don&apos;t have an account?{' '}
-        <Link href='/signup' className='text-cyan-600 hover:underline'>
+        <Link href="/signup" className="text-cyan-600 hover:underline">
           Sign up here
         </Link>
       </p>
 
-      <form className='bg-white px-4 py-8 rounded-3xl my-4 w-11/12 sm:w-64' onSubmit={(e) => handleSubmit(e)}>
-        <div className='space-y-6 mb-4 w-full'>
+      <form
+        className="my-4 w-11/12 rounded-3xl bg-white px-4 py-8 sm:w-64"
+        onSubmit={(e) => handleSubmit(e)}
+      >
+        <div className="mb-4 w-full space-y-6">
           <TextField
-            label='Email address'
-            id='email'
-            name='email'
-            type='email'
-            autoComplete='email'
+            label="Email address"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
             required
             onChange={(e) => {
               setEmail(e.target.value)
             }}
           />
           <TextField
-            label='Password'
-            id='password'
-            name='password'
-            type='password'
-            autoComplete='current-password'
+            label="Password"
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
             required
             onChange={(e) => {
               setPassword(e.target.value)
             }}
           />
         </div>
-        <Link href='/forgot-password' className='text-cyan-600 hover:underline'>
+        <Link href="/forgot-password" className="text-cyan-600 hover:underline">
           Forgot your password?
         </Link>
 
-        <Button type='submit' color='primary' size='full'>
+        <Button type="submit" color="primary" size="full">
           Sign in to account
         </Button>
 
-        {Object.values(providers).filter((provider) => provider.id !== 'credentials').length >= 1 &&
-          <span className='flex items-center justify-center space-x-2 text-sm mt-1'>
-            <span className='h-px bg-gray-400 w-14'></span>
-            <span className='font-normal text-gray-500'>or login with</span>
-            <span className='h-px bg-gray-400 w-14'></span>
+        {Object.values(providers).filter((provider) => provider.id !== 'credentials').length >=
+          1 && (
+          <span className="mt-1 flex items-center justify-center space-x-2 text-sm">
+            <span className="h-px w-14 bg-gray-400"></span>
+            <span className="font-normal text-gray-500">or login with</span>
+            <span className="h-px w-14 bg-gray-400"></span>
           </span>
-        }
+        )}
 
-        {Object.values(providers).filter((provider) => provider.id !== 'credentials').map((provider) => (
-          <div key={provider.name}>
-            <Button onClick={() => signIn(provider.id)} color='white' size='full' className='mt-1'>
-              Sign in with {provider.name}
-            </Button>
-          </div>
-        ))}
-
+        {Object.values(providers)
+          .filter((provider) => provider.id !== 'credentials')
+          .map((provider) => (
+            <div key={provider.name}>
+              <Button
+                onClick={() => signIn(provider.id)}
+                color="white"
+                size="full"
+                className="mt-1"
+              >
+                Sign in with {provider.name}
+              </Button>
+            </div>
+          ))}
       </form>
     </div>
   )

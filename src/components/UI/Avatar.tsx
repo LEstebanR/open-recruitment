@@ -19,7 +19,7 @@ const Avatar: React.FC<Props> = ({ src, name, className }) => {
     />
   ) : (
     <div
-      className={`${className} bg-primary-500 w-9 h-9 flex justify-center items-center rounded-full border border-black m-0.5 text-white`}
+      className={`${className} m-0.5 flex h-9 w-9 items-center justify-center rounded-full border border-black bg-primary-500 text-white`}
     >
       <p>{altName?.charAt(0)}</p>
     </div>

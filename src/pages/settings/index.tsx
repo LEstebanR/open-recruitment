@@ -5,23 +5,23 @@ import { GoBell, GoPerson } from 'react-icons/go'
 const Page = () => {
   return (
     <>
-      <div className='flex flex-col justify-start w-full p-4 gap-2'>
-        <h2 className='text-2xl font-bold'>Settings</h2>
-        <ul className='flex flex-col gap-2'>
+      <div className="flex w-full flex-col justify-start gap-2 p-4">
+        <h2 className="text-2xl font-bold">Settings</h2>
+        <ul className="flex flex-col gap-2">
           <li>
-            <Link href='/settings/profile'>
-              <span className='flex gap-2 items-center'>
+            <Link href="/settings/profile">
+              <span className="flex items-center gap-2">
                 <GoPerson />
-                <p className='text-xl'>Profile</p>
+                <p className="text-xl">Profile</p>
               </span>
             </Link>
           </li>
 
           <li>
-            <Link href='/settings/notifications'>
-              <span className='flex gap-2 items-center'>
+            <Link href="/settings/notifications">
+              <span className="flex items-center gap-2">
                 <GoBell />
-                <p className='text-xl'>Notifications</p>
+                <p className="text-xl">Notifications</p>
               </span>
             </Link>
           </li>

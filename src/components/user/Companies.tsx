@@ -7,7 +7,7 @@ import CompanyCard from '../UI/cards/CompanyCard'
 const Companies = () => {
   return (
     <div>
-      <div className="flex  items-center justify-between mt-2">
+      <div className="mt-2  flex items-center justify-between">
         <h2 className="text-xl">My companies</h2>
         <Button variant="solid" color="primary" size="large" icon={<GoPlus />}>
           Add Company

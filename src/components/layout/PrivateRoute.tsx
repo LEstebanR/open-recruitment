@@ -3,30 +3,10 @@ import { useRouter } from 'next/router'
 import { isAuthenticated } from '@/utils/auth'
 import Alert from '@/components/alert'
 import SideMenu from './side-menu'
-import { GoPersonFill } from 'react-icons/go'
 
 interface Props {
   children: React.ReactNode
 }
-
-const MENU_ITEMS = [
-  {
-    name: 'My account',
-    href: '/settings/account',
-    icon: <GoPersonFill />,
-    type: 'collapse',
-    collaspse_items: [
-      {
-        name: 'Profile',
-        href: '/settings/profile',
-      },
-      {
-        name: 'Notifications',
-        href: '/settings/notifications',
-      },
-    ],
-  },
-]
 
 const PrivateRoute: React.FC<Props> = ({ children }) => {
   const router = useRouter()
@@ -43,9 +23,9 @@ const PrivateRoute: React.FC<Props> = ({ children }) => {
   }, [pathname, router])
 
   return (
-    <div className="h-full w-full flex justify-center items-center">
-      <SideMenu items={MENU_ITEMS} />
-      <div className="p-4 grow h-full flex flex-col items-center justify-start gap-2 border">
+    <div className="flex h-full  w-full items-center justify-center">
+      <SideMenu />
+      <div className="flex h-full grow flex-col items-center justify-start gap-2 border p-4">
         {children}
       </div>
     </div>

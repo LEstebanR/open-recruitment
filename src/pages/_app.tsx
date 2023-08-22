@@ -10,13 +10,13 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Alert from '@/components/alert'
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = Record<string, never>, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
   auth?: ComponentAuth
 }
 
 type ComponentAuth = {
-  permission?: string,
+  permission?: string
   loading?: ReactElement
 }
 
@@ -24,7 +24,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   const Layout = Component.auth ? LayoutAuthenticated : LayoutLanding
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
@@ -32,9 +35,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     <ApolloProvider client={client}>
       <SessionProvider session={session}>
         {Component.auth ? (
-          <Auth options={Component.auth}>
-            {getLayout(<Component {...pageProps} />)}
-          </Auth>
+          <Auth options={Component.auth}>{getLayout(<Component {...pageProps} />)}</Auth>
         ) : (
           getLayout(<Component {...pageProps} />)
         )}
@@ -43,26 +44,29 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   )
 }
 
-function Auth({ children, options }: { children: React.ReactNode, options: ComponentAuth }) {
+function Auth({ children, options }: { children: React.ReactNode; options: ComponentAuth }) {
   const { status, data: session } = useSession({ required: true })
   const router = useRouter()
   const isUser = !!session?.user
-  const viewPermission = !!options?.permission ? session?.user?.userRole === options.permission : true
+  const viewPermission = options?.permission ? session?.user?.userRole === options.permission : true
 
   useEffect(() => {
     if (!viewPermission) {
-      router.push(`/dashboard`).then(() =>
-        Alert({ type: 'error', message: 'Not enough permissions!' }))
+      router
+        .push(`/dashboard`)
+        .then(() => Alert({ type: 'error', message: 'Not enough permissions!' }))
     }
-  }, [isUser, router])
+  }, [isUser, router, viewPermission])
 
   if (status === 'loading' || !viewPermission) {
-    return options?.loading ? options.loading : (
+    return options?.loading ? (
+      options.loading
+    ) : (
       <LayoutAuthenticated>
         <div>Loading...</div>
       </LayoutAuthenticated>
     )
   }
 
-  return (<>{children}</>)
+  return <>{children}</>
 }

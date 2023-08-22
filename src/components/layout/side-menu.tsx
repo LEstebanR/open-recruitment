@@ -1,20 +1,7 @@
 import React, { useState } from 'react'
-import { Listbox, Menu } from '@headlessui/react'
+import { Listbox } from '@headlessui/react'
 import Link from 'next/link'
 import { GoChevronDown, GoChevronUp, GoPersonFill } from 'react-icons/go'
-
-interface Props {
-  items: {
-    name: string
-    href: string
-    icon: React.ReactNode
-    type: string
-    collaspse_items: {
-      name: string
-      href: string
-    }[]
-  }[]
-}
 
 interface CollapseProps {
   name: string

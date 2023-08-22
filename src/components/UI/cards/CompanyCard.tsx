@@ -19,7 +19,7 @@ type company = {
 
 const CompanyCard: React.FC<props> = ({ company }) => {
   return (
-    <div className="border mt-4 rounded-md flex justify-between py-2 border-l-4 border-l-primary-500">
+    <div className="mt-4 flex justify-between rounded-md border border-l-4 border-l-primary-500 py-2">
       <div className="flex gap-4 ">
         <Avatar name={company.name} />
         <div className="flex flex-col">
@@ -27,9 +27,9 @@ const CompanyCard: React.FC<props> = ({ company }) => {
             <h2 className="text-xs md:text-lg">{company.name}</h2>
             <Chip>ID: {company.id}</Chip>
           </span>
-          <div className="flex gap-2 items-center text-gray-500">
+          <div className="flex items-center gap-2 text-gray-500">
             <p>{company.role}</p>
-            <span className="flex gap-1 items-center">
+            <span className="flex items-center gap-1">
               <GoPeople data-tooltip-id="members-tooltip" />
               <Tooltip
                 place="bottom"
@@ -42,21 +42,16 @@ const CompanyCard: React.FC<props> = ({ company }) => {
           </div>
         </div>
       </div>
-      <div className="flex items-center mr-4">
+      <div className="mr-4 flex items-center">
         {company.signed ? (
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             <GoCheck className="text-primary-500" />
             <p className="text-primary-500">Signed in</p>
             <GoKebabHorizontal
               data-tooltip-id="more-tooltip"
-              className="w-6 h-6 text-base cursor-pointer hover:bg-gray-200 rounded-lg "
+              className="h-6 w-6 cursor-pointer rounded-lg text-base hover:bg-gray-200 "
             />
-            <Tooltip
-              place="bottom"
-              content="More"
-              id="more-tooltip"
-              className="capitalize"
-            />
+            <Tooltip place="bottom" content="More" id="more-tooltip" className="capitalize" />
           </div>
         ) : (
           <Button variant="solid" color="primary" size="small">

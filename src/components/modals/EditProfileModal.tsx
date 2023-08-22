@@ -1,12 +1,6 @@
 import React from 'react'
 import ModalContainner from './ModalContainner'
-import {
-  PhoneField,
-  SelectField,
-  TextField,
-  TimezoneSelect,
-  UploadFile,
-} from '../UI/Fields'
+import { PhoneField, SelectField, TextField, TimezoneSelect, UploadFile } from '../UI/Fields'
 import { languages, days } from '@/utils/mockdata'
 import { Button } from '../UI/Button'
 import { GoTrash } from 'react-icons/go'
@@ -27,27 +21,12 @@ const EditProfileModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
         <PhoneField id="tel" label="Phone Number" />
         <UploadFile id="avatar" label="Profile picture" />
         <div className="flex justify-between gap-1 ">
-          <SelectField
-            id="language"
-            label="Language"
-            options={languages}
-            className="w-1/2"
-          />
+          <SelectField id="language" label="Language" options={languages} className="w-1/2" />
           <TimezoneSelect id="time_zone" className="w-1/2" />
         </div>
         <div className="flex justify-between gap-1">
-          <SelectField
-            id="language"
-            label="Time format"
-            options={languages}
-            className="w-1/2"
-          />
-          <SelectField
-            id="language"
-            label="Week begining"
-            options={days}
-            className="w-1/2"
-          />
+          <SelectField id="language" label="Time format" options={languages} className="w-1/2" />
+          <SelectField id="language" label="Week begining" options={days} className="w-1/2" />
         </div>
         <Button
           variant="noborder"
@@ -66,13 +45,8 @@ const EditProfileModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
           variant="warning"
         />
       </div>
-      <div className="flex gap-2 justify-end">
-        <Button
-          variant="noborder"
-          color="primary"
-          size="small"
-          onClick={() => setIsOpen(false)}
-        >
+      <div className="flex justify-end gap-2">
+        <Button variant="noborder" color="primary" size="small" onClick={() => setIsOpen(false)}>
           Cancel
         </Button>
         <Button variant="solid" color="primary" size="small">

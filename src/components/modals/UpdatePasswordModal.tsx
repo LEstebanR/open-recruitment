@@ -39,7 +39,7 @@ const UpdatePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
       <UserCard />
       {isVerified ? (
         <div>
-          <div className="flex flex-col gap-4 mt-4">
+          <div className="mt-4 flex flex-col gap-4">
             <p>Choose a new password</p>
             <TextField
               label="New Password"
@@ -59,13 +59,8 @@ const UpdatePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
             />
           </div>
 
-          <div className="flex gap-2 justify-end mt-4">
-            <Button
-              variant="noborder"
-              color="primary"
-              size="small"
-              onClick={() => cancel()}
-            >
+          <div className="mt-4 flex justify-end gap-2">
+            <Button variant="noborder" color="primary" size="small" onClick={() => cancel()}>
               Cancel
             </Button>
             <Button variant="solid" color="gray" size="small">
@@ -75,7 +70,7 @@ const UpdatePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
         </div>
       ) : (
         <div>
-          <p className="text-base text-gray-500 mb-4 ease-in duration-300">
+          <p className="mb-4 text-base text-gray-500 duration-300 ease-in">
             Verify that it&apos;s you in order to continue
           </p>
           <TextField
@@ -86,11 +81,9 @@ const UpdatePasswordModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
             autoComplete="current-password"
             required
             value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           />
-          <div className="flex gap-2 justify-end mt-4">
+          <div className="mt-4 flex justify-end gap-2">
             <Button
               variant="noborder"
               color="primary"

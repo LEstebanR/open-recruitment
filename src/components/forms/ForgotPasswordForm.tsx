@@ -10,17 +10,13 @@ const ForgotPasswordForm = () => {
       <BackgroundIllustration
         width="900"
         height="900"
-        className="hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block"
+        className="absolute -top-7 left-1/2 -z-10 hidden h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:block sm:h-auto"
       />
-      <h1 className="text-2xl font-semibold text-gray-900">
-        Forgot your password?
-      </h1>
-      <p className="text-gray-600 mt-2">
-        No worries, we&apos;ll send you a recovery link.
-      </p>
+      <h1 className="text-2xl font-semibold text-gray-900">Forgot your password?</h1>
+      <p className="mt-2 text-gray-600">No worries, we&apos;ll send you a recovery link.</p>
 
-      <form className="bg-white md:p-8 px-4 py-8 rounded-3xl my-4">
-        <div className="space-y-6 mb-4">
+      <form className="my-4 rounded-3xl bg-white px-4 py-8 md:p-8">
+        <div className="mb-4 space-y-6">
           <TextField
             label="Email address"
             id="email"
@@ -33,10 +29,7 @@ const ForgotPasswordForm = () => {
         <Button type="submit" color="primary" size="full">
           Send recovery link
         </Button>
-        <Link
-          href="/login"
-          className="text-cyan-600 hover:underline mt-2 text-center block w-full"
-        >
+        <Link href="/login" className="mt-2 block w-full text-center text-cyan-600 hover:underline">
           Go back to log in
         </Link>
       </form>

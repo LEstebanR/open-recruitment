@@ -43,45 +43,40 @@ const tabs = [
 ]
 
 const Profile = () => {
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
-    React.useState(false)
-  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
-    React.useState(false)
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = React.useState(false)
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = React.useState(false)
   return (
     <>
-      <div className='flex flex-col lg:flex-row md:gap-8 gap-2  w-full  justify-between items-center  '>
-        <div className='flex items-end gap-4'>
+      <div className="flex w-full flex-col items-center justify-between  gap-2  md:gap-8 lg:flex-row  ">
+        <div className="flex items-end gap-4">
           <Avatar src={user.avatar} name={user.name} />
-          <div className='flex flex-col '>
-            <h1 className='text-2xl font-bold'>{user.name}</h1>
-            <p className='text-gray-500'>{user.tel}</p>
+          <div className="flex flex-col ">
+            <h1 className="text-2xl font-bold">{user.name}</h1>
+            <p className="text-gray-500">{user.tel}</p>
           </div>
           <div>
-            <p className='text-gray-500'>{user.email}</p>
-            <p className='text-gray-500'>{user.role}</p>
+            <p className="text-gray-500">{user.email}</p>
+            <p className="text-gray-500">{user.role}</p>
           </div>
         </div>
 
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           <Button
-            variant='outline'
+            variant="outline"
             icon={<GoGear />}
             onClick={() => setIsEditProfileModalOpen(true)}
           >
             Edit profile
           </Button>
           <Button
-            variant='outline'
-            size='large'
+            variant="outline"
+            size="large"
             icon={<GoKey />}
             onClick={() => setIsChangePasswordModalOpen(true)}
           >
             Change Password
           </Button>
-          <EditProfileModal
-            isOpen={isEditProfileModalOpen}
-            setIsOpen={setIsEditProfileModalOpen}
-          />
+          <EditProfileModal isOpen={isEditProfileModalOpen} setIsOpen={setIsEditProfileModalOpen} />
           <UpdatePasswordModal
             isOpen={isChangePasswordModalOpen}
             setIsOpen={setIsChangePasswordModalOpen}

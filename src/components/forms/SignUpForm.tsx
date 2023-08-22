@@ -43,10 +43,10 @@ const SignUpForm = () => {
       <BackgroundIllustration
         width="900"
         height="900"
-        className="hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block"
+        className="absolute -top-7 left-1/2 -z-10 hidden h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:block sm:h-auto"
       />
       <h1 className="text-2xl font-semibold text-gray-900">Create a company account</h1>
-      <p className="text-gray-600 mt-2">
+      <p className="mt-2 text-gray-600">
         Does your company already has account? &nbsp;
         <Link href="/login" className="text-cyan-600 hover:underline">
           Log in
@@ -54,7 +54,7 @@ const SignUpForm = () => {
       </p>
 
       <form
-        className="bg-white md:p-8 px-4 py-8 rounded-3xl my-4"
+        className="my-4 rounded-3xl bg-white px-4 py-8 md:p-8"
         onSubmit={async (e) => {
           e.preventDefault()
 
@@ -69,7 +69,7 @@ const SignUpForm = () => {
           })
         }}
       >
-        <div className="grid grid-cols-2 gap-6 mb-4">
+        <div className="mb-4 grid grid-cols-2 gap-6">
           <TextField
             className="col-span-full"
             label="Company name"
