@@ -46,7 +46,7 @@ const roots = [
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="flex h-full flex-col items-center justify-between">
+    <nav className="flex h-full flex-col items-center justify-between pb-2 pt-3">
       <ul className="flex flex-col gap-4">
         {roots.map((item) => (
           <li key={item.name}>
@@ -65,7 +65,7 @@ const Sidebar: React.FC = () => {
           <span className="text-xs ">settings</span>
         </Tooltip>
       </Link>
-    </div>
+    </nav>
   )
 }
 

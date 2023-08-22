@@ -1,12 +1,12 @@
 import React from 'react'
 import { getSession } from 'next-auth/react'
 import type { NextPageWithLayout } from '../_app'
-import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import LayoutAuthenticated from '@/components/layout/layout-authenticated'
 import { useRedirectionFlag } from '@/hooks/redirection'
+import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 
 const Dashboard: NextPageWithLayout = () => {
   useRedirectionFlag()

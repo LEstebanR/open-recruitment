@@ -51,7 +51,7 @@ function Auth({ children, options }: { children: React.ReactNode; options: Compo
   const viewPermission = options?.permission ? session?.user?.userRole === options.permission : true
 
   useEffect(() => {
-    if (!viewPermission) {
+    if (status !== 'loading' && !viewPermission) {
       router
         .push(`/dashboard`)
         .then(() => Alert({ type: 'error', message: 'Not enough permissions!' }))

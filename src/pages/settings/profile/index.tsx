@@ -46,7 +46,7 @@ const Profile = () => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = React.useState(false)
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = React.useState(false)
   return (
-    <>
+    <LayoutSideMenu>
       <div className="flex w-full flex-col items-center justify-between  gap-2  md:gap-8 lg:flex-row  ">
         <div className="flex items-end gap-4">
           <Avatar src={user.avatar} name={user.name} />
@@ -84,17 +84,10 @@ const Profile = () => {
         </div>
       </div>
       <TabsContainer tabs={tabs} />
-    </>
+    </LayoutSideMenu>
   )
 }
 
 Profile.auth = {}
 
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <LayoutAuthenticated>
-      <LayoutSideMenu>{page}</LayoutSideMenu>
-    </LayoutAuthenticated>
-  )
-}
 export default Profile
