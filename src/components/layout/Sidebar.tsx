@@ -1,14 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import {
-  GoBriefcase,
-  GoGraph,
-  GoHome,
-  GoInbox,
-  GoPeople,
-  GoPersonAdd,
-  GoRss,
-} from 'react-icons/go'
+import { GoBriefcase, GoGraph, GoHome, GoInbox, GoPeople, GoPersonAdd, GoRss } from 'react-icons/go'
 import { IoMdSettings } from 'react-icons/io'
 import { Tooltip } from 'react-tooltip'
 
@@ -54,40 +46,22 @@ const roots = [
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="flex flex-col justify-between items-center h-full py-4">
+    <div className="flex h-full flex-col items-center justify-between">
       <ul className="flex flex-col gap-4">
         {roots.map((item) => (
           <li key={item.name}>
-            <Link
-              href={item.href}
-              data-tooltip-id="my-tooltip"
-              data-tooltip-content={item.name}
-            >
+            <Link href={item.href} data-tooltip-id="my-tooltip" data-tooltip-content={item.name}>
               {item.icon}{' '}
             </Link>
-            <Tooltip
-              place="right"
-              content={item.name}
-              id="my-tooltip"
-              className="capitalize"
-            >
+            <Tooltip place="right" content={item.name} id="my-tooltip" className="capitalize">
               <span className="text-xs ">{item.name}</span>
             </Tooltip>
           </li>
         ))}
       </ul>
-      <Link
-        href="/settings"
-        data-tooltip-id="my-tooltip"
-        data-tooltip-content="settings"
-      >
-        <IoMdSettings className="w-8 h-8 text-gray-500 hover:text-black" />
-        <Tooltip
-          place="right"
-          content="settings"
-          id="my-tooltip"
-          className="capitalize"
-        >
+      <Link href="/settings" data-tooltip-id="my-tooltip" data-tooltip-content="settings">
+        <IoMdSettings className="h-8 w-8 text-gray-500 hover:text-black" />
+        <Tooltip place="right" content="settings" id="my-tooltip" className="capitalize">
           <span className="text-xs ">settings</span>
         </Tooltip>
       </Link>

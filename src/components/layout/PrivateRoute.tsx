@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isAuthenticated } from '@/utils/auth'
 import Alert from '@/components/alert'
-import SideMenu from './SideMenu'
+import SideMenu from './side-menu'
 import { GoPersonFill } from 'react-icons/go'
 
 interface Props {
@@ -53,5 +53,3 @@ const PrivateRoute: React.FC<Props> = ({ children }) => {
 }
 
 export default PrivateRoute
-
-

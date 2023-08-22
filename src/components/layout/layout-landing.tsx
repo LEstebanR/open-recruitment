@@ -9,11 +9,9 @@ interface Props {
 
 const LayoutLanding: React.FC<Props> = ({ children }) => {
   return (
-    <div className={'w-screen'}>
+    <div className={'flex min-h-screen w-screen flex-col justify-between'}>
       <HeaderLanding />
-      <MainLanding>
-        {children}
-      </MainLanding>
+      <MainLanding>{children}</MainLanding>
       <FooterLanding />
     </div>
   )

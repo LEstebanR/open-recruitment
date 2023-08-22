@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Listbox } from '@headlessui/react'
+import { Listbox, Menu } from '@headlessui/react'
 import Link from 'next/link'
 import { GoChevronDown, GoChevronUp, GoPersonFill } from 'react-icons/go'
 
@@ -44,16 +44,16 @@ const MENU_ITEMS = [
   },
 ]
 
-const SideMenu: React.FC = ({}) => {
+const SideMenu: React.FC = () => {
   const items = MENU_ITEMS
   const [selectedOption, setSelectedOption] = useState(items[0])
 
   const Collapse: React.FC<CollapseProps> = ({ icon, name, items }) => {
     return (
       <Listbox value={selectedOption} onChange={setSelectedOption}>
-        <Listbox.Button className='w-full'>
+        <Listbox.Button className="w-full">
           {({ open }) => (
-            <div className='flex justify-between items-center gap-4 p-2 w-full'>
+            <div className="flex w-full items-center justify-between gap-4 p-2">
               {icon}
               <p>{name}</p>
               {open ? <GoChevronUp /> : <GoChevronDown />}
@@ -65,11 +65,11 @@ const SideMenu: React.FC = ({}) => {
             <Listbox.Option
               key={index}
               value={item}
-              className='p-2 hover:bg-primary-500 hover:text-white'
+              className="p-2 hover:bg-primary-500 hover:text-white"
             >
-              <div >
-                <p>{item.name}</p>
-              </div>
+              <Link href={item.href}>
+                <p onClick={(e) => e.stopPropagation()}>{item.name}</p>
+              </Link>
             </Listbox.Option>
           ))}
         </Listbox.Options>
@@ -78,8 +78,8 @@ const SideMenu: React.FC = ({}) => {
   }
 
   return (
-    <div className='h-full border-r w-full max-w-52 hidden md:block'>
-      <ul className='list-none'>
+    <div className="hidden h-full w-full border-r md:block">
+      <ul className="list-none">
         {items.map((item, index) => {
           if (item.type === 'collapse') {
             return (
