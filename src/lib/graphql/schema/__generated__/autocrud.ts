@@ -1,4 +1,3 @@
-import { builder } from '../builder';
 import * as User from './User';
 import * as Account from './Account';
 import * as Session from './Session';
@@ -41,6 +40,7 @@ import * as SharedCandidateLink from './SharedCandidateLink';
 import * as Task from './Task';
 import * as TaskMember from './TaskMember';
 import * as Follow from './Follow';
+import { builder } from '../builder';
 import * as Objects from './objects';
 
 type Model = Objects.Model;

@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,45 +11,45 @@ export const OfferObject = definePrismaObject('Offer', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', OfferIdFieldObject),
-    name: t.exposeString('name', OfferNameFieldObject),
+    id: t.field(OfferIdFieldObject),
+    name: t.field(OfferNameFieldObject),
     company: t.relation('company', OfferCompanyFieldObject),
-    companyId: t.exposeString('companyId', OfferCompanyIdFieldObject),
+    companyId: t.field(OfferCompanyIdFieldObject),
     deparment: t.relation('deparment', OfferDeparmentFieldObject),
-    deparmentId: t.exposeInt('deparmentId', OfferDeparmentIdFieldObject),
+    deparmentId: t.field(OfferDeparmentIdFieldObject),
     recruiter: t.relation('recruiter', OfferRecruiterFieldObject),
-    recruiterId: t.exposeInt('recruiterId', OfferRecruiterIdFieldObject),
+    recruiterId: t.field(OfferRecruiterIdFieldObject),
     hiringManager: t.relation('hiringManager', OfferHiringManagerFieldObject),
-    hiringManagerId: t.exposeInt('hiringManagerId', OfferHiringManagerIdFieldObject),
-    description: t.exposeString('description', OfferDescriptionFieldObject),
-    requirements: t.exposeString('requirements', OfferRequirementsFieldObject),
-    locationCountry: t.exposeString('locationCountry', OfferLocationCountryFieldObject),
-    locationState: t.exposeString('locationState', OfferLocationStateFieldObject),
-    locationCity: t.exposeString('locationCity', OfferLocationCityFieldObject),
-    locationStreet: t.exposeString('locationStreet', OfferLocationStreetFieldObject),
-    zipcode: t.exposeString('zipcode', OfferZipcodeFieldObject),
-    remote: t.exposeBoolean('remote', OfferRemoteFieldObject),
-    jobType: t.exposeString('jobType', OfferJobTypeFieldObject),
-    jobCategory: t.exposeString('jobCategory', OfferJobCategoryFieldObject),
-    jobReqEducation: t.exposeString('jobReqEducation', OfferJobReqEducationFieldObject),
-    jobReqExperience: t.exposeString('jobReqExperience', OfferJobReqExperienceFieldObject),
-    jobHoursMin: t.exposeInt('jobHoursMin', OfferJobHoursMinFieldObject),
-    jobHoursMax: t.exposeInt('jobHoursMax', OfferJobHoursMaxFieldObject),
-    jobSalaryMin: t.exposeInt('jobSalaryMin', OfferJobSalaryMinFieldObject),
-    jobSalaryMax: t.exposeInt('jobSalaryMax', OfferJobSalaryMaxFieldObject),
-    jobSalaryPeriod: t.exposeString('jobSalaryPeriod', OfferJobSalaryPeriodFieldObject),
-    jobSalaryCurrency: t.exposeString('jobSalaryCurrency', OfferJobSalaryCurrencyFieldObject),
+    hiringManagerId: t.field(OfferHiringManagerIdFieldObject),
+    description: t.field(OfferDescriptionFieldObject),
+    requirements: t.field(OfferRequirementsFieldObject),
+    locationCountry: t.field(OfferLocationCountryFieldObject),
+    locationState: t.field(OfferLocationStateFieldObject),
+    locationCity: t.field(OfferLocationCityFieldObject),
+    locationStreet: t.field(OfferLocationStreetFieldObject),
+    zipcode: t.field(OfferZipcodeFieldObject),
+    remote: t.field(OfferRemoteFieldObject),
+    jobType: t.field(OfferJobTypeFieldObject),
+    jobCategory: t.field(OfferJobCategoryFieldObject),
+    jobReqEducation: t.field(OfferJobReqEducationFieldObject),
+    jobReqExperience: t.field(OfferJobReqExperienceFieldObject),
+    jobHoursMin: t.field(OfferJobHoursMinFieldObject),
+    jobHoursMax: t.field(OfferJobHoursMaxFieldObject),
+    jobSalaryMin: t.field(OfferJobSalaryMinFieldObject),
+    jobSalaryMax: t.field(OfferJobSalaryMaxFieldObject),
+    jobSalaryPeriod: t.field(OfferJobSalaryPeriodFieldObject),
+    jobSalaryCurrency: t.field(OfferJobSalaryCurrencyFieldObject),
     personalInfoCv: t.field(OfferPersonalInfoCvFieldObject),
     personalInfoCoverLetter: t.field(OfferPersonalInfoCoverLetterFieldObject),
     personalInfoPhoto: t.field(OfferPersonalInfoPhotoFieldObject),
     personalInfoPhone: t.field(OfferPersonalInfoPhoneFieldObject),
     screeningQuestionsTemplate: t.relation('screeningQuestionsTemplate', OfferScreeningQuestionsTemplateFieldObject),
-    screeningQuestionsTemplateId: t.exposeInt('screeningQuestionsTemplateId', OfferScreeningQuestionsTemplateIdFieldObject),
+    screeningQuestionsTemplateId: t.field(OfferScreeningQuestionsTemplateIdFieldObject),
     pipelineTemplate: t.relation('pipelineTemplate', OfferPipelineTemplateFieldObject),
-    pipelineTemplateId: t.exposeInt('pipelineTemplateId', OfferPipelineTemplateIdFieldObject),
+    pipelineTemplateId: t.field(OfferPipelineTemplateIdFieldObject),
     autoConfirmationEmail: t.relation('autoConfirmationEmail', OfferAutoConfirmationEmailFieldObject),
-    autoConfirmationEmailId: t.exposeInt('autoConfirmationEmailId', OfferAutoConfirmationEmailIdFieldObject),
-    isPublished: t.exposeBoolean('isPublished', OfferIsPublishedFieldObject),
+    autoConfirmationEmailId: t.field(OfferAutoConfirmationEmailIdFieldObject),
+    isPublished: t.field(OfferIsPublishedFieldObject),
     auditLogs: t.relation('auditLogs', OfferAuditLogsFieldObject(t)),
     files: t.relation('files', OfferFilesFieldObject(t)),
     offerTags: t.relation('offerTags', OfferOfferTagsFieldObject(t)),
@@ -61,14 +61,18 @@ export const OfferObject = definePrismaObject('Offer', {
   }),
 });
 
-export const OfferIdFieldObject = defineExposeObject('Int', {
+export const OfferIdFieldObject = defineFieldObject('Offer', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const OfferNameFieldObject = defineExposeObject('String', {
+export const OfferNameFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
 export const OfferCompanyFieldObject = defineRelationObject('Offer', 'company', {
@@ -78,9 +82,11 @@ export const OfferCompanyFieldObject = defineRelationObject('Offer', 'company', 
   query: undefined,
 });
 
-export const OfferCompanyIdFieldObject = defineExposeObject('String', {
+export const OfferCompanyIdFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
 
 export const OfferDeparmentFieldObject = defineRelationObject('Offer', 'deparment', {
@@ -90,9 +96,11 @@ export const OfferDeparmentFieldObject = defineRelationObject('Offer', 'deparmen
   query: undefined,
 });
 
-export const OfferDeparmentIdFieldObject = defineExposeObject('Int', {
+export const OfferDeparmentIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.deparmentId,
 });
 
 export const OfferRecruiterFieldObject = defineRelationObject('Offer', 'recruiter', {
@@ -102,9 +110,11 @@ export const OfferRecruiterFieldObject = defineRelationObject('Offer', 'recruite
   query: undefined,
 });
 
-export const OfferRecruiterIdFieldObject = defineExposeObject('Int', {
+export const OfferRecruiterIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.recruiterId,
 });
 
 export const OfferHiringManagerFieldObject = defineRelationObject('Offer', 'hiringManager', {
@@ -114,99 +124,137 @@ export const OfferHiringManagerFieldObject = defineRelationObject('Offer', 'hiri
   query: undefined,
 });
 
-export const OfferHiringManagerIdFieldObject = defineExposeObject('Int', {
+export const OfferHiringManagerIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.hiringManagerId,
 });
 
-export const OfferDescriptionFieldObject = defineExposeObject('String', {
+export const OfferDescriptionFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.description,
 });
 
-export const OfferRequirementsFieldObject = defineExposeObject('String', {
+export const OfferRequirementsFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.requirements,
 });
 
-export const OfferLocationCountryFieldObject = defineExposeObject('String', {
+export const OfferLocationCountryFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.locationCountry,
 });
 
-export const OfferLocationStateFieldObject = defineExposeObject('String', {
+export const OfferLocationStateFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.locationState,
 });
 
-export const OfferLocationCityFieldObject = defineExposeObject('String', {
+export const OfferLocationCityFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.locationCity,
 });
 
-export const OfferLocationStreetFieldObject = defineExposeObject('String', {
+export const OfferLocationStreetFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.locationStreet,
 });
 
-export const OfferZipcodeFieldObject = defineExposeObject('String', {
+export const OfferZipcodeFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.zipcode,
 });
 
-export const OfferRemoteFieldObject = defineExposeObject('Boolean', {
+export const OfferRemoteFieldObject = defineFieldObject('Offer', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.remote,
 });
 
-export const OfferJobTypeFieldObject = defineExposeObject('String', {
+export const OfferJobTypeFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobType,
 });
 
-export const OfferJobCategoryFieldObject = defineExposeObject('String', {
+export const OfferJobCategoryFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobCategory,
 });
 
-export const OfferJobReqEducationFieldObject = defineExposeObject('String', {
+export const OfferJobReqEducationFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobReqEducation,
 });
 
-export const OfferJobReqExperienceFieldObject = defineExposeObject('String', {
+export const OfferJobReqExperienceFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobReqExperience,
 });
 
-export const OfferJobHoursMinFieldObject = defineExposeObject('Int', {
+export const OfferJobHoursMinFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobHoursMin,
 });
 
-export const OfferJobHoursMaxFieldObject = defineExposeObject('Int', {
+export const OfferJobHoursMaxFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobHoursMax,
 });
 
-export const OfferJobSalaryMinFieldObject = defineExposeObject('Int', {
+export const OfferJobSalaryMinFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobSalaryMin,
 });
 
-export const OfferJobSalaryMaxFieldObject = defineExposeObject('Int', {
+export const OfferJobSalaryMaxFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobSalaryMax,
 });
 
-export const OfferJobSalaryPeriodFieldObject = defineExposeObject('String', {
+export const OfferJobSalaryPeriodFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobSalaryPeriod,
 });
 
-export const OfferJobSalaryCurrencyFieldObject = defineExposeObject('String', {
+export const OfferJobSalaryCurrencyFieldObject = defineFieldObject('Offer', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.jobSalaryCurrency,
 });
 
 export const OfferPersonalInfoCvFieldObject = defineFieldObject('Offer', {
@@ -244,9 +292,11 @@ export const OfferScreeningQuestionsTemplateFieldObject = defineRelationObject('
   query: undefined,
 });
 
-export const OfferScreeningQuestionsTemplateIdFieldObject = defineExposeObject('Int', {
+export const OfferScreeningQuestionsTemplateIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.screeningQuestionsTemplateId,
 });
 
 export const OfferPipelineTemplateFieldObject = defineRelationObject('Offer', 'pipelineTemplate', {
@@ -256,9 +306,11 @@ export const OfferPipelineTemplateFieldObject = defineRelationObject('Offer', 'p
   query: undefined,
 });
 
-export const OfferPipelineTemplateIdFieldObject = defineExposeObject('Int', {
+export const OfferPipelineTemplateIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.pipelineTemplateId,
 });
 
 export const OfferAutoConfirmationEmailFieldObject = defineRelationObject('Offer', 'autoConfirmationEmail', {
@@ -268,28 +320,34 @@ export const OfferAutoConfirmationEmailFieldObject = defineRelationObject('Offer
   query: undefined,
 });
 
-export const OfferAutoConfirmationEmailIdFieldObject = defineExposeObject('Int', {
+export const OfferAutoConfirmationEmailIdFieldObject = defineFieldObject('Offer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.autoConfirmationEmailId,
 });
 
-export const OfferIsPublishedFieldObject = defineExposeObject('Boolean', {
+export const OfferIsPublishedFieldObject = defineFieldObject('Offer', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.isPublished,
 });
+
+export const OfferAuditLogsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.AuditLogWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.AuditLogOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.AuditLogWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.AuditLogScalarFieldEnum], required: false }),
+}))
 
 export const OfferAuditLogsFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'auditLogs', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.AuditLogWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.AuditLogOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.AuditLogWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.AuditLogScalarFieldEnum], required: false }),
-    },
+    args: OfferAuditLogsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -300,19 +358,21 @@ export const OfferAuditLogsFieldObject = defineRelationFunction('Offer', (t) =>
     }),
   }),
 );
+
+export const OfferFilesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.OfferFileWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.OfferFileOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.OfferFileWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.OfferFileScalarFieldEnum], required: false }),
+}))
 
 export const OfferFilesFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'files', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.OfferFileWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.OfferFileOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.OfferFileWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.OfferFileScalarFieldEnum], required: false }),
-    },
+    args: OfferFilesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -323,19 +383,21 @@ export const OfferFilesFieldObject = defineRelationFunction('Offer', (t) =>
     }),
   }),
 );
+
+export const OfferOfferTagsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.OfferTagWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.OfferTagOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.OfferTagWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.OfferTagScalarFieldEnum], required: false }),
+}))
 
 export const OfferOfferTagsFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'offerTags', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.OfferTagWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.OfferTagOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.OfferTagWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.OfferTagScalarFieldEnum], required: false }),
-    },
+    args: OfferOfferTagsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -346,19 +408,21 @@ export const OfferOfferTagsFieldObject = defineRelationFunction('Offer', (t) =>
     }),
   }),
 );
+
+export const OfferMembershipsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.MembershipWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.MembershipOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.MembershipWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.MembershipScalarFieldEnum], required: false }),
+}))
 
 export const OfferMembershipsFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'memberships', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.MembershipWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.MembershipOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.MembershipWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.MembershipScalarFieldEnum], required: false }),
-    },
+    args: OfferMembershipsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -369,19 +433,21 @@ export const OfferMembershipsFieldObject = defineRelationFunction('Offer', (t) =
     }),
   }),
 );
+
+export const OfferMatchesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.MatchWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.MatchOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.MatchWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.MatchScalarFieldEnum], required: false }),
+}))
 
 export const OfferMatchesFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'matches', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.MatchWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.MatchOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.MatchWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.MatchScalarFieldEnum], required: false }),
-    },
+    args: OfferMatchesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -392,19 +458,21 @@ export const OfferMatchesFieldObject = defineRelationFunction('Offer', (t) =>
     }),
   }),
 );
+
+export const OfferHiredFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CandidateWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CandidateWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
+}))
 
 export const OfferHiredFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'hired', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.CandidateWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.CandidateWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
-    },
+    args: OfferHiredFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -415,19 +483,21 @@ export const OfferHiredFieldObject = defineRelationFunction('Offer', (t) =>
     }),
   }),
 );
+
+export const OfferEvaluationsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EvaluationWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EvaluationOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EvaluationWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EvaluationScalarFieldEnum], required: false }),
+}))
 
 export const OfferEvaluationsFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'evaluations', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EvaluationWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EvaluationOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EvaluationWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EvaluationScalarFieldEnum], required: false }),
-    },
+    args: OfferEvaluationsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -439,18 +509,20 @@ export const OfferEvaluationsFieldObject = defineRelationFunction('Offer', (t) =
   }),
 );
 
+export const OfferFollowsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.FollowWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.FollowOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.FollowWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.FollowScalarFieldEnum], required: false }),
+}))
+
 export const OfferFollowsFieldObject = defineRelationFunction('Offer', (t) =>
   defineRelationObject('Offer', 'follows', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.FollowWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.FollowOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.FollowWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.FollowScalarFieldEnum], required: false }),
-    },
+    args: OfferFollowsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

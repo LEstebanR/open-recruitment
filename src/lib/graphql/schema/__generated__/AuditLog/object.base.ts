@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,27 +11,29 @@ export const AuditLogObject = definePrismaObject('AuditLog', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', AuditLogIdFieldObject),
+    id: t.field(AuditLogIdFieldObject),
     company: t.relation('company', AuditLogCompanyFieldObject),
-    companyId: t.exposeString('companyId', AuditLogCompanyIdFieldObject),
+    companyId: t.field(AuditLogCompanyIdFieldObject),
     user: t.relation('user', AuditLogUserFieldObject),
-    userId: t.exposeInt('userId', AuditLogUserIdFieldObject),
+    userId: t.field(AuditLogUserIdFieldObject),
     offer: t.relation('offer', AuditLogOfferFieldObject),
-    offerId: t.exposeInt('offerId', AuditLogOfferIdFieldObject),
+    offerId: t.field(AuditLogOfferIdFieldObject),
     candidate: t.relation('candidate', AuditLogCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', AuditLogCandidateIdFieldObject),
-    actor: t.exposeString('actor', AuditLogActorFieldObject),
-    actorType: t.exposeString('actorType', AuditLogActorTypeFieldObject),
-    ip: t.exposeString('ip', AuditLogIpFieldObject),
-    action: t.exposeString('action', AuditLogActionFieldObject),
+    candidateId: t.field(AuditLogCandidateIdFieldObject),
+    actor: t.field(AuditLogActorFieldObject),
+    actorType: t.field(AuditLogActorTypeFieldObject),
+    ip: t.field(AuditLogIpFieldObject),
+    action: t.field(AuditLogActionFieldObject),
     eventDetails: t.field(AuditLogEventDetailsFieldObject),
     createdAt: t.field(AuditLogCreatedAtFieldObject),
   }),
 });
 
-export const AuditLogIdFieldObject = defineExposeObject('Int', {
+export const AuditLogIdFieldObject = defineFieldObject('AuditLog', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const AuditLogCompanyFieldObject = defineRelationObject('AuditLog', 'company', {
@@ -41,9 +43,11 @@ export const AuditLogCompanyFieldObject = defineRelationObject('AuditLog', 'comp
   query: undefined,
 });
 
-export const AuditLogCompanyIdFieldObject = defineExposeObject('String', {
+export const AuditLogCompanyIdFieldObject = defineFieldObject('AuditLog', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
 
 export const AuditLogUserFieldObject = defineRelationObject('AuditLog', 'user', {
@@ -53,9 +57,11 @@ export const AuditLogUserFieldObject = defineRelationObject('AuditLog', 'user', 
   query: undefined,
 });
 
-export const AuditLogUserIdFieldObject = defineExposeObject('Int', {
+export const AuditLogUserIdFieldObject = defineFieldObject('AuditLog', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.userId,
 });
 
 export const AuditLogOfferFieldObject = defineRelationObject('AuditLog', 'offer', {
@@ -65,9 +71,11 @@ export const AuditLogOfferFieldObject = defineRelationObject('AuditLog', 'offer'
   query: undefined,
 });
 
-export const AuditLogOfferIdFieldObject = defineExposeObject('Int', {
+export const AuditLogOfferIdFieldObject = defineFieldObject('AuditLog', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.offerId,
 });
 
 export const AuditLogCandidateFieldObject = defineRelationObject('AuditLog', 'candidate', {
@@ -77,29 +85,39 @@ export const AuditLogCandidateFieldObject = defineRelationObject('AuditLog', 'ca
   query: undefined,
 });
 
-export const AuditLogCandidateIdFieldObject = defineExposeObject('Int', {
+export const AuditLogCandidateIdFieldObject = defineFieldObject('AuditLog', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.candidateId,
 });
 
-export const AuditLogActorFieldObject = defineExposeObject('String', {
+export const AuditLogActorFieldObject = defineFieldObject('AuditLog', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.actor,
 });
 
-export const AuditLogActorTypeFieldObject = defineExposeObject('String', {
+export const AuditLogActorTypeFieldObject = defineFieldObject('AuditLog', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.actorType,
 });
 
-export const AuditLogIpFieldObject = defineExposeObject('String', {
+export const AuditLogIpFieldObject = defineFieldObject('AuditLog', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.ip,
 });
 
-export const AuditLogActionFieldObject = defineExposeObject('String', {
+export const AuditLogActionFieldObject = defineFieldObject('AuditLog', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.action,
 });
 
 export const AuditLogEventDetailsFieldObject = defineFieldObject('AuditLog', {

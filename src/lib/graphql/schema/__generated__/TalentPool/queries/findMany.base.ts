@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findManyTalentPoolQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.TalentPoolWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.TalentPoolOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.TalentPoolWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.TalentPoolScalarFieldEnum], required: false }),
+}))
 
 export const findManyTalentPoolQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: ['TalentPool'],
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.TalentPoolWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.TalentPoolOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.TalentPoolWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.TalentPoolScalarFieldEnum], required: false }),
-    },
+    args: findManyTalentPoolQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.talentPool.findMany({
         where: args.where || undefined,

@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const EventScheduleEvaluationObject = definePrismaObject('EventScheduleEv
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EventScheduleEvaluationIdFieldObject),
+    id: t.field(EventScheduleEvaluationIdFieldObject),
     eventSchedule: t.relation('eventSchedule', EventScheduleEvaluationEventScheduleFieldObject),
-    eventScheduleId: t.exposeInt('eventScheduleId', EventScheduleEvaluationEventScheduleIdFieldObject),
+    eventScheduleId: t.field(EventScheduleEvaluationEventScheduleIdFieldObject),
     evaluation: t.relation('evaluation', EventScheduleEvaluationEvaluationFieldObject),
-    evaluationId: t.exposeInt('evaluationId', EventScheduleEvaluationEvaluationIdFieldObject),
+    evaluationId: t.field(EventScheduleEvaluationEvaluationIdFieldObject),
   }),
 });
 
-export const EventScheduleEvaluationIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleEvaluationIdFieldObject = defineFieldObject('EventScheduleEvaluation', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EventScheduleEvaluationEventScheduleFieldObject = defineRelationObject('EventScheduleEvaluation', 'eventSchedule', {
@@ -31,9 +33,11 @@ export const EventScheduleEvaluationEventScheduleFieldObject = defineRelationObj
   query: undefined,
 });
 
-export const EventScheduleEvaluationEventScheduleIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleEvaluationEventScheduleIdFieldObject = defineFieldObject('EventScheduleEvaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.eventScheduleId,
 });
 
 export const EventScheduleEvaluationEvaluationFieldObject = defineRelationObject('EventScheduleEvaluation', 'evaluation', {
@@ -43,7 +47,9 @@ export const EventScheduleEvaluationEvaluationFieldObject = defineRelationObject
   query: undefined,
 });
 
-export const EventScheduleEvaluationEvaluationIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleEvaluationEvaluationIdFieldObject = defineFieldObject('EventScheduleEvaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.evaluationId,
 });

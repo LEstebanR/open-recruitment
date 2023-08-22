@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryObject } from '../../utils';
+
+export const countCompanyMetadataQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CompanyMetadataWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CompanyMetadataOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CompanyMetadataWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CompanyMetadataScalarFieldEnum], required: false }),
+}))
 
 export const countCompanyMetadataQueryObject = defineQueryFunction((t) =>
   defineQueryObject({
     type: 'Int',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.CompanyMetadataWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.CompanyMetadataOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.CompanyMetadataWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.CompanyMetadataScalarFieldEnum], required: false }),
-    },
+    args: countCompanyMetadataQueryArgs,
     resolve: async (_root, args, _context, _info) =>
       await prisma.companyMetadata.count({
         where: args.where || undefined,

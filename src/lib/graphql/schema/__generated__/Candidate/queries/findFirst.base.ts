@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findFirstCandidateQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CandidateWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CandidateWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
+}))
 
 export const findFirstCandidateQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: 'Candidate',
     nullable: true,
-    args: {
-      where: t.arg({ type: Inputs.CandidateWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.CandidateWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
-    },
+    args: findFirstCandidateQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.candidate.findFirst({
         where: args.where || undefined,

@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findManyHiringRoleQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.HiringRoleWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
+}))
 
 export const findManyHiringRoleQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: ['HiringRole'],
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.HiringRoleWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
-    },
+    args: findManyHiringRoleQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.hiringRole.findMany({
         where: args.where || undefined,

@@ -1,16 +1,19 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineMutation, defineMutationFunction, defineMutationPrismaObject } from '../../utils';
+
+export const upsertOneEventScheduleInterviewerMutationArgs = builder.args((t) => ({
+      where: t.field({ type: Inputs.EventScheduleInterviewerWhereUniqueInput, required: true }),
+      create: t.field({ type: Inputs.EventScheduleInterviewerCreateInput, required: true }),
+      update: t.field({ type: Inputs.EventScheduleInterviewerUpdateInput, required: true }),
+    }))
 
 export const upsertOneEventScheduleInterviewerMutationObject = defineMutationFunction((t) =>
   defineMutationPrismaObject({
     type: 'EventScheduleInterviewer',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventScheduleInterviewerWhereUniqueInput, required: true }),
-      create: t.arg({ type: Inputs.EventScheduleInterviewerCreateInput, required: true }),
-      update: t.arg({ type: Inputs.EventScheduleInterviewerUpdateInput, required: true }),
-    },
+    args: upsertOneEventScheduleInterviewerMutationArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.eventScheduleInterviewer.upsert({
         where: args.where,

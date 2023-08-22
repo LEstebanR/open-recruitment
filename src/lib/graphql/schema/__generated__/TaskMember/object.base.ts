@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const TaskMemberObject = definePrismaObject('TaskMember', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', TaskMemberIdFieldObject),
+    id: t.field(TaskMemberIdFieldObject),
     task: t.relation('task', TaskMemberTaskFieldObject),
-    taskId: t.exposeInt('taskId', TaskMemberTaskIdFieldObject),
+    taskId: t.field(TaskMemberTaskIdFieldObject),
     teamMember: t.relation('teamMember', TaskMemberTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', TaskMemberTeamMemberIdFieldObject),
+    teamMemberId: t.field(TaskMemberTeamMemberIdFieldObject),
   }),
 });
 
-export const TaskMemberIdFieldObject = defineExposeObject('Int', {
+export const TaskMemberIdFieldObject = defineFieldObject('TaskMember', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const TaskMemberTaskFieldObject = defineRelationObject('TaskMember', 'task', {
@@ -31,9 +33,11 @@ export const TaskMemberTaskFieldObject = defineRelationObject('TaskMember', 'tas
   query: undefined,
 });
 
-export const TaskMemberTaskIdFieldObject = defineExposeObject('Int', {
+export const TaskMemberTaskIdFieldObject = defineFieldObject('TaskMember', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.taskId,
 });
 
 export const TaskMemberTeamMemberFieldObject = defineRelationObject('TaskMember', 'teamMember', {
@@ -43,7 +47,9 @@ export const TaskMemberTeamMemberFieldObject = defineRelationObject('TaskMember'
   query: undefined,
 });
 
-export const TaskMemberTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const TaskMemberTeamMemberIdFieldObject = defineFieldObject('TaskMember', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.teamMemberId,
 });

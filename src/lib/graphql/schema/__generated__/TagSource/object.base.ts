@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,30 +11,36 @@ export const TagSourceObject = definePrismaObject('TagSource', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', TagSourceIdFieldObject),
-    name: t.exposeString('name', TagSourceNameFieldObject),
-    type: t.exposeString('type', TagSourceTypeFieldObject),
+    id: t.field(TagSourceIdFieldObject),
+    name: t.field(TagSourceNameFieldObject),
+    type: t.field(TagSourceTypeFieldObject),
     company: t.relation('company', TagSourceCompanyFieldObject),
-    companyId: t.exposeString('companyId', TagSourceCompanyIdFieldObject),
+    companyId: t.field(TagSourceCompanyIdFieldObject),
     offerTags: t.relation('offerTags', TagSourceOfferTagsFieldObject(t)),
     candidateReferrer: t.relation('candidateReferrer', TagSourceCandidateReferrerFieldObject),
     candidateTags: t.relation('candidateTags', TagSourceCandidateTagsFieldObject(t)),
   }),
 });
 
-export const TagSourceIdFieldObject = defineExposeObject('Int', {
+export const TagSourceIdFieldObject = defineFieldObject('TagSource', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const TagSourceNameFieldObject = defineExposeObject('String', {
+export const TagSourceNameFieldObject = defineFieldObject('TagSource', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
-export const TagSourceTypeFieldObject = defineExposeObject('String', {
+export const TagSourceTypeFieldObject = defineFieldObject('TagSource', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.type,
 });
 
 export const TagSourceCompanyFieldObject = defineRelationObject('TagSource', 'company', {
@@ -44,23 +50,27 @@ export const TagSourceCompanyFieldObject = defineRelationObject('TagSource', 'co
   query: undefined,
 });
 
-export const TagSourceCompanyIdFieldObject = defineExposeObject('String', {
+export const TagSourceCompanyIdFieldObject = defineFieldObject('TagSource', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
+
+export const TagSourceOfferTagsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.OfferTagWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.OfferTagOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.OfferTagWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.OfferTagScalarFieldEnum], required: false }),
+}))
 
 export const TagSourceOfferTagsFieldObject = defineRelationFunction('TagSource', (t) =>
   defineRelationObject('TagSource', 'offerTags', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.OfferTagWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.OfferTagOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.OfferTagWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.OfferTagScalarFieldEnum], required: false }),
-    },
+    args: TagSourceOfferTagsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -79,18 +89,20 @@ export const TagSourceCandidateReferrerFieldObject = defineRelationObject('TagSo
   query: undefined,
 });
 
+export const TagSourceCandidateTagsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CandidateTagWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CandidateTagOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CandidateTagWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CandidateTagScalarFieldEnum], required: false }),
+}))
+
 export const TagSourceCandidateTagsFieldObject = defineRelationFunction('TagSource', (t) =>
   defineRelationObject('TagSource', 'candidateTags', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.CandidateTagWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.CandidateTagOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.CandidateTagWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.CandidateTagScalarFieldEnum], required: false }),
-    },
+    args: TagSourceCandidateTagsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

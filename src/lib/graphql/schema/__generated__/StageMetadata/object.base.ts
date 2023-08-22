@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,27 +11,33 @@ export const StageMetadataObject = definePrismaObject('StageMetadata', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', StageMetadataIdFieldObject),
-    metaKey: t.exposeString('metaKey', StageMetadataMetaKeyFieldObject),
-    metaValue: t.exposeString('metaValue', StageMetadataMetaValueFieldObject),
+    id: t.field(StageMetadataIdFieldObject),
+    metaKey: t.field(StageMetadataMetaKeyFieldObject),
+    metaValue: t.field(StageMetadataMetaValueFieldObject),
     stage: t.relation('stage', StageMetadataStageFieldObject),
-    stageId: t.exposeInt('stageId', StageMetadataStageIdFieldObject),
+    stageId: t.field(StageMetadataStageIdFieldObject),
   }),
 });
 
-export const StageMetadataIdFieldObject = defineExposeObject('Int', {
+export const StageMetadataIdFieldObject = defineFieldObject('StageMetadata', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const StageMetadataMetaKeyFieldObject = defineExposeObject('String', {
+export const StageMetadataMetaKeyFieldObject = defineFieldObject('StageMetadata', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.metaKey,
 });
 
-export const StageMetadataMetaValueFieldObject = defineExposeObject('String', {
+export const StageMetadataMetaValueFieldObject = defineFieldObject('StageMetadata', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.metaValue,
 });
 
 export const StageMetadataStageFieldObject = defineRelationObject('StageMetadata', 'stage', {
@@ -41,7 +47,9 @@ export const StageMetadataStageFieldObject = defineRelationObject('StageMetadata
   query: undefined,
 });
 
-export const StageMetadataStageIdFieldObject = defineExposeObject('Int', {
+export const StageMetadataStageIdFieldObject = defineFieldObject('StageMetadata', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.stageId,
 });

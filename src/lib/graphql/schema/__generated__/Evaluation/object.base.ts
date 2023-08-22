@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,27 +11,29 @@ export const EvaluationObject = definePrismaObject('Evaluation', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EvaluationIdFieldObject),
+    id: t.field(EvaluationIdFieldObject),
     template: t.relation('template', EvaluationTemplateFieldObject),
-    templateId: t.exposeInt('templateId', EvaluationTemplateIdFieldObject),
+    templateId: t.field(EvaluationTemplateIdFieldObject),
     offer: t.relation('offer', EvaluationOfferFieldObject),
-    offerId: t.exposeInt('offerId', EvaluationOfferIdFieldObject),
+    offerId: t.field(EvaluationOfferIdFieldObject),
     candidate: t.relation('candidate', EvaluationCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', EvaluationCandidateIdFieldObject),
+    candidateId: t.field(EvaluationCandidateIdFieldObject),
     teamMember: t.relation('teamMember', EvaluationTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', EvaluationTeamMemberIdFieldObject),
-    note: t.exposeString('note', EvaluationNoteFieldObject),
-    isQuickEval: t.exposeBoolean('isQuickEval', EvaluationIsQuickEvalFieldObject),
-    score: t.exposeInt('score', EvaluationScoreFieldObject),
+    teamMemberId: t.field(EvaluationTeamMemberIdFieldObject),
+    note: t.field(EvaluationNoteFieldObject),
+    isQuickEval: t.field(EvaluationIsQuickEvalFieldObject),
+    score: t.field(EvaluationScoreFieldObject),
     eventScheduleEvaluations: t.relation('eventScheduleEvaluations', EvaluationEventScheduleEvaluationsFieldObject(t)),
     eventEvaluations: t.relation('eventEvaluations', EvaluationEventEvaluationsFieldObject(t)),
     answers: t.relation('answers', EvaluationAnswersFieldObject(t)),
   }),
 });
 
-export const EvaluationIdFieldObject = defineExposeObject('Int', {
+export const EvaluationIdFieldObject = defineFieldObject('Evaluation', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EvaluationTemplateFieldObject = defineRelationObject('Evaluation', 'template', {
@@ -41,9 +43,11 @@ export const EvaluationTemplateFieldObject = defineRelationObject('Evaluation', 
   query: undefined,
 });
 
-export const EvaluationTemplateIdFieldObject = defineExposeObject('Int', {
+export const EvaluationTemplateIdFieldObject = defineFieldObject('Evaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.templateId,
 });
 
 export const EvaluationOfferFieldObject = defineRelationObject('Evaluation', 'offer', {
@@ -53,9 +57,11 @@ export const EvaluationOfferFieldObject = defineRelationObject('Evaluation', 'of
   query: undefined,
 });
 
-export const EvaluationOfferIdFieldObject = defineExposeObject('Int', {
+export const EvaluationOfferIdFieldObject = defineFieldObject('Evaluation', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.offerId,
 });
 
 export const EvaluationCandidateFieldObject = defineRelationObject('Evaluation', 'candidate', {
@@ -65,9 +71,11 @@ export const EvaluationCandidateFieldObject = defineRelationObject('Evaluation',
   query: undefined,
 });
 
-export const EvaluationCandidateIdFieldObject = defineExposeObject('Int', {
+export const EvaluationCandidateIdFieldObject = defineFieldObject('Evaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.candidateId,
 });
 
 export const EvaluationTeamMemberFieldObject = defineRelationObject('Evaluation', 'teamMember', {
@@ -77,38 +85,48 @@ export const EvaluationTeamMemberFieldObject = defineRelationObject('Evaluation'
   query: undefined,
 });
 
-export const EvaluationTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const EvaluationTeamMemberIdFieldObject = defineFieldObject('Evaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.teamMemberId,
 });
 
-export const EvaluationNoteFieldObject = defineExposeObject('String', {
+export const EvaluationNoteFieldObject = defineFieldObject('Evaluation', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.note,
 });
 
-export const EvaluationIsQuickEvalFieldObject = defineExposeObject('Boolean', {
+export const EvaluationIsQuickEvalFieldObject = defineFieldObject('Evaluation', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.isQuickEval,
 });
 
-export const EvaluationScoreFieldObject = defineExposeObject('Int', {
+export const EvaluationScoreFieldObject = defineFieldObject('Evaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.score,
 });
+
+export const EvaluationEventScheduleEvaluationsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventScheduleEvaluationWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventScheduleEvaluationOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventScheduleEvaluationWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventScheduleEvaluationScalarFieldEnum], required: false }),
+}))
 
 export const EvaluationEventScheduleEvaluationsFieldObject = defineRelationFunction('Evaluation', (t) =>
   defineRelationObject('Evaluation', 'eventScheduleEvaluations', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventScheduleEvaluationWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventScheduleEvaluationOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventScheduleEvaluationWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventScheduleEvaluationScalarFieldEnum], required: false }),
-    },
+    args: EvaluationEventScheduleEvaluationsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -119,19 +137,21 @@ export const EvaluationEventScheduleEvaluationsFieldObject = defineRelationFunct
     }),
   }),
 );
+
+export const EvaluationEventEvaluationsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventEvaluationWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventEvaluationOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventEvaluationWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventEvaluationScalarFieldEnum], required: false }),
+}))
 
 export const EvaluationEventEvaluationsFieldObject = defineRelationFunction('Evaluation', (t) =>
   defineRelationObject('Evaluation', 'eventEvaluations', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventEvaluationWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventEvaluationOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventEvaluationWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventEvaluationScalarFieldEnum], required: false }),
-    },
+    args: EvaluationEventEvaluationsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -143,18 +163,20 @@ export const EvaluationEventEvaluationsFieldObject = defineRelationFunction('Eva
   }),
 );
 
+export const EvaluationAnswersFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
+}))
+
 export const EvaluationAnswersFieldObject = defineRelationFunction('Evaluation', (t) =>
   defineRelationObject('Evaluation', 'answers', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
-    },
+    args: EvaluationAnswersFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

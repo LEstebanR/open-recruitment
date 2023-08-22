@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,14 +11,14 @@ export const AttachmentObject = definePrismaObject('Attachment', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', AttachmentIdFieldObject),
-    contentType: t.exposeString('contentType', AttachmentContentTypeFieldObject),
-    filename: t.exposeString('filename', AttachmentFilenameFieldObject),
-    path: t.exposeString('path', AttachmentPathFieldObject),
+    id: t.field(AttachmentIdFieldObject),
+    contentType: t.field(AttachmentContentTypeFieldObject),
+    filename: t.field(AttachmentFilenameFieldObject),
+    path: t.field(AttachmentPathFieldObject),
     userProfilePhoto: t.relation('userProfilePhoto', AttachmentUserProfilePhotoFieldObject),
     candidate: t.relation('candidate', AttachmentCandidateFieldObject),
     uploader: t.relation('uploader', AttachmentUploaderFieldObject),
-    uploaderId: t.exposeInt('uploaderId', AttachmentUploaderIdFieldObject),
+    uploaderId: t.field(AttachmentUploaderIdFieldObject),
     createdAt: t.field(AttachmentCreatedAtFieldObject),
     updatedAt: t.field(AttachmentUpdatedAtFieldObject),
     offerFiles: t.relation('offerFiles', AttachmentOfferFilesFieldObject(t)),
@@ -26,24 +26,32 @@ export const AttachmentObject = definePrismaObject('Attachment', {
   }),
 });
 
-export const AttachmentIdFieldObject = defineExposeObject('Int', {
+export const AttachmentIdFieldObject = defineFieldObject('Attachment', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const AttachmentContentTypeFieldObject = defineExposeObject('String', {
+export const AttachmentContentTypeFieldObject = defineFieldObject('Attachment', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.contentType,
 });
 
-export const AttachmentFilenameFieldObject = defineExposeObject('String', {
+export const AttachmentFilenameFieldObject = defineFieldObject('Attachment', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.filename,
 });
 
-export const AttachmentPathFieldObject = defineExposeObject('String', {
+export const AttachmentPathFieldObject = defineFieldObject('Attachment', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.path,
 });
 
 export const AttachmentUserProfilePhotoFieldObject = defineRelationObject('Attachment', 'userProfilePhoto', {
@@ -67,9 +75,11 @@ export const AttachmentUploaderFieldObject = defineRelationObject('Attachment', 
   query: undefined,
 });
 
-export const AttachmentUploaderIdFieldObject = defineExposeObject('Int', {
+export const AttachmentUploaderIdFieldObject = defineFieldObject('Attachment', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.uploaderId,
 });
 
 export const AttachmentCreatedAtFieldObject = defineFieldObject('Attachment', {
@@ -86,18 +96,20 @@ export const AttachmentUpdatedAtFieldObject = defineFieldObject('Attachment', {
   resolve: (parent) => parent.updatedAt,
 });
 
+export const AttachmentOfferFilesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.OfferFileWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.OfferFileOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.OfferFileWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.OfferFileScalarFieldEnum], required: false }),
+}))
+
 export const AttachmentOfferFilesFieldObject = defineRelationFunction('Attachment', (t) =>
   defineRelationObject('Attachment', 'offerFiles', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.OfferFileWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.OfferFileOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.OfferFileWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.OfferFileScalarFieldEnum], required: false }),
-    },
+    args: AttachmentOfferFilesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -109,18 +121,20 @@ export const AttachmentOfferFilesFieldObject = defineRelationFunction('Attachmen
   }),
 );
 
+export const AttachmentTalentPoolFilesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.TalentPoolFileWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.TalentPoolFileOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.TalentPoolFileWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.TalentPoolFileScalarFieldEnum], required: false }),
+}))
+
 export const AttachmentTalentPoolFilesFieldObject = defineRelationFunction('Attachment', (t) =>
   defineRelationObject('Attachment', 'talentPoolFiles', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.TalentPoolFileWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.TalentPoolFileOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.TalentPoolFileWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.TalentPoolFileScalarFieldEnum], required: false }),
-    },
+    args: AttachmentTalentPoolFilesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

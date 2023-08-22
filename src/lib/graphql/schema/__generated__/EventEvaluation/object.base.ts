@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const EventEvaluationObject = definePrismaObject('EventEvaluation', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EventEvaluationIdFieldObject),
+    id: t.field(EventEvaluationIdFieldObject),
     event: t.relation('event', EventEvaluationEventFieldObject),
-    eventId: t.exposeInt('eventId', EventEvaluationEventIdFieldObject),
+    eventId: t.field(EventEvaluationEventIdFieldObject),
     evaluation: t.relation('evaluation', EventEvaluationEvaluationFieldObject),
-    evaluationId: t.exposeInt('evaluationId', EventEvaluationEvaluationIdFieldObject),
+    evaluationId: t.field(EventEvaluationEvaluationIdFieldObject),
   }),
 });
 
-export const EventEvaluationIdFieldObject = defineExposeObject('Int', {
+export const EventEvaluationIdFieldObject = defineFieldObject('EventEvaluation', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EventEvaluationEventFieldObject = defineRelationObject('EventEvaluation', 'event', {
@@ -31,9 +33,11 @@ export const EventEvaluationEventFieldObject = defineRelationObject('EventEvalua
   query: undefined,
 });
 
-export const EventEvaluationEventIdFieldObject = defineExposeObject('Int', {
+export const EventEvaluationEventIdFieldObject = defineFieldObject('EventEvaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.eventId,
 });
 
 export const EventEvaluationEvaluationFieldObject = defineRelationObject('EventEvaluation', 'evaluation', {
@@ -43,7 +47,9 @@ export const EventEvaluationEvaluationFieldObject = defineRelationObject('EventE
   query: undefined,
 });
 
-export const EventEvaluationEvaluationIdFieldObject = defineExposeObject('Int', {
+export const EventEvaluationEvaluationIdFieldObject = defineFieldObject('EventEvaluation', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.evaluationId,
 });

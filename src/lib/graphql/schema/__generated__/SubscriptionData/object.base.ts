@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,24 +11,28 @@ export const SubscriptionDataObject = definePrismaObject('SubscriptionData', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', SubscriptionDataIdFieldObject),
-    active: t.exposeBoolean('active', SubscriptionDataActiveFieldObject),
+    id: t.field(SubscriptionDataIdFieldObject),
+    active: t.field(SubscriptionDataActiveFieldObject),
     currentPeriodStart: t.field(SubscriptionDataCurrentPeriodStartFieldObject),
     currentPeriodEnd: t.field(SubscriptionDataCurrentPeriodEndFieldObject),
-    status: t.exposeString('status', SubscriptionDataStatusFieldObject),
+    status: t.field(SubscriptionDataStatusFieldObject),
     company: t.relation('company', SubscriptionDataCompanyFieldObject),
-    companyId: t.exposeString('companyId', SubscriptionDataCompanyIdFieldObject),
+    companyId: t.field(SubscriptionDataCompanyIdFieldObject),
   }),
 });
 
-export const SubscriptionDataIdFieldObject = defineExposeObject('Int', {
+export const SubscriptionDataIdFieldObject = defineFieldObject('SubscriptionData', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const SubscriptionDataActiveFieldObject = defineExposeObject('Boolean', {
+export const SubscriptionDataActiveFieldObject = defineFieldObject('SubscriptionData', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.active,
 });
 
 export const SubscriptionDataCurrentPeriodStartFieldObject = defineFieldObject('SubscriptionData', {
@@ -45,9 +49,11 @@ export const SubscriptionDataCurrentPeriodEndFieldObject = defineFieldObject('Su
   resolve: (parent) => parent.currentPeriodEnd,
 });
 
-export const SubscriptionDataStatusFieldObject = defineExposeObject('String', {
+export const SubscriptionDataStatusFieldObject = defineFieldObject('SubscriptionData', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.status,
 });
 
 export const SubscriptionDataCompanyFieldObject = defineRelationObject('SubscriptionData', 'company', {
@@ -57,7 +63,9 @@ export const SubscriptionDataCompanyFieldObject = defineRelationObject('Subscrip
   query: undefined,
 });
 
-export const SubscriptionDataCompanyIdFieldObject = defineExposeObject('String', {
+export const SubscriptionDataCompanyIdFieldObject = defineFieldObject('SubscriptionData', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });

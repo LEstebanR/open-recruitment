@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,13 +11,13 @@ export const TemplateObject = definePrismaObject('Template', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', TemplateIdFieldObject),
+    id: t.field(TemplateIdFieldObject),
     company: t.relation('company', TemplateCompanyFieldObject),
-    companyId: t.exposeString('companyId', TemplateCompanyIdFieldObject),
-    isCompanyWide: t.exposeBoolean('isCompanyWide', TemplateIsCompanyWideFieldObject),
+    companyId: t.field(TemplateCompanyIdFieldObject),
+    isCompanyWide: t.field(TemplateIsCompanyWideFieldObject),
     type: t.field(TemplateTypeFieldObject),
-    name: t.exposeString('name', TemplateNameFieldObject),
-    category: t.exposeString('category', TemplateCategoryFieldObject),
+    name: t.field(TemplateNameFieldObject),
+    category: t.field(TemplateCategoryFieldObject),
     screeningQuestionsTemplate: t.relation('screeningQuestionsTemplate', TemplateScreeningQuestionsTemplateFieldObject),
     pipelineTemplate: t.relation('pipelineTemplate', TemplatePipelineTemplateFieldObject),
     autoConfirmationEmail: t.relation('autoConfirmationEmail', TemplateAutoConfirmationEmailFieldObject),
@@ -26,9 +26,11 @@ export const TemplateObject = definePrismaObject('Template', {
   }),
 });
 
-export const TemplateIdFieldObject = defineExposeObject('Int', {
+export const TemplateIdFieldObject = defineFieldObject('Template', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const TemplateCompanyFieldObject = defineRelationObject('Template', 'company', {
@@ -38,14 +40,18 @@ export const TemplateCompanyFieldObject = defineRelationObject('Template', 'comp
   query: undefined,
 });
 
-export const TemplateCompanyIdFieldObject = defineExposeObject('String', {
+export const TemplateCompanyIdFieldObject = defineFieldObject('Template', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
 
-export const TemplateIsCompanyWideFieldObject = defineExposeObject('Boolean', {
+export const TemplateIsCompanyWideFieldObject = defineFieldObject('Template', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.isCompanyWide,
 });
 
 export const TemplateTypeFieldObject = defineFieldObject('Template', {
@@ -55,14 +61,18 @@ export const TemplateTypeFieldObject = defineFieldObject('Template', {
   resolve: (parent) => parent.type,
 });
 
-export const TemplateNameFieldObject = defineExposeObject('String', {
+export const TemplateNameFieldObject = defineFieldObject('Template', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
-export const TemplateCategoryFieldObject = defineExposeObject('String', {
+export const TemplateCategoryFieldObject = defineFieldObject('Template', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.category,
 });
 
 export const TemplateScreeningQuestionsTemplateFieldObject = defineRelationObject('Template', 'screeningQuestionsTemplate', {
@@ -86,18 +96,20 @@ export const TemplateAutoConfirmationEmailFieldObject = defineRelationObject('Te
   query: undefined,
 });
 
+export const TemplateStagesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.StageWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.StageOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.StageWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.StageScalarFieldEnum], required: false }),
+}))
+
 export const TemplateStagesFieldObject = defineRelationFunction('Template', (t) =>
   defineRelationObject('Template', 'stages', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.StageWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.StageOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.StageWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.StageScalarFieldEnum], required: false }),
-    },
+    args: TemplateStagesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -109,18 +121,20 @@ export const TemplateStagesFieldObject = defineRelationFunction('Template', (t) 
   }),
 );
 
+export const TemplateEvaluationsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EvaluationWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EvaluationOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EvaluationWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EvaluationScalarFieldEnum], required: false }),
+}))
+
 export const TemplateEvaluationsFieldObject = defineRelationFunction('Template', (t) =>
   defineRelationObject('Template', 'evaluations', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EvaluationWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EvaluationOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EvaluationWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EvaluationScalarFieldEnum], required: false }),
-    },
+    args: TemplateEvaluationsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

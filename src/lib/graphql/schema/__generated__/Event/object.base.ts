@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,24 +11,26 @@ export const EventObject = definePrismaObject('Event', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EventIdFieldObject),
+    id: t.field(EventIdFieldObject),
     date: t.field(EventDateFieldObject),
-    time: t.exposeInt('time', EventTimeFieldObject),
-    duration: t.exposeInt('duration', EventDurationFieldObject),
-    type: t.exposeString('type', EventTypeFieldObject),
-    location: t.exposeString('location', EventLocationFieldObject),
-    note: t.exposeString('note', EventNoteFieldObject),
-    privateNote: t.exposeString('privateNote', EventPrivateNoteFieldObject),
+    time: t.field(EventTimeFieldObject),
+    duration: t.field(EventDurationFieldObject),
+    type: t.field(EventTypeFieldObject),
+    location: t.field(EventLocationFieldObject),
+    note: t.field(EventNoteFieldObject),
+    privateNote: t.field(EventPrivateNoteFieldObject),
     company: t.relation('company', EventCompanyFieldObject),
-    companyId: t.exposeString('companyId', EventCompanyIdFieldObject),
+    companyId: t.field(EventCompanyIdFieldObject),
     eventInterviewers: t.relation('eventInterviewers', EventEventInterviewersFieldObject(t)),
     eventEvaluations: t.relation('eventEvaluations', EventEventEvaluationsFieldObject(t)),
   }),
 });
 
-export const EventIdFieldObject = defineExposeObject('Int', {
+export const EventIdFieldObject = defineFieldObject('Event', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EventDateFieldObject = defineFieldObject('Event', {
@@ -38,34 +40,46 @@ export const EventDateFieldObject = defineFieldObject('Event', {
   resolve: (parent) => parent.date,
 });
 
-export const EventTimeFieldObject = defineExposeObject('Int', {
+export const EventTimeFieldObject = defineFieldObject('Event', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.time,
 });
 
-export const EventDurationFieldObject = defineExposeObject('Int', {
+export const EventDurationFieldObject = defineFieldObject('Event', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.duration,
 });
 
-export const EventTypeFieldObject = defineExposeObject('String', {
+export const EventTypeFieldObject = defineFieldObject('Event', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.type,
 });
 
-export const EventLocationFieldObject = defineExposeObject('String', {
+export const EventLocationFieldObject = defineFieldObject('Event', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.location,
 });
 
-export const EventNoteFieldObject = defineExposeObject('String', {
+export const EventNoteFieldObject = defineFieldObject('Event', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.note,
 });
 
-export const EventPrivateNoteFieldObject = defineExposeObject('String', {
+export const EventPrivateNoteFieldObject = defineFieldObject('Event', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.privateNote,
 });
 
 export const EventCompanyFieldObject = defineRelationObject('Event', 'company', {
@@ -75,23 +89,27 @@ export const EventCompanyFieldObject = defineRelationObject('Event', 'company', 
   query: undefined,
 });
 
-export const EventCompanyIdFieldObject = defineExposeObject('String', {
+export const EventCompanyIdFieldObject = defineFieldObject('Event', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
+
+export const EventEventInterviewersFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventInterviewerWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventInterviewerOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventInterviewerWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventInterviewerScalarFieldEnum], required: false }),
+}))
 
 export const EventEventInterviewersFieldObject = defineRelationFunction('Event', (t) =>
   defineRelationObject('Event', 'eventInterviewers', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventInterviewerWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventInterviewerOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventInterviewerWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventInterviewerScalarFieldEnum], required: false }),
-    },
+    args: EventEventInterviewersFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -103,18 +121,20 @@ export const EventEventInterviewersFieldObject = defineRelationFunction('Event',
   }),
 );
 
+export const EventEventEvaluationsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventEvaluationWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventEvaluationOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventEvaluationWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventEvaluationScalarFieldEnum], required: false }),
+}))
+
 export const EventEventEvaluationsFieldObject = defineRelationFunction('Event', (t) =>
   defineRelationObject('Event', 'eventEvaluations', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventEvaluationWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventEvaluationOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventEvaluationWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventEvaluationScalarFieldEnum], required: false }),
-    },
+    args: EventEventEvaluationsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

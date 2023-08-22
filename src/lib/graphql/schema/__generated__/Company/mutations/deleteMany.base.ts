@@ -1,13 +1,16 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { BatchPayload } from '../../objects';
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineMutation, defineMutationFunction, defineMutationObject } from '../../utils';
+
+export const deleteManyCompanyMutationArgs = builder.args((t) => ({ where: t.field({ type: Inputs.CompanyWhereInput, required: true }) }))
 
 export const deleteManyCompanyMutationObject = defineMutationFunction((t) =>
   defineMutationObject({
     type: BatchPayload,
     nullable: true,
-    args: { where: t.arg({ type: Inputs.CompanyWhereInput, required: true }) },
+    args: deleteManyCompanyMutationArgs,
     resolve: async (_root, args, _context, _info) =>
       await prisma.company.deleteMany({ where: args.where }),
   }),

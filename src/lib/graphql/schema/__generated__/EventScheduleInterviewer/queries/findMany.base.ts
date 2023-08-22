@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findManyEventScheduleInterviewerQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventScheduleInterviewerWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventScheduleInterviewerOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventScheduleInterviewerWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventScheduleInterviewerScalarFieldEnum], required: false }),
+}))
 
 export const findManyEventScheduleInterviewerQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: ['EventScheduleInterviewer'],
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventScheduleInterviewerWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventScheduleInterviewerOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventScheduleInterviewerWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventScheduleInterviewerScalarFieldEnum], required: false }),
-    },
+    args: findManyEventScheduleInterviewerQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.eventScheduleInterviewer.findMany({
         where: args.where || undefined,

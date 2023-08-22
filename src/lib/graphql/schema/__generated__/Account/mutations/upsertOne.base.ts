@@ -1,16 +1,19 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineMutation, defineMutationFunction, defineMutationPrismaObject } from '../../utils';
+
+export const upsertOneAccountMutationArgs = builder.args((t) => ({
+      where: t.field({ type: Inputs.AccountWhereUniqueInput, required: true }),
+      create: t.field({ type: Inputs.AccountCreateInput, required: true }),
+      update: t.field({ type: Inputs.AccountUpdateInput, required: true }),
+    }))
 
 export const upsertOneAccountMutationObject = defineMutationFunction((t) =>
   defineMutationPrismaObject({
     type: 'Account',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.AccountWhereUniqueInput, required: true }),
-      create: t.arg({ type: Inputs.AccountCreateInput, required: true }),
-      update: t.arg({ type: Inputs.AccountUpdateInput, required: true }),
-    },
+    args: upsertOneAccountMutationArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.account.upsert({
         where: args.where,

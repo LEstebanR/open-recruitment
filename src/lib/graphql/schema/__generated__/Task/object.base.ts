@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,22 +11,24 @@ export const TaskObject = definePrismaObject('Task', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', TaskIdFieldObject),
+    id: t.field(TaskIdFieldObject),
     company: t.relation('company', TaskCompanyFieldObject),
-    companyId: t.exposeString('companyId', TaskCompanyIdFieldObject),
-    name: t.exposeString('name', TaskNameFieldObject),
-    status: t.exposeString('status', TaskStatusFieldObject),
+    companyId: t.field(TaskCompanyIdFieldObject),
+    name: t.field(TaskNameFieldObject),
+    status: t.field(TaskStatusFieldObject),
     dueDate: t.field(TaskDueDateFieldObject),
-    note: t.exposeString('note', TaskNoteFieldObject),
+    note: t.field(TaskNoteFieldObject),
     taskMembers: t.relation('taskMembers', TaskTaskMembersFieldObject(t)),
     Candidate: t.relation('Candidate', TaskCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', TaskCandidateIdFieldObject),
+    candidateId: t.field(TaskCandidateIdFieldObject),
   }),
 });
 
-export const TaskIdFieldObject = defineExposeObject('Int', {
+export const TaskIdFieldObject = defineFieldObject('Task', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const TaskCompanyFieldObject = defineRelationObject('Task', 'company', {
@@ -36,19 +38,25 @@ export const TaskCompanyFieldObject = defineRelationObject('Task', 'company', {
   query: undefined,
 });
 
-export const TaskCompanyIdFieldObject = defineExposeObject('String', {
+export const TaskCompanyIdFieldObject = defineFieldObject('Task', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
 
-export const TaskNameFieldObject = defineExposeObject('String', {
+export const TaskNameFieldObject = defineFieldObject('Task', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
-export const TaskStatusFieldObject = defineExposeObject('String', {
+export const TaskStatusFieldObject = defineFieldObject('Task', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.status,
 });
 
 export const TaskDueDateFieldObject = defineFieldObject('Task', {
@@ -58,23 +66,27 @@ export const TaskDueDateFieldObject = defineFieldObject('Task', {
   resolve: (parent) => parent.dueDate,
 });
 
-export const TaskNoteFieldObject = defineExposeObject('String', {
+export const TaskNoteFieldObject = defineFieldObject('Task', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.note,
 });
+
+export const TaskTaskMembersFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.TaskMemberWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.TaskMemberOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.TaskMemberWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.TaskMemberScalarFieldEnum], required: false }),
+}))
 
 export const TaskTaskMembersFieldObject = defineRelationFunction('Task', (t) =>
   defineRelationObject('Task', 'taskMembers', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.TaskMemberWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.TaskMemberOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.TaskMemberWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.TaskMemberScalarFieldEnum], required: false }),
-    },
+    args: TaskTaskMembersFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -93,7 +105,9 @@ export const TaskCandidateFieldObject = defineRelationObject('Task', 'Candidate'
   query: undefined,
 });
 
-export const TaskCandidateIdFieldObject = defineExposeObject('Int', {
+export const TaskCandidateIdFieldObject = defineFieldObject('Task', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.candidateId,
 });

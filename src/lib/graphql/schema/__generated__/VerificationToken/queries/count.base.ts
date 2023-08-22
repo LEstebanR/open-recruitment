@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryObject } from '../../utils';
+
+export const countVerificationTokenQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.VerificationTokenWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.VerificationTokenOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.VerificationTokenWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.VerificationTokenScalarFieldEnum], required: false }),
+}))
 
 export const countVerificationTokenQueryObject = defineQueryFunction((t) =>
   defineQueryObject({
     type: 'Int',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.VerificationTokenWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.VerificationTokenOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.VerificationTokenWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.VerificationTokenScalarFieldEnum], required: false }),
-    },
+    args: countVerificationTokenQueryArgs,
     resolve: async (_root, args, _context, _info) =>
       await prisma.verificationToken.count({
         where: args.where || undefined,

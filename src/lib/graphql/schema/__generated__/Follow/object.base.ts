@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,21 +11,23 @@ export const FollowObject = definePrismaObject('Follow', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', FollowIdFieldObject),
+    id: t.field(FollowIdFieldObject),
     offer: t.relation('offer', FollowOfferFieldObject),
-    offerId: t.exposeInt('offerId', FollowOfferIdFieldObject),
+    offerId: t.field(FollowOfferIdFieldObject),
     candidate: t.relation('candidate', FollowCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', FollowCandidateIdFieldObject),
+    candidateId: t.field(FollowCandidateIdFieldObject),
     talentPool: t.relation('talentPool', FollowTalentPoolFieldObject),
-    talentPoolId: t.exposeInt('talentPoolId', FollowTalentPoolIdFieldObject),
+    talentPoolId: t.field(FollowTalentPoolIdFieldObject),
     teamMember: t.relation('teamMember', FollowTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', FollowTeamMemberIdFieldObject),
+    teamMemberId: t.field(FollowTeamMemberIdFieldObject),
   }),
 });
 
-export const FollowIdFieldObject = defineExposeObject('Int', {
+export const FollowIdFieldObject = defineFieldObject('Follow', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const FollowOfferFieldObject = defineRelationObject('Follow', 'offer', {
@@ -35,9 +37,11 @@ export const FollowOfferFieldObject = defineRelationObject('Follow', 'offer', {
   query: undefined,
 });
 
-export const FollowOfferIdFieldObject = defineExposeObject('Int', {
+export const FollowOfferIdFieldObject = defineFieldObject('Follow', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.offerId,
 });
 
 export const FollowCandidateFieldObject = defineRelationObject('Follow', 'candidate', {
@@ -47,9 +51,11 @@ export const FollowCandidateFieldObject = defineRelationObject('Follow', 'candid
   query: undefined,
 });
 
-export const FollowCandidateIdFieldObject = defineExposeObject('Int', {
+export const FollowCandidateIdFieldObject = defineFieldObject('Follow', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.candidateId,
 });
 
 export const FollowTalentPoolFieldObject = defineRelationObject('Follow', 'talentPool', {
@@ -59,9 +65,11 @@ export const FollowTalentPoolFieldObject = defineRelationObject('Follow', 'talen
   query: undefined,
 });
 
-export const FollowTalentPoolIdFieldObject = defineExposeObject('Int', {
+export const FollowTalentPoolIdFieldObject = defineFieldObject('Follow', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.talentPoolId,
 });
 
 export const FollowTeamMemberFieldObject = defineRelationObject('Follow', 'teamMember', {
@@ -71,7 +79,9 @@ export const FollowTeamMemberFieldObject = defineRelationObject('Follow', 'teamM
   query: undefined,
 });
 
-export const FollowTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const FollowTeamMemberIdFieldObject = defineFieldObject('Follow', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.teamMemberId,
 });

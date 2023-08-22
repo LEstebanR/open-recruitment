@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryObject } from '../../utils';
+
+export const countEventQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventScalarFieldEnum], required: false }),
+}))
 
 export const countEventQueryObject = defineQueryFunction((t) =>
   defineQueryObject({
     type: 'Int',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EventWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventScalarFieldEnum], required: false }),
-    },
+    args: countEventQueryArgs,
     resolve: async (_root, args, _context, _info) =>
       await prisma.event.count({
         where: args.where || undefined,

@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,20 +11,22 @@ export const CandidateCustomFieldsObject = definePrismaObject('CandidateCustomFi
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', CandidateCustomFieldsIdFieldObject),
+    id: t.field(CandidateCustomFieldsIdFieldObject),
     candidate: t.relation('candidate', CandidateCustomFieldsCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', CandidateCustomFieldsCandidateIdFieldObject),
-    inputType: t.exposeString('inputType', CandidateCustomFieldsInputTypeFieldObject),
-    fieldKey: t.exposeString('fieldKey', CandidateCustomFieldsFieldKeyFieldObject),
-    fieldValue: t.exposeString('fieldValue', CandidateCustomFieldsFieldValueFieldObject),
+    candidateId: t.field(CandidateCustomFieldsCandidateIdFieldObject),
+    inputType: t.field(CandidateCustomFieldsInputTypeFieldObject),
+    fieldKey: t.field(CandidateCustomFieldsFieldKeyFieldObject),
+    fieldValue: t.field(CandidateCustomFieldsFieldValueFieldObject),
     fieldSettings: t.field(CandidateCustomFieldsFieldSettingsFieldObject),
     evaluationAnswers: t.relation('evaluationAnswers', CandidateCustomFieldsEvaluationAnswersFieldObject(t)),
   }),
 });
 
-export const CandidateCustomFieldsIdFieldObject = defineExposeObject('Int', {
+export const CandidateCustomFieldsIdFieldObject = defineFieldObject('CandidateCustomFields', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const CandidateCustomFieldsCandidateFieldObject = defineRelationObject('CandidateCustomFields', 'candidate', {
@@ -34,24 +36,32 @@ export const CandidateCustomFieldsCandidateFieldObject = defineRelationObject('C
   query: undefined,
 });
 
-export const CandidateCustomFieldsCandidateIdFieldObject = defineExposeObject('Int', {
+export const CandidateCustomFieldsCandidateIdFieldObject = defineFieldObject('CandidateCustomFields', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.candidateId,
 });
 
-export const CandidateCustomFieldsInputTypeFieldObject = defineExposeObject('String', {
+export const CandidateCustomFieldsInputTypeFieldObject = defineFieldObject('CandidateCustomFields', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.inputType,
 });
 
-export const CandidateCustomFieldsFieldKeyFieldObject = defineExposeObject('String', {
+export const CandidateCustomFieldsFieldKeyFieldObject = defineFieldObject('CandidateCustomFields', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.fieldKey,
 });
 
-export const CandidateCustomFieldsFieldValueFieldObject = defineExposeObject('String', {
+export const CandidateCustomFieldsFieldValueFieldObject = defineFieldObject('CandidateCustomFields', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.fieldValue,
 });
 
 export const CandidateCustomFieldsFieldSettingsFieldObject = defineFieldObject('CandidateCustomFields', {
@@ -61,18 +71,20 @@ export const CandidateCustomFieldsFieldSettingsFieldObject = defineFieldObject('
   resolve: (parent) => parent.fieldSettings,
 });
 
+export const CandidateCustomFieldsEvaluationAnswersFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
+}))
+
 export const CandidateCustomFieldsEvaluationAnswersFieldObject = defineRelationFunction('CandidateCustomFields', (t) =>
   defineRelationObject('CandidateCustomFields', 'evaluationAnswers', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
-    },
+    args: CandidateCustomFieldsEvaluationAnswersFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

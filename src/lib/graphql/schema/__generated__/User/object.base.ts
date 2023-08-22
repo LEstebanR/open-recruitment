@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,24 +11,24 @@ export const UserObject = definePrismaObject('User', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', UserIdFieldObject),
-    name: t.exposeString('name', UserNameFieldObject),
-    email: t.exposeString('email', UserEmailFieldObject),
+    id: t.field(UserIdFieldObject),
+    name: t.field(UserNameFieldObject),
+    email: t.field(UserEmailFieldObject),
     emailVerified: t.field(UserEmailVerifiedFieldObject),
-    image: t.exposeString('image', UserImageFieldObject),
-    password: t.exposeString('password', UserPasswordFieldObject),
-    phone: t.exposeString('phone', UserPhoneFieldObject),
-    firstName: t.exposeString('firstName', UserFirstNameFieldObject),
-    lastName: t.exposeString('lastName', UserLastNameFieldObject),
-    preferredLanguage: t.exposeString('preferredLanguage', UserPreferredLanguageFieldObject),
-    timeformat24: t.exposeBoolean('timeformat24', UserTimeformat24FieldObject),
-    timezone: t.exposeString('timezone', UserTimezoneFieldObject),
-    weekStartDate: t.exposeString('weekStartDate', UserWeekStartDateFieldObject),
+    image: t.field(UserImageFieldObject),
+    password: t.field(UserPasswordFieldObject),
+    phone: t.field(UserPhoneFieldObject),
+    firstName: t.field(UserFirstNameFieldObject),
+    lastName: t.field(UserLastNameFieldObject),
+    preferredLanguage: t.field(UserPreferredLanguageFieldObject),
+    timeformat24: t.field(UserTimeformat24FieldObject),
+    timezone: t.field(UserTimezoneFieldObject),
+    weekStartDate: t.field(UserWeekStartDateFieldObject),
     photo: t.relation('photo', UserPhotoFieldObject),
-    photoId: t.exposeInt('photoId', UserPhotoIdFieldObject),
-    featureDiscovery: t.exposeStringList('featureDiscovery', UserFeatureDiscoveryFieldObject),
-    emailProviders: t.exposeStringList('emailProviders', UserEmailProvidersFieldObject),
-    theme: t.exposeString('theme', UserThemeFieldObject),
+    photoId: t.field(UserPhotoIdFieldObject),
+    featureDiscovery: t.field(UserFeatureDiscoveryFieldObject),
+    emailProviders: t.field(UserEmailProvidersFieldObject),
+    theme: t.field(UserThemeFieldObject),
     notifications: t.field(UserNotificationsFieldObject),
     createdAt: t.field(UserCreatedAtFieldObject),
     updatedAt: t.field(UserUpdatedAtFieldObject),
@@ -40,19 +40,25 @@ export const UserObject = definePrismaObject('User', {
   }),
 });
 
-export const UserIdFieldObject = defineExposeObject('String', {
+export const UserIdFieldObject = defineFieldObject('User', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const UserNameFieldObject = defineExposeObject('String', {
+export const UserNameFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.name,
 });
 
-export const UserEmailFieldObject = defineExposeObject('String', {
+export const UserEmailFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.email,
 });
 
 export const UserEmailVerifiedFieldObject = defineFieldObject('User', {
@@ -62,49 +68,67 @@ export const UserEmailVerifiedFieldObject = defineFieldObject('User', {
   resolve: (parent) => parent.emailVerified,
 });
 
-export const UserImageFieldObject = defineExposeObject('String', {
+export const UserImageFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.image,
 });
 
-export const UserPasswordFieldObject = defineExposeObject('String', {
+export const UserPasswordFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.password,
 });
 
-export const UserPhoneFieldObject = defineExposeObject('String', {
+export const UserPhoneFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.phone,
 });
 
-export const UserFirstNameFieldObject = defineExposeObject('String', {
+export const UserFirstNameFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.firstName,
 });
 
-export const UserLastNameFieldObject = defineExposeObject('String', {
+export const UserLastNameFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.lastName,
 });
 
-export const UserPreferredLanguageFieldObject = defineExposeObject('String', {
+export const UserPreferredLanguageFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.preferredLanguage,
 });
 
-export const UserTimeformat24FieldObject = defineExposeObject('Boolean', {
+export const UserTimeformat24FieldObject = defineFieldObject('User', {
+  type: "Boolean",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.timeformat24,
 });
 
-export const UserTimezoneFieldObject = defineExposeObject('String', {
+export const UserTimezoneFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.timezone,
 });
 
-export const UserWeekStartDateFieldObject = defineExposeObject('String', {
+export const UserWeekStartDateFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.weekStartDate,
 });
 
 export const UserPhotoFieldObject = defineRelationObject('User', 'photo', {
@@ -114,24 +138,32 @@ export const UserPhotoFieldObject = defineRelationObject('User', 'photo', {
   query: undefined,
 });
 
-export const UserPhotoIdFieldObject = defineExposeObject('Int', {
+export const UserPhotoIdFieldObject = defineFieldObject('User', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.photoId,
 });
 
-export const UserFeatureDiscoveryFieldObject = defineExposeObject('String', {
+export const UserFeatureDiscoveryFieldObject = defineFieldObject('User', {
+  type: ["String"],
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.featureDiscovery,
 });
 
-export const UserEmailProvidersFieldObject = defineExposeObject('String', {
+export const UserEmailProvidersFieldObject = defineFieldObject('User', {
+  type: ["String"],
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.emailProviders,
 });
 
-export const UserThemeFieldObject = defineExposeObject('String', {
+export const UserThemeFieldObject = defineFieldObject('User', {
+  type: "String",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.theme,
 });
 
 export const UserNotificationsFieldObject = defineFieldObject('User', {
@@ -155,18 +187,20 @@ export const UserUpdatedAtFieldObject = defineFieldObject('User', {
   resolve: (parent) => parent.updatedAt,
 });
 
+export const UserAccountsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.AccountWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.AccountOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.AccountWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.AccountScalarFieldEnum], required: false }),
+}))
+
 export const UserAccountsFieldObject = defineRelationFunction('User', (t) =>
   defineRelationObject('User', 'accounts', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.AccountWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.AccountOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.AccountWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.AccountScalarFieldEnum], required: false }),
-    },
+    args: UserAccountsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -177,19 +211,21 @@ export const UserAccountsFieldObject = defineRelationFunction('User', (t) =>
     }),
   }),
 );
+
+export const UserSessionsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.SessionWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.SessionOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.SessionWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.SessionScalarFieldEnum], required: false }),
+}))
 
 export const UserSessionsFieldObject = defineRelationFunction('User', (t) =>
   defineRelationObject('User', 'sessions', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.SessionWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.SessionOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.SessionWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.SessionScalarFieldEnum], required: false }),
-    },
+    args: UserSessionsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -200,19 +236,21 @@ export const UserSessionsFieldObject = defineRelationFunction('User', (t) =>
     }),
   }),
 );
+
+export const UserHiringRolesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.HiringRoleWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
+}))
 
 export const UserHiringRolesFieldObject = defineRelationFunction('User', (t) =>
   defineRelationObject('User', 'hiringRoles', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.HiringRoleWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
-    },
+    args: UserHiringRolesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -224,18 +262,20 @@ export const UserHiringRolesFieldObject = defineRelationFunction('User', (t) =>
   }),
 );
 
+export const UserCompaniesOwnedFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CompanyWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CompanyOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CompanyWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CompanyScalarFieldEnum], required: false }),
+}))
+
 export const UserCompaniesOwnedFieldObject = defineRelationFunction('User', (t) =>
   defineRelationObject('User', 'companiesOwned', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.CompanyWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.CompanyOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.CompanyWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.CompanyScalarFieldEnum], required: false }),
-    },
+    args: UserCompaniesOwnedFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

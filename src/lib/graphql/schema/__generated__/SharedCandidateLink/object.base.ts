@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,40 +11,50 @@ export const SharedCandidateLinkObject = definePrismaObject('SharedCandidateLink
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', SharedCandidateLinkIdFieldObject),
-    name: t.exposeString('name', SharedCandidateLinkNameFieldObject),
-    visibleSections: t.exposeStringList('visibleSections', SharedCandidateLinkVisibleSectionsFieldObject),
-    editModelSections: t.exposeStringList('editModelSections', SharedCandidateLinkEditModelSectionsFieldObject),
-    link: t.exposeString('link', SharedCandidateLinkLinkFieldObject),
+    id: t.field(SharedCandidateLinkIdFieldObject),
+    name: t.field(SharedCandidateLinkNameFieldObject),
+    visibleSections: t.field(SharedCandidateLinkVisibleSectionsFieldObject),
+    editModelSections: t.field(SharedCandidateLinkEditModelSectionsFieldObject),
+    link: t.field(SharedCandidateLinkLinkFieldObject),
     expiration: t.field(SharedCandidateLinkExpirationFieldObject),
     candidate: t.relation('candidate', SharedCandidateLinkCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', SharedCandidateLinkCandidateIdFieldObject),
+    candidateId: t.field(SharedCandidateLinkCandidateIdFieldObject),
   }),
 });
 
-export const SharedCandidateLinkIdFieldObject = defineExposeObject('Int', {
+export const SharedCandidateLinkIdFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const SharedCandidateLinkNameFieldObject = defineExposeObject('String', {
+export const SharedCandidateLinkNameFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
-export const SharedCandidateLinkVisibleSectionsFieldObject = defineExposeObject('String', {
+export const SharedCandidateLinkVisibleSectionsFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: ["String"],
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.visibleSections,
 });
 
-export const SharedCandidateLinkEditModelSectionsFieldObject = defineExposeObject('String', {
+export const SharedCandidateLinkEditModelSectionsFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: ["String"],
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.editModelSections,
 });
 
-export const SharedCandidateLinkLinkFieldObject = defineExposeObject('String', {
+export const SharedCandidateLinkLinkFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.link,
 });
 
 export const SharedCandidateLinkExpirationFieldObject = defineFieldObject('SharedCandidateLink', {
@@ -61,7 +71,9 @@ export const SharedCandidateLinkCandidateFieldObject = defineRelationObject('Sha
   query: undefined,
 });
 
-export const SharedCandidateLinkCandidateIdFieldObject = defineExposeObject('Int', {
+export const SharedCandidateLinkCandidateIdFieldObject = defineFieldObject('SharedCandidateLink', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.candidateId,
 });

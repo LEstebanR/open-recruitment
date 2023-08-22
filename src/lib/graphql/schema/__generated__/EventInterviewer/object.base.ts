@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const EventInterviewerObject = definePrismaObject('EventInterviewer', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EventInterviewerIdFieldObject),
+    id: t.field(EventInterviewerIdFieldObject),
     event: t.relation('event', EventInterviewerEventFieldObject),
-    eventId: t.exposeInt('eventId', EventInterviewerEventIdFieldObject),
+    eventId: t.field(EventInterviewerEventIdFieldObject),
     teamMember: t.relation('teamMember', EventInterviewerTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', EventInterviewerTeamMemberIdFieldObject),
+    teamMemberId: t.field(EventInterviewerTeamMemberIdFieldObject),
   }),
 });
 
-export const EventInterviewerIdFieldObject = defineExposeObject('Int', {
+export const EventInterviewerIdFieldObject = defineFieldObject('EventInterviewer', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EventInterviewerEventFieldObject = defineRelationObject('EventInterviewer', 'event', {
@@ -31,9 +33,11 @@ export const EventInterviewerEventFieldObject = defineRelationObject('EventInter
   query: undefined,
 });
 
-export const EventInterviewerEventIdFieldObject = defineExposeObject('Int', {
+export const EventInterviewerEventIdFieldObject = defineFieldObject('EventInterviewer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.eventId,
 });
 
 export const EventInterviewerTeamMemberFieldObject = defineRelationObject('EventInterviewer', 'teamMember', {
@@ -43,7 +47,9 @@ export const EventInterviewerTeamMemberFieldObject = defineRelationObject('Event
   query: undefined,
 });
 
-export const EventInterviewerTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const EventInterviewerTeamMemberIdFieldObject = defineFieldObject('EventInterviewer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.teamMemberId,
 });

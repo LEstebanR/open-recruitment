@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const OfferFileObject = definePrismaObject('OfferFile', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', OfferFileIdFieldObject),
+    id: t.field(OfferFileIdFieldObject),
     offer: t.relation('offer', OfferFileOfferFieldObject),
-    offerId: t.exposeInt('offerId', OfferFileOfferIdFieldObject),
+    offerId: t.field(OfferFileOfferIdFieldObject),
     attachment: t.relation('attachment', OfferFileAttachmentFieldObject),
-    attachmentId: t.exposeInt('attachmentId', OfferFileAttachmentIdFieldObject),
+    attachmentId: t.field(OfferFileAttachmentIdFieldObject),
   }),
 });
 
-export const OfferFileIdFieldObject = defineExposeObject('Int', {
+export const OfferFileIdFieldObject = defineFieldObject('OfferFile', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const OfferFileOfferFieldObject = defineRelationObject('OfferFile', 'offer', {
@@ -31,9 +33,11 @@ export const OfferFileOfferFieldObject = defineRelationObject('OfferFile', 'offe
   query: undefined,
 });
 
-export const OfferFileOfferIdFieldObject = defineExposeObject('Int', {
+export const OfferFileOfferIdFieldObject = defineFieldObject('OfferFile', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.offerId,
 });
 
 export const OfferFileAttachmentFieldObject = defineRelationObject('OfferFile', 'attachment', {
@@ -43,7 +47,9 @@ export const OfferFileAttachmentFieldObject = defineRelationObject('OfferFile', 
   query: undefined,
 });
 
-export const OfferFileAttachmentIdFieldObject = defineExposeObject('Int', {
+export const OfferFileAttachmentIdFieldObject = defineFieldObject('OfferFile', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.attachmentId,
 });

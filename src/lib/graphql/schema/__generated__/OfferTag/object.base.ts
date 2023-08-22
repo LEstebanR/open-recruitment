@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const OfferTagObject = definePrismaObject('OfferTag', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', OfferTagIdFieldObject),
+    id: t.field(OfferTagIdFieldObject),
     offer: t.relation('offer', OfferTagOfferFieldObject),
-    offerId: t.exposeInt('offerId', OfferTagOfferIdFieldObject),
+    offerId: t.field(OfferTagOfferIdFieldObject),
     tag: t.relation('tag', OfferTagTagFieldObject),
-    tagId: t.exposeInt('tagId', OfferTagTagIdFieldObject),
+    tagId: t.field(OfferTagTagIdFieldObject),
   }),
 });
 
-export const OfferTagIdFieldObject = defineExposeObject('Int', {
+export const OfferTagIdFieldObject = defineFieldObject('OfferTag', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const OfferTagOfferFieldObject = defineRelationObject('OfferTag', 'offer', {
@@ -31,9 +33,11 @@ export const OfferTagOfferFieldObject = defineRelationObject('OfferTag', 'offer'
   query: undefined,
 });
 
-export const OfferTagOfferIdFieldObject = defineExposeObject('Int', {
+export const OfferTagOfferIdFieldObject = defineFieldObject('OfferTag', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.offerId,
 });
 
 export const OfferTagTagFieldObject = defineRelationObject('OfferTag', 'tag', {
@@ -43,7 +47,9 @@ export const OfferTagTagFieldObject = defineRelationObject('OfferTag', 'tag', {
   query: undefined,
 });
 
-export const OfferTagTagIdFieldObject = defineExposeObject('Int', {
+export const OfferTagTagIdFieldObject = defineFieldObject('OfferTag', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.tagId,
 });

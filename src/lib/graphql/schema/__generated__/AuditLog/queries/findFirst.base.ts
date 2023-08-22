@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findFirstAuditLogQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.AuditLogWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.AuditLogOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.AuditLogWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.AuditLogScalarFieldEnum], required: false }),
+}))
 
 export const findFirstAuditLogQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: 'AuditLog',
     nullable: true,
-    args: {
-      where: t.arg({ type: Inputs.AuditLogWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.AuditLogOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.AuditLogWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.AuditLogScalarFieldEnum], required: false }),
-    },
+    args: findFirstAuditLogQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.auditLog.findFirst({
         where: args.where || undefined,

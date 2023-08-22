@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findFirstEventQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EventWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EventOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EventWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EventScalarFieldEnum], required: false }),
+}))
 
 export const findFirstEventQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: 'Event',
     nullable: true,
-    args: {
-      where: t.arg({ type: Inputs.EventWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EventOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EventWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EventScalarFieldEnum], required: false }),
-    },
+    args: findFirstEventQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.event.findFirst({
         where: args.where || undefined,

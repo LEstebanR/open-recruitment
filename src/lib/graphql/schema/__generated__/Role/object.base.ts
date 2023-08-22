@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,11 +11,11 @@ export const RoleObject = definePrismaObject('Role', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', RoleIdFieldObject),
-    name: t.exposeString('name', RoleNameFieldObject),
-    abilities: t.exposeStringList('abilities', RoleAbilitiesFieldObject),
+    id: t.field(RoleIdFieldObject),
+    name: t.field(RoleNameFieldObject),
+    abilities: t.field(RoleAbilitiesFieldObject),
     company: t.relation('company', RoleCompanyFieldObject),
-    companyId: t.exposeString('companyId', RoleCompanyIdFieldObject),
+    companyId: t.field(RoleCompanyIdFieldObject),
     hiringRoles: t.relation('hiringRoles', RoleHiringRolesFieldObject(t)),
     createdAt: t.field(RoleCreatedAtFieldObject),
     updatedAt: t.field(RoleUpdatedAtFieldObject),
@@ -24,19 +24,25 @@ export const RoleObject = definePrismaObject('Role', {
   }),
 });
 
-export const RoleIdFieldObject = defineExposeObject('Int', {
+export const RoleIdFieldObject = defineFieldObject('Role', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const RoleNameFieldObject = defineExposeObject('String', {
+export const RoleNameFieldObject = defineFieldObject('Role', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.name,
 });
 
-export const RoleAbilitiesFieldObject = defineExposeObject('String', {
+export const RoleAbilitiesFieldObject = defineFieldObject('Role', {
+  type: ["String"],
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.abilities,
 });
 
 export const RoleCompanyFieldObject = defineRelationObject('Role', 'company', {
@@ -46,23 +52,27 @@ export const RoleCompanyFieldObject = defineRelationObject('Role', 'company', {
   query: undefined,
 });
 
-export const RoleCompanyIdFieldObject = defineExposeObject('String', {
+export const RoleCompanyIdFieldObject = defineFieldObject('Role', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.companyId,
 });
+
+export const RoleHiringRolesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.HiringRoleWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
+}))
 
 export const RoleHiringRolesFieldObject = defineRelationFunction('Role', (t) =>
   defineRelationObject('Role', 'hiringRoles', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.HiringRoleWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.HiringRoleOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.HiringRoleWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.HiringRoleScalarFieldEnum], required: false }),
-    },
+    args: RoleHiringRolesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -88,18 +98,20 @@ export const RoleUpdatedAtFieldObject = defineFieldObject('Role', {
   resolve: (parent) => parent.updatedAt,
 });
 
+export const RoleMembershipsFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.MembershipWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.MembershipOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.MembershipWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.MembershipScalarFieldEnum], required: false }),
+}))
+
 export const RoleMembershipsFieldObject = defineRelationFunction('Role', (t) =>
   defineRelationObject('Role', 'memberships', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.MembershipWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.MembershipOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.MembershipWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.MembershipScalarFieldEnum], required: false }),
-    },
+    args: RoleMembershipsFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,
@@ -111,18 +123,20 @@ export const RoleMembershipsFieldObject = defineRelationFunction('Role', (t) =>
   }),
 );
 
+export const RoleStageVisibilityFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.StageVisibilityWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.StageVisibilityOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.StageVisibilityWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.StageVisibilityScalarFieldEnum], required: false }),
+}))
+
 export const RoleStageVisibilityFieldObject = defineRelationFunction('Role', (t) =>
   defineRelationObject('Role', 'stageVisibility', {
     description: undefined,
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.StageVisibilityWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.StageVisibilityOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.StageVisibilityWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.StageVisibilityScalarFieldEnum], required: false }),
-    },
+    args: RoleStageVisibilityFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

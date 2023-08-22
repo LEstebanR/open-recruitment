@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,17 +11,19 @@ export const TalentPoolMatchObject = definePrismaObject('TalentPoolMatch', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', TalentPoolMatchIdFieldObject),
+    id: t.field(TalentPoolMatchIdFieldObject),
     talentPool: t.relation('talentPool', TalentPoolMatchTalentPoolFieldObject),
-    talentPoolId: t.exposeInt('talentPoolId', TalentPoolMatchTalentPoolIdFieldObject),
+    talentPoolId: t.field(TalentPoolMatchTalentPoolIdFieldObject),
     candidate: t.relation('candidate', TalentPoolMatchCandidateFieldObject),
-    candidateId: t.exposeInt('candidateId', TalentPoolMatchCandidateIdFieldObject),
+    candidateId: t.field(TalentPoolMatchCandidateIdFieldObject),
   }),
 });
 
-export const TalentPoolMatchIdFieldObject = defineExposeObject('Int', {
+export const TalentPoolMatchIdFieldObject = defineFieldObject('TalentPoolMatch', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const TalentPoolMatchTalentPoolFieldObject = defineRelationObject('TalentPoolMatch', 'talentPool', {
@@ -31,9 +33,11 @@ export const TalentPoolMatchTalentPoolFieldObject = defineRelationObject('Talent
   query: undefined,
 });
 
-export const TalentPoolMatchTalentPoolIdFieldObject = defineExposeObject('Int', {
+export const TalentPoolMatchTalentPoolIdFieldObject = defineFieldObject('TalentPoolMatch', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.talentPoolId,
 });
 
 export const TalentPoolMatchCandidateFieldObject = defineRelationObject('TalentPoolMatch', 'candidate', {
@@ -43,7 +47,9 @@ export const TalentPoolMatchCandidateFieldObject = defineRelationObject('TalentP
   query: undefined,
 });
 
-export const TalentPoolMatchCandidateIdFieldObject = defineExposeObject('Int', {
+export const TalentPoolMatchCandidateIdFieldObject = defineFieldObject('TalentPoolMatch', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.candidateId,
 });

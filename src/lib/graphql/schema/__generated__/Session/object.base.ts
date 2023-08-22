@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,27 +11,33 @@ export const SessionObject = definePrismaObject('Session', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', SessionIdFieldObject),
-    sessionToken: t.exposeString('sessionToken', SessionSessionTokenFieldObject),
-    userId: t.exposeString('userId', SessionUserIdFieldObject),
+    id: t.field(SessionIdFieldObject),
+    sessionToken: t.field(SessionSessionTokenFieldObject),
+    userId: t.field(SessionUserIdFieldObject),
     expires: t.field(SessionExpiresFieldObject),
     user: t.relation('user', SessionUserFieldObject),
   }),
 });
 
-export const SessionIdFieldObject = defineExposeObject('String', {
+export const SessionIdFieldObject = defineFieldObject('Session', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
-export const SessionSessionTokenFieldObject = defineExposeObject('String', {
+export const SessionSessionTokenFieldObject = defineFieldObject('Session', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.sessionToken,
 });
 
-export const SessionUserIdFieldObject = defineExposeObject('String', {
+export const SessionUserIdFieldObject = defineFieldObject('Session', {
+  type: "String",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.userId,
 });
 
 export const SessionExpiresFieldObject = defineFieldObject('Session', {

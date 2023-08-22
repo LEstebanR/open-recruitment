@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,20 +11,22 @@ export const StageVisibilityObject = definePrismaObject('StageVisibility', {
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', StageVisibilityIdFieldObject),
+    id: t.field(StageVisibilityIdFieldObject),
     type: t.field(StageVisibilityTypeFieldObject),
     teamMember: t.relation('teamMember', StageVisibilityTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', StageVisibilityTeamMemberIdFieldObject),
+    teamMemberId: t.field(StageVisibilityTeamMemberIdFieldObject),
     role: t.relation('role', StageVisibilityRoleFieldObject),
-    roleId: t.exposeInt('roleId', StageVisibilityRoleIdFieldObject),
+    roleId: t.field(StageVisibilityRoleIdFieldObject),
     stage: t.relation('stage', StageVisibilityStageFieldObject),
-    stageId: t.exposeInt('stageId', StageVisibilityStageIdFieldObject),
+    stageId: t.field(StageVisibilityStageIdFieldObject),
   }),
 });
 
-export const StageVisibilityIdFieldObject = defineExposeObject('Int', {
+export const StageVisibilityIdFieldObject = defineFieldObject('StageVisibility', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const StageVisibilityTypeFieldObject = defineFieldObject('StageVisibility', {
@@ -41,9 +43,11 @@ export const StageVisibilityTeamMemberFieldObject = defineRelationObject('StageV
   query: undefined,
 });
 
-export const StageVisibilityTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const StageVisibilityTeamMemberIdFieldObject = defineFieldObject('StageVisibility', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.teamMemberId,
 });
 
 export const StageVisibilityRoleFieldObject = defineRelationObject('StageVisibility', 'role', {
@@ -53,9 +57,11 @@ export const StageVisibilityRoleFieldObject = defineRelationObject('StageVisibil
   query: undefined,
 });
 
-export const StageVisibilityRoleIdFieldObject = defineExposeObject('Int', {
+export const StageVisibilityRoleIdFieldObject = defineFieldObject('StageVisibility', {
+  type: "Int",
   description: undefined,
   nullable: true,
+  resolve: (parent) => parent.roleId,
 });
 
 export const StageVisibilityStageFieldObject = defineRelationObject('StageVisibility', 'stage', {
@@ -65,7 +71,9 @@ export const StageVisibilityStageFieldObject = defineRelationObject('StageVisibi
   query: undefined,
 });
 
-export const StageVisibilityStageIdFieldObject = defineExposeObject('Int', {
+export const StageVisibilityStageIdFieldObject = defineFieldObject('StageVisibility', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.stageId,
 });

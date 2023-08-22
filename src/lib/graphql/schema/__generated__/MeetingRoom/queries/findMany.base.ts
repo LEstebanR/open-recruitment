@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findManyMeetingRoomQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.MeetingRoomWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.MeetingRoomOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.MeetingRoomWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.MeetingRoomScalarFieldEnum], required: false }),
+}))
 
 export const findManyMeetingRoomQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: ['MeetingRoom'],
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.MeetingRoomWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.MeetingRoomOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.MeetingRoomWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.MeetingRoomScalarFieldEnum], required: false }),
-    },
+    args: findManyMeetingRoomQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.meetingRoom.findMany({
         where: args.where || undefined,

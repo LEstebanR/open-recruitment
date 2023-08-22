@@ -1,12 +1,15 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineMutation, defineMutationFunction, defineMutationPrismaObject } from '../../utils';
+
+export const createOneEventMutationArgs = builder.args((t) => ({ data: t.field({ type: Inputs.EventCreateInput, required: true }) }))
 
 export const createOneEventMutationObject = defineMutationFunction((t) =>
   defineMutationPrismaObject({
     type: 'Event',
     nullable: false,
-    args: { data: t.arg({ type: Inputs.EventCreateInput, required: true }) },
+    args: createOneEventMutationArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.event.create({ data: args.data, ...query }),
   }),

@@ -45,7 +45,7 @@ export function SelectCompany() {
     } else if (query?.me.hiringRoles) {
       update({ selectedCompany: query.me.hiringRoles[0].company.id }).then()
     }
-  }, [session?.user.selectedCompany, query.me.hiringRoles, session?.user.email, update])
+  }, [session?.user.selectedCompany, query?.me?.hiringRoles, session?.user.email, update])
 
   let companies = [{ label: 'Select a Company...', value: 'placeholder', placeholder: true }]
 

@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryObject } from '../../utils';
+
+export const countUserQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.UserWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.UserOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.UserWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.UserScalarFieldEnum], required: false }),
+}))
 
 export const countUserQueryObject = defineQueryFunction((t) =>
   defineQueryObject({
     type: 'Int',
     nullable: false,
-    args: {
-      where: t.arg({ type: Inputs.UserWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.UserOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.UserWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.UserScalarFieldEnum], required: false }),
-    },
+    args: countUserQueryArgs,
     resolve: async (_root, args, _context, _info) =>
       await prisma.user.count({
         where: args.where || undefined,

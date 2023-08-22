@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findFirstStageMetadataQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.StageMetadataWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.StageMetadataOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.StageMetadataWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.StageMetadataScalarFieldEnum], required: false }),
+}))
 
 export const findFirstStageMetadataQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: 'StageMetadata',
     nullable: true,
-    args: {
-      where: t.arg({ type: Inputs.StageMetadataWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.StageMetadataOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.StageMetadataWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.StageMetadataScalarFieldEnum], required: false }),
-    },
+    args: findFirstStageMetadataQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.stageMetadata.findFirst({
         where: args.where || undefined,

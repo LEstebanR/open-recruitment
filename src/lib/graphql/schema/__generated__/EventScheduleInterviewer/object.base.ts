@@ -1,6 +1,6 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
+import { builder } from '../../builder';
 import {
-  defineExposeObject,
   definePrismaObject,
   defineFieldObject,
   defineRelationFunction,
@@ -11,18 +11,20 @@ export const EventScheduleInterviewerObject = definePrismaObject('EventScheduleI
   description: undefined,
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
-    id: t.exposeID('id', EventScheduleInterviewerIdFieldObject),
+    id: t.field(EventScheduleInterviewerIdFieldObject),
     eventSchedule: t.relation('eventSchedule', EventScheduleInterviewerEventScheduleFieldObject),
-    eventScheduleId: t.exposeInt('eventScheduleId', EventScheduleInterviewerEventScheduleIdFieldObject),
+    eventScheduleId: t.field(EventScheduleInterviewerEventScheduleIdFieldObject),
     teamMember: t.relation('teamMember', EventScheduleInterviewerTeamMemberFieldObject),
-    teamMemberId: t.exposeInt('teamMemberId', EventScheduleInterviewerTeamMemberIdFieldObject),
+    teamMemberId: t.field(EventScheduleInterviewerTeamMemberIdFieldObject),
     availability: t.field(EventScheduleInterviewerAvailabilityFieldObject),
   }),
 });
 
-export const EventScheduleInterviewerIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleInterviewerIdFieldObject = defineFieldObject('EventScheduleInterviewer', {
+  type: "ID",
   description: undefined,
   nullable: false,
+  resolve: (parent) => String(parent.id),
 });
 
 export const EventScheduleInterviewerEventScheduleFieldObject = defineRelationObject('EventScheduleInterviewer', 'eventSchedule', {
@@ -32,9 +34,11 @@ export const EventScheduleInterviewerEventScheduleFieldObject = defineRelationOb
   query: undefined,
 });
 
-export const EventScheduleInterviewerEventScheduleIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleInterviewerEventScheduleIdFieldObject = defineFieldObject('EventScheduleInterviewer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.eventScheduleId,
 });
 
 export const EventScheduleInterviewerTeamMemberFieldObject = defineRelationObject('EventScheduleInterviewer', 'teamMember', {
@@ -44,9 +48,11 @@ export const EventScheduleInterviewerTeamMemberFieldObject = defineRelationObjec
   query: undefined,
 });
 
-export const EventScheduleInterviewerTeamMemberIdFieldObject = defineExposeObject('Int', {
+export const EventScheduleInterviewerTeamMemberIdFieldObject = defineFieldObject('EventScheduleInterviewer', {
+  type: "Int",
   description: undefined,
   nullable: false,
+  resolve: (parent) => parent.teamMemberId,
 });
 
 export const EventScheduleInterviewerAvailabilityFieldObject = defineFieldObject('EventScheduleInterviewer', {

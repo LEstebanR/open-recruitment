@@ -1,19 +1,22 @@
 import * as Inputs from '@/lib/graphql/schema/__generated__/inputs'
 import { prisma } from '@/lib/prisma';
+import { builder } from '../../../builder';
 import { defineQuery, defineQueryFunction, defineQueryPrismaObject } from '../../utils';
+
+export const findFirstEvaluationAnswerQueryArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
+}))
 
 export const findFirstEvaluationAnswerQueryObject = defineQueryFunction((t) =>
   defineQueryPrismaObject({
     type: 'EvaluationAnswer',
     nullable: true,
-    args: {
-      where: t.arg({ type: Inputs.EvaluationAnswerWhereInput, required: false }),
-      orderBy: t.arg({ type: [Inputs.EvaluationAnswerOrderByWithRelationInput], required: false }),
-      cursor: t.arg({ type: Inputs.EvaluationAnswerWhereUniqueInput, required: false }),
-      take: t.arg({ type: 'Int', required: false }),
-      skip: t.arg({ type: 'Int', required: false }),
-      distinct: t.arg({ type: [Inputs.EvaluationAnswerScalarFieldEnum], required: false }),
-    },
+    args: findFirstEvaluationAnswerQueryArgs,
     resolve: async (query, _root, args, _context, _info) =>
       await prisma.evaluationAnswer.findFirst({
         where: args.where || undefined,
