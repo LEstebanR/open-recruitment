@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function extractType(node: ReactNode): Function | string {
-  return ((node as unknown) as React.ReactElement).type
+  return (node as unknown as React.ReactElement).type
 }
 
 export function extractDisplayName(type: React.FunctionComponent): string {
@@ -11,13 +11,18 @@ export function extractDisplayName(type: React.FunctionComponent): string {
 
 export const getChildrenOnDisplayName = (children: ReactNode, displayName: string) => {
   return React.Children.map(children, (child) => {
-      if (typeof child === displayName) return child
+    if (typeof child === displayName) return child
 
-      const type = extractType(child)
-      const childDisplayName = (typeof type === 'function') ? extractDisplayName((type as unknown) as React.FunctionComponent) : ''
+    const type = extractType(child)
+    const childDisplayName =
+      typeof type === 'function'
+        ? extractDisplayName(type as unknown as React.FunctionComponent)
+        : ''
 
-      return childDisplayName === displayName ? child : null
-    },
-  )
+    return childDisplayName === displayName ? child : null
+  })
 }
 
+export function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}

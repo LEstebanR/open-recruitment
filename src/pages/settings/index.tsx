@@ -5,7 +5,7 @@ import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 
 const Page = () => {
   return (
-    <LayoutSideMenu>
+    <LayoutSideMenu menu={'settings'}>
       <div className="flex w-full flex-col justify-start gap-2 p-4">
         <h2 className="text-2xl font-bold">Settings</h2>
         <ul className="flex flex-col gap-2">

@@ -1,10 +1,9 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
-import LayoutAuthenticated from '@/components/layout/layout-authenticated'
 
 const Notifications = () => {
   return (
-    <LayoutSideMenu>
+    <LayoutSideMenu menu={'settings'}>
       <p>Notifications</p>
     </LayoutSideMenu>
   )
