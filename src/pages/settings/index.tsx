@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
 import { GoBell, GoPerson } from 'react-icons/go'
+import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 
 const Page = () => {
   return (
-    <>
+    <LayoutSideMenu>
       <div className="flex w-full flex-col justify-start gap-2 p-4">
         <h2 className="text-2xl font-bold">Settings</h2>
         <ul className="flex flex-col gap-2">
@@ -27,7 +28,7 @@ const Page = () => {
           </li>
         </ul>
       </div>
-    </>
+    </LayoutSideMenu>
   )
 }
 
