@@ -1,11 +1,14 @@
 import React from 'react'
-import PrivateRoute from '@/components/layout/PrivateRoute'
-const Home = () => {
+import LayoutAuthenticated from '@/components/layout/layout-authenticated'
+
+const Page = () => {
   return (
-    <PrivateRoute>
-      <p>Jobs</p>
-    </PrivateRoute>
+    <p className={'text-xl text-primary-50'}>Jobs</p>
   )
 }
+Page.auth = {
+  permission: 'REGULAR',
+  loading: <LayoutAuthenticated>Jobs Loading</LayoutAuthenticated>,
+}
 
-export default Home
+export default Page

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isAuthenticated } from '@/utils/auth'
-import Alert from '@/utils/Alert'
+import Alert from '@/components/alert'
+import SideMenu from './side-menu'
 
 interface Props {
   children: React.ReactNode
@@ -22,8 +23,11 @@ const PrivateRoute: React.FC<Props> = ({ children }) => {
   }, [pathname, router])
 
   return (
-    <div className="h-full w-full flex justify-center items-center">
-      {children}
+    <div className="flex h-full  w-full items-center justify-center">
+      <SideMenu />
+      <div className="flex h-full grow flex-col items-center justify-start gap-2 border p-4">
+        {children}
+      </div>
     </div>
   )
 }

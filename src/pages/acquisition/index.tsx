@@ -1,11 +1,25 @@
 import React from 'react'
-import PrivateRoute from '@/components/layout/PrivateRoute'
-const Home = () => {
+import { GetServerSidePropsContext } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
+
+const Page = () => {
   return (
-    <PrivateRoute>
-      <p>Acquisition</p>
-    </PrivateRoute>
+    <p>Acquisition</p>
   )
 }
 
-export default Home
+Page.auth = {}
+export default Page
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+
+  if (session?.user.userRole !== 'asdf') {
+    return { redirect: { destination: '/dashboard?redirectionFlag=1' } }
+  }
+
+  return {
+    props: {},
+  }
+}

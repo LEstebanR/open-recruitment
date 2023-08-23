@@ -1,3 +1,5 @@
+import { useSession } from 'next-auth/react'
+
 export const isAuthenticated = (url: string) => {
   const auth =
     url === '/' || url === '/login' || url === '/signup' ? false : true
@@ -6,4 +8,10 @@ export const isAuthenticated = (url: string) => {
   // return !!authToken
 
   return auth
+}
+
+// define useIsAuthenticated hook
+export const useIsAuthenticated = () => {
+  const { status  } = useSession()
+  return { isAuthenticated: status === 'authenticated' }
 }

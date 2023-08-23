@@ -8,10 +8,7 @@ const JoinNewsletter = () => {
   }
 
   return (
-    <form
-      className="flex w-full justify-center md:w-auto gap-2"
-      onSubmit={handleSubmit}
-    >
+    <form className="flex w-full justify-center gap-2 md:w-auto" onSubmit={handleSubmit}>
       <TextField
         id="email-newsletter"
         type="email"

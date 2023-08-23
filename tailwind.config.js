@@ -1,10 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -19,8 +15,7 @@ module.exports = {
           700: '#2593BB',
           800: '#2286AA',
           900: '#1E7999',
-        },
-        secondary: {
+        }, secondary: {
           50: '#f5f5f5',
           100: '#ebebeb',
           200: '#c7c7c7',
@@ -32,11 +27,16 @@ module.exports = {
           800: '#0c0c0c',
           900: '#0a0a0a',
         },
-      },
-      backgroundImage: {
+      }, backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      }, height: {
+        'header': 'theme(height.14)', 'main': 'calc(100vh - theme(height.14))',
+      }, width: {
+        'sidebar': 'theme(width.16)',
+        'main': 'calc(100vw - theme(width.16))',
+        'submenu': 'theme(width.52)',
+        'panel': 'calc(100% - theme(width.52))',
       },
     },
   },

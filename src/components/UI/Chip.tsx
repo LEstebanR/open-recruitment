@@ -2,11 +2,14 @@ import React from 'react'
 
 interface Props {
   children: React.ReactNode
+  className?: string
 }
 
-const Chip: React.FC<Props> = ({ children }) => {
+const Chip: React.FC<Props> = ({ children, className }) => {
   return (
-    <div className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 h-10">
+    <div
+      className={`${className} hidden items-center rounded-lg bg-gray-100 px-2 text-sm text-gray-800 sm:inline-flex`}
+    >
       {children}
     </div>
   )

@@ -2,18 +2,27 @@ import React from 'react'
 import Image from 'next/image'
 
 interface Props {
-  src: string
-  alt: string
+  src?: string | null
+  name?: string | null
+  className?: string
 }
-const Avatar: React.FC<Props> = ({ src, alt }) => {
-  return (
+
+const Avatar: React.FC<Props> = ({ src, name, className }) => {
+  const altName = name || 'avatar'
+  return src ? (
     <Image
       src={src}
-      alt={alt}
+      alt={altName}
       width={40}
       height={40}
-      className="rounded-full border border-black"
+      className={`${className} rounded-full border border-black object-cover`}
     />
+  ) : (
+    <div
+      className={`${className} m-0.5 flex h-9 w-9 items-center justify-center rounded-full border border-black bg-primary-500 text-white`}
+    >
+      <p>{altName?.charAt(0)}</p>
+    </div>
   )
 }
 

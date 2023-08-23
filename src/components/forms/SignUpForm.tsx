@@ -1,30 +1,75 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../UI/Button'
-import { PhoneField, TextField } from '../UI/Fields'
+import { PhoneField, SelectField, TextField } from '../UI/Fields'
 import Link from 'next/link'
 import BackgroundIllustration from '../layout/BackgroundIlustration'
-import { SelectField } from '../UI/Fields'
+import { gql, useMutation } from '@apollo/client'
+import Alert from '@/components/alert'
+import { signIn } from 'next-auth/react'
+
+const SIGNUP_MUTATION = gql`
+  mutation createUserAndCompany($data: UserSignUpInput!) {
+    signUpUser(data: $data) {
+      id
+      email
+      companies {
+        id
+      }
+    }
+  }
+`
 
 const SignUpForm = () => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [companyName, setCompanyName] = useState('')
+
+  const [signup, { data, error }] = useMutation(SIGNUP_MUTATION)
+
+  useEffect(() => {
+    if (error) {
+      Alert({ type: 'error', message: error.message })
+    }
+
+    if (data) {
+      console.log('success')
+      signIn('credentials', { email, password })
+    }
+  }, [error, data, email, password])
+
   return (
     <div className="px-4">
       <BackgroundIllustration
         width="900"
         height="900"
-        className="hidden absolute -top-7 left-1/2 -z-10 h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:h-auto sm:block"
+        className="absolute -top-7 left-1/2 -z-10 hidden h-[788px] -translate-x-1/2 stroke-gray-300 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)] sm:-top-9 sm:block sm:h-auto"
       />
-      <h1 className="text-2xl font-semibold text-gray-900">
-        Create a company account
-      </h1>
-      <p className="text-gray-600 mt-2">
+      <h1 className="text-2xl font-semibold text-gray-900">Create a company account</h1>
+      <p className="mt-2 text-gray-600">
         Does your company already has account? &nbsp;
         <Link href="/login" className="text-cyan-600 hover:underline">
           Log in
         </Link>
       </p>
 
-      <form className="bg-white md:p-8 px-4 py-8 rounded-3xl my-4">
-        <div className="grid grid-cols-2 gap-6 mb-4">
+      <form
+        className="my-4 rounded-3xl bg-white px-4 py-8 md:p-8"
+        onSubmit={async (e) => {
+          e.preventDefault()
+
+          await signup({
+            variables: {
+              data: {
+                name: name,
+                email: email,
+                companyName: companyName,
+              },
+            },
+          })
+        }}
+      >
+        <div className="mb-4 grid grid-cols-2 gap-6">
           <TextField
             className="col-span-full"
             label="Company name"
@@ -33,6 +78,7 @@ const SignUpForm = () => {
             type="text"
             autoComplete="company"
             required
+            onChange={(e) => setCompanyName(e.target.value)}
           />
           <TextField
             label="First name"
@@ -41,6 +87,7 @@ const SignUpForm = () => {
             type="text"
             autoComplete="given-name"
             required
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             label="Last name"
@@ -58,6 +105,7 @@ const SignUpForm = () => {
             type="email"
             autoComplete="email"
             required
+            onChange={(e) => setEmail(e.target.value)}
           />
           <PhoneField
             className="col-span-full"
@@ -75,6 +123,7 @@ const SignUpForm = () => {
             type="password"
             autoComplete="new-password"
             required
+            onChange={(e) => setPassword(e.target.value)}
           />
           <SelectField
             className="col-span-full"
