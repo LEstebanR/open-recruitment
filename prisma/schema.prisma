@@ -15,11 +15,11 @@ generator pothos {
   output       = "../src/lib/prisma/types/objects.d.ts"
 }
 
-generator pothosCrud {
-  // Suggested codegen
-  provider            = "prisma-generator-pothos-codegen"
-  generatorConfigPath = "../src/lib/graphql/schema/config.js"
-}
+// generator pothosCrud {
+//   // Suggested codegen
+//   provider            = "prisma-generator-pothos-codegen"
+//   generatorConfigPath = "../src/lib/graphql/schema/config.js"
+// }
 
 model User {
   id                String       @id @default(cuid())
