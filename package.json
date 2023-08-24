@@ -27,6 +27,7 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
+    "chart.js": "^4.3.3",
     "clsx": "1.2.1",
     "eslint-config-next": "13.4.2",
     "framer-motion": "10.12.16",
@@ -37,6 +38,7 @@
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-google-charts": "^4.0.1",
     "react-icons": "4.10.1",
     "react-phone-input-2": "^2.15.1",
     "react-tooltip": "5.18.0",
@@ -75,5 +77,11 @@
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "overrides": {
+    "prisma-generator-pothos-codegen": {
+      "@prisma/client": "$@prisma/client",
+      "prisma": "$prisma"
+    }
   }
 }

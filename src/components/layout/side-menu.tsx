@@ -36,7 +36,7 @@ type Navigation = Record<string, NavigationItem[]>
 
 const navigation: Navigation = {
   dashboard: [
-    { name: 'Overview', href: '/', icon: HomeIcon },
+    { name: 'Overview', href: '/dashboard', icon: HomeIcon },
     { name: 'Calendar', href: '/', icon: CalendarIcon },
     { name: 'Events', href: '/', icon: ChartPieIcon },
     { name: 'Evaluations', href: '/', icon: DocumentDuplicateIcon },
@@ -148,7 +148,7 @@ export default function SideMenu({ menu }: { menu?: string }) {
   )
 
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white pt-3">
+    <div className="flex grow flex-col gap-y-5 overflow-y-auto  border-gray-200 bg-white pt-3">
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col">
           {navigation[path].map((item) => (
