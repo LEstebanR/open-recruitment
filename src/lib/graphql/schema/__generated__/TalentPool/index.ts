@@ -1,11 +1,13 @@
 export {
   TalentPoolObject,
   TalentPoolIdFieldObject,
-  TalentPoolTitleFieldObject,
+  TalentPoolNameFieldObject,
   TalentPoolDescriptionFieldObject,
   TalentPoolFilesFieldObject,
   TalentPoolMatchesFieldObject,
-  TalentPoolFollowsFieldObject
+  TalentPoolFollowsFieldObject,
+  TalentPoolCompanyFieldObject,
+  TalentPoolCompanyIdFieldObject
 } from './object.base';
 export {
   createManyTalentPoolMutation,

@@ -22,12 +22,12 @@ import * as Company from './Company'
 // import * as Event from './Event'
 // import * as EventInterviewer from './EventInterviewer'
 // import * as EventEvaluation from './EventEvaluation'
-// import * as Offer from './Offer'
+import * as Offer from './Offer'
 // import * as OfferFile from './OfferFile'
 // import * as Match from './Match'
 // import * as OfferTag from './OfferTag'
 // import * as Membership from './Membership'
-// import * as TalentPool from './TalentPool'
+import * as TalentPool from './TalentPool'
 // import * as TalentPoolFile from './TalentPoolFile'
 // import * as TalentPoolMatch from './TalentPoolMatch'
 // import * as Template from './Template'
@@ -79,6 +79,22 @@ export const Cruds: Record<
       count: Candidate.countCandidateQueryObject,
     },
     mutations: AutoCruds.Candidate.mutations,
+  },
+  Offer: {
+    Object: AutoCruds.Offer.Object,
+    queries: {
+      ...AutoCruds.Offer.queries,
+      count: Offer.countOfferQueryObject,
+    },
+    mutations: AutoCruds.Offer.mutations,
+  },
+  TalentPool: {
+    Object: AutoCruds.TalentPool.Object,
+    queries: {
+      ...AutoCruds.TalentPool.queries,
+      count: TalentPool.countTalentPoolQueryObject,
+    },
+    mutations: AutoCruds.TalentPool.mutations,
   },
 }
 

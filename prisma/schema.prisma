@@ -180,6 +180,7 @@ model Company {
   ownerId               String
   hiringRoles           HiringRole[]
   candidates            Candidate[]
+  TalentPool            TalentPool[]
 }
 
 model SubscriptionData {
@@ -339,35 +340,35 @@ model Offer {
   recruiterId                  Int?               @unique
   hiringManager                HiringRole?        @relation("hiringManager", fields: [hiringManagerId], references: [id])
   hiringManagerId              Int?               @unique
-  description                  String
-  requirements                 String
-  locationCountry              String
-  locationState                String
-  locationCity                 String
-  locationStreet               String
-  zipcode                      String
-  remote                       Boolean
-  jobType                      String
-  jobCategory                  String
-  jobReqEducation              String
-  jobReqExperience             String
-  jobHoursMin                  Int
-  jobHoursMax                  Int
-  jobSalaryMin                 Int
-  jobSalaryMax                 Int
-  jobSalaryPeriod              String
-  jobSalaryCurrency            String
-  personalInfoCv               OfferPersonalItems
-  personalInfoCoverLetter      OfferPersonalItems
-  personalInfoPhoto            OfferPersonalItems
-  personalInfoPhone            OfferPersonalItems
-  screeningQuestionsTemplate   Template           @relation("screeningQuestionsTemplate", fields: [screeningQuestionsTemplateId], references: [id])
-  screeningQuestionsTemplateId Int                @unique
-  pipelineTemplate             Template           @relation("pipelineTemplate", fields: [pipelineTemplateId], references: [id])
-  pipelineTemplateId           Int                @unique
-  autoConfirmationEmail        Template           @relation("autoConfirmationEmail", fields: [autoConfirmationEmailId], references: [id])
-  autoConfirmationEmailId      Int                @unique
-  isPublished                  Boolean
+  description                  String?
+  requirements                 String?
+  locationCountry              String?
+  locationState                String?
+  locationCity                 String?
+  locationStreet               String?
+  zipcode                      String?
+  remote                       Boolean            @default(false)
+  jobType                      String?
+  jobCategory                  String?
+  jobReqEducation              String?
+  jobReqExperience             String?
+  jobHoursMin                  Int?
+  jobHoursMax                  Int?
+  jobSalaryMin                 Int?
+  jobSalaryMax                 Int?
+  jobSalaryPeriod              String?
+  jobSalaryCurrency            String?
+  personalInfoCv               OfferPersonalItems @default(NONE)
+  personalInfoCoverLetter      OfferPersonalItems @default(NONE)
+  personalInfoPhoto            OfferPersonalItems @default(NONE)
+  personalInfoPhone            OfferPersonalItems @default(NONE)
+  screeningQuestionsTemplate   Template?          @relation("screeningQuestionsTemplate", fields: [screeningQuestionsTemplateId], references: [id])
+  screeningQuestionsTemplateId Int?               @unique
+  pipelineTemplate             Template?          @relation("pipelineTemplate", fields: [pipelineTemplateId], references: [id])
+  pipelineTemplateId           Int?               @unique
+  autoConfirmationEmail        Template?          @relation("autoConfirmationEmail", fields: [autoConfirmationEmailId], references: [id])
+  autoConfirmationEmailId      Int?               @unique
+  isPublished                  Boolean            @default(false)
   auditLogs                    AuditLog[]
   files                        OfferFile[]
   offerTags                    OfferTag[]
@@ -432,11 +433,13 @@ model Membership {
 
 model TalentPool {
   id          Int               @id @default(autoincrement())
-  title       String
-  description String
+  name        String
+  description String?
   files       TalentPoolFile[]
   matches     TalentPoolMatch[]
   follows     Follow[]
+  company     Company           @relation(fields: [companyId], references: [id])
+  companyId   String
 }
 
 model TalentPoolFile {

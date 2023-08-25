@@ -134,49 +134,49 @@ export const OfferHiringManagerIdFieldObject = defineFieldObject('Offer', {
 export const OfferDescriptionFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.description,
 });
 
 export const OfferRequirementsFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.requirements,
 });
 
 export const OfferLocationCountryFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.locationCountry,
 });
 
 export const OfferLocationStateFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.locationState,
 });
 
 export const OfferLocationCityFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.locationCity,
 });
 
 export const OfferLocationStreetFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.locationStreet,
 });
 
 export const OfferZipcodeFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.zipcode,
 });
 
@@ -190,70 +190,70 @@ export const OfferRemoteFieldObject = defineFieldObject('Offer', {
 export const OfferJobTypeFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobType,
 });
 
 export const OfferJobCategoryFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobCategory,
 });
 
 export const OfferJobReqEducationFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobReqEducation,
 });
 
 export const OfferJobReqExperienceFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobReqExperience,
 });
 
 export const OfferJobHoursMinFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobHoursMin,
 });
 
 export const OfferJobHoursMaxFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobHoursMax,
 });
 
 export const OfferJobSalaryMinFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobSalaryMin,
 });
 
 export const OfferJobSalaryMaxFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobSalaryMax,
 });
 
 export const OfferJobSalaryPeriodFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobSalaryPeriod,
 });
 
 export const OfferJobSalaryCurrencyFieldObject = defineFieldObject('Offer', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.jobSalaryCurrency,
 });
 
@@ -287,7 +287,7 @@ export const OfferPersonalInfoPhoneFieldObject = defineFieldObject('Offer', {
 
 export const OfferScreeningQuestionsTemplateFieldObject = defineRelationObject('Offer', 'screeningQuestionsTemplate', {
   description: undefined,
-  nullable: false,
+  nullable: true,
   args: undefined,
   query: undefined,
 });
@@ -295,13 +295,13 @@ export const OfferScreeningQuestionsTemplateFieldObject = defineRelationObject('
 export const OfferScreeningQuestionsTemplateIdFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.screeningQuestionsTemplateId,
 });
 
 export const OfferPipelineTemplateFieldObject = defineRelationObject('Offer', 'pipelineTemplate', {
   description: undefined,
-  nullable: false,
+  nullable: true,
   args: undefined,
   query: undefined,
 });
@@ -309,13 +309,13 @@ export const OfferPipelineTemplateFieldObject = defineRelationObject('Offer', 'p
 export const OfferPipelineTemplateIdFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.pipelineTemplateId,
 });
 
 export const OfferAutoConfirmationEmailFieldObject = defineRelationObject('Offer', 'autoConfirmationEmail', {
   description: undefined,
-  nullable: false,
+  nullable: true,
   args: undefined,
   query: undefined,
 });
@@ -323,7 +323,7 @@ export const OfferAutoConfirmationEmailFieldObject = defineRelationObject('Offer
 export const OfferAutoConfirmationEmailIdFieldObject = defineFieldObject('Offer', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.autoConfirmationEmailId,
 });
 

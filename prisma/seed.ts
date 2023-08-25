@@ -216,6 +216,37 @@ async function main() {
 
   console.log(candidate3)
 
+  const offer1 = await prisma.offer.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: 'Offer 1',
+      companyId: company1.id,
+    },
+  })
+
+  const offer2 = await prisma.offer.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      name: 'Offer 2',
+      companyId: company1.id,
+    },
+  })
+
+  console.log(offer2)
+
+  const talentPool1 = await prisma.talentPool.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: 'Talent Pool 1',
+      companyId: company1.id,
+    },
+  })
+
+  console.log(talentPool1)
+
   const adminPhoto =
     '1' ||
     (await prisma.attachment.upsert({

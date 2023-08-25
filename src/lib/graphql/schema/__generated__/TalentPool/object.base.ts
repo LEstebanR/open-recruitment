@@ -12,11 +12,13 @@ export const TalentPoolObject = definePrismaObject('TalentPool', {
   findUnique: ({ id }) => ({ id }),
   fields: (t) => ({
     id: t.field(TalentPoolIdFieldObject),
-    title: t.field(TalentPoolTitleFieldObject),
+    name: t.field(TalentPoolNameFieldObject),
     description: t.field(TalentPoolDescriptionFieldObject),
     files: t.relation('files', TalentPoolFilesFieldObject(t)),
     matches: t.relation('matches', TalentPoolMatchesFieldObject(t)),
     follows: t.relation('follows', TalentPoolFollowsFieldObject(t)),
+    company: t.relation('company', TalentPoolCompanyFieldObject),
+    companyId: t.field(TalentPoolCompanyIdFieldObject),
   }),
 });
 
@@ -27,17 +29,17 @@ export const TalentPoolIdFieldObject = defineFieldObject('TalentPool', {
   resolve: (parent) => String(parent.id),
 });
 
-export const TalentPoolTitleFieldObject = defineFieldObject('TalentPool', {
+export const TalentPoolNameFieldObject = defineFieldObject('TalentPool', {
   type: "String",
   description: undefined,
   nullable: false,
-  resolve: (parent) => parent.title,
+  resolve: (parent) => parent.name,
 });
 
 export const TalentPoolDescriptionFieldObject = defineFieldObject('TalentPool', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.description,
 });
 
@@ -115,3 +117,17 @@ export const TalentPoolFollowsFieldObject = defineRelationFunction('TalentPool',
     }),
   }),
 );
+
+export const TalentPoolCompanyFieldObject = defineRelationObject('TalentPool', 'company', {
+  description: undefined,
+  nullable: false,
+  args: undefined,
+  query: undefined,
+});
+
+export const TalentPoolCompanyIdFieldObject = defineFieldObject('TalentPool', {
+  type: "String",
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.companyId,
+});

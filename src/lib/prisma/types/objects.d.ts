@@ -239,8 +239,8 @@ export default interface PrismaTypes {
         Where: Prisma.CompanyWhereInput;
         Create: {};
         Update: {};
-        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles" | "candidates";
-        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles" | "candidates";
+        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles" | "candidates" | "TalentPool";
+        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles" | "candidates" | "TalentPool";
         Relations: {
             roles: {
                 Shape: Role[];
@@ -305,6 +305,10 @@ export default interface PrismaTypes {
             candidates: {
                 Shape: Candidate[];
                 Name: "Candidate";
+            };
+            TalentPool: {
+                Shape: TalentPool[];
+                Name: "TalentPool";
             };
         };
     };
@@ -649,15 +653,15 @@ export default interface PrismaTypes {
                 Name: "HiringRole";
             };
             screeningQuestionsTemplate: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             pipelineTemplate: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             autoConfirmationEmail: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             auditLogs: {
@@ -808,7 +812,7 @@ export default interface PrismaTypes {
         Where: Prisma.TalentPoolWhereInput;
         Create: {};
         Update: {};
-        RelationName: "files" | "matches" | "follows";
+        RelationName: "files" | "matches" | "follows" | "company";
         ListRelations: "files" | "matches" | "follows";
         Relations: {
             files: {
@@ -822,6 +826,10 @@ export default interface PrismaTypes {
             follows: {
                 Shape: Follow[];
                 Name: "Follow";
+            };
+            company: {
+                Shape: Company;
+                Name: "Company";
             };
         };
     };
