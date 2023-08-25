@@ -22,7 +22,7 @@ async function main() {
       featureDiscovery: ['asdf1'],
       emailProviders: ['email1'],
       theme: 'light',
-      notifications: { 'asdf': '1234' },
+      notifications: { asdf: '1234' },
       updatedAt: new Date(),
       userRole: 'SUPERADMIN',
     },
@@ -47,7 +47,7 @@ async function main() {
       featureDiscovery: ['asdf1'],
       emailProviders: ['email1'],
       theme: 'light',
-      notifications: { 'asdf': '1234' },
+      notifications: { asdf: '1234' },
       updatedAt: new Date(),
       userRole: 'SUPERADMIN',
     },
@@ -88,7 +88,7 @@ async function main() {
   console.log({ company3 })
 
   const defaultRoles = async (companyIdS: string) => {
-    let companyId = parseInt(companyIdS)
+    const companyId = parseInt(companyIdS)
 
     const role1 = await prisma.role.upsert({
       where: { id: companyId * 1000 + 1 },
@@ -122,7 +122,7 @@ async function main() {
     })
   }
 
-  for (let company of [company1, company2, company3]) {
+  for (const company of [company1, company2, company3]) {
     await defaultRoles(company.id)
   }
 
@@ -166,17 +166,69 @@ async function main() {
     },
   })
 
-  const adminPhoto = '1' || await prisma.attachment.upsert({
+  const candidate1 = await prisma.candidate.upsert({
     where: { id: 1 },
     update: {},
     create: {
-      contentType: 'profilePhoto',
-      filename: 'photo1.png',
-      path: '/images/photo1.png',
-      uploaderId: 1,
-      updatedAt: new Date(),
+      firstName: 'Candidate',
+      lastName: 'Number 1',
+      email: 'candidate1@admin.com',
+      phone: '1234123123',
+      educationLevel: 'Bachelors degree',
+      socials: ['https://twitter.com/@candidate1'],
+      salaryExpectation: '5000',
+      companyId: company1.id,
+      birthDate: new Date('1993-01-01'),
     },
   })
+
+  const candidate2 = await prisma.candidate.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      firstName: 'Candidate',
+      lastName: 'Number 2',
+      email: 'candidate2@admin.com',
+      phone: '1234123123',
+      educationLevel: 'Bachelors degree',
+      socials: ['https://twitter.com/@candidate1'],
+      salaryExpectation: '5000',
+      companyId: company1.id,
+      birthDate: new Date('1993-01-01'),
+    },
+  })
+
+  const candidate3 = await prisma.candidate.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      firstName: 'Candidate',
+      lastName: 'Number 3',
+      email: 'candidate3@admin.com',
+      phone: '1234123123',
+      educationLevel: 'Bachelors degree',
+      socials: ['https://twitter.com/@candidate1'],
+      salaryExpectation: '5000',
+      companyId: company1.id,
+      birthDate: new Date('1993-01-01'),
+    },
+  })
+
+  console.log(candidate3)
+
+  const adminPhoto =
+    '1' ||
+    (await prisma.attachment.upsert({
+      where: { id: 1 },
+      update: {},
+      create: {
+        contentType: 'profilePhoto',
+        filename: 'photo1.png',
+        path: '/images/photo1.png',
+        uploaderId: 1,
+        updatedAt: new Date(),
+      },
+    }))
 }
 
 main()

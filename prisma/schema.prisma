@@ -15,11 +15,11 @@ generator pothos {
   output       = "../src/lib/prisma/types/objects.d.ts"
 }
 
-// generator pothosCrud {
-//   // Suggested codegen
-//   provider            = "prisma-generator-pothos-codegen"
-//   generatorConfigPath = "../src/lib/graphql/schema/config.js"
-// }
+generator pothosCrud {
+  // Suggested codegen
+  provider            = "prisma-generator-pothos-codegen"
+  generatorConfigPath = "../src/lib/graphql/schema/config.js"
+}
 
 model User {
   id                String       @id @default(cuid())
@@ -179,6 +179,7 @@ model Company {
   owner                 User               @relation("owner", fields: [ownerId], references: [id])
   ownerId               String
   hiringRoles           HiringRole[]
+  candidates            Candidate[]
 }
 
 model SubscriptionData {
@@ -514,23 +515,22 @@ model Candidate {
   id                  Int                     @id @default(autoincrement())
   firstName           String
   lastName            String
-  initials            String
-  email               String                  @unique
-  phone               String
+  email               String
+  phone               String?
   skills              String[]
-  mainLanguage        String
+  mainLanguage        String                  @default("en")
   languages           String[]
-  coverLetter         String
+  coverLetter         String?
   birthDate           DateTime
-  referrer            TagSource               @relation("referrer", fields: [referrerId], references: [id])
-  referrerId          Int                     @unique
+  referrer            TagSource?              @relation("referrer", fields: [referrerId], references: [id])
+  referrerId          Int?                    @unique
   cv                  Attachment?             @relation(fields: [cvId], references: [id])
   cvId                Int?                    @unique
-  educationLevel      String // Should enum
+  educationLevel      String? // Should enum
   socials             String[]
   links               String[]
-  salaryExpectation   String
-  isHired             Boolean
+  salaryExpectation   String?
+  isHired             Boolean?
   hiredAt             Offer?                  @relation(fields: [hiredAtId], references: [id])
   hiredAtId           Int?
   hiredBy             HiringRole?             @relation(fields: [hiredById], references: [id])
@@ -544,6 +544,10 @@ model Candidate {
   tasks               Task[]
   follows             Follow[]
   SharedCandidateLink SharedCandidateLink[]
+  company             Company                 @relation(fields: [companyId], references: [id])
+  companyId           String
+
+  @@unique([email, companyId])
 }
 
 model CandidateTag {

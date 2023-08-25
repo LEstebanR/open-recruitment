@@ -42,6 +42,7 @@ export const CompanyObject = definePrismaObject('Company', {
     owner: t.relation('owner', CompanyOwnerFieldObject),
     ownerId: t.field(CompanyOwnerIdFieldObject),
     hiringRoles: t.relation('hiringRoles', CompanyHiringRolesFieldObject(t)),
+    candidates: t.relation('candidates', CompanyCandidatesFieldObject(t)),
   }),
 });
 
@@ -485,6 +486,31 @@ export const CompanyHiringRolesFieldObject = defineRelationFunction('Company', (
     description: undefined,
     nullable: false,
     args: CompanyHiringRolesFieldArgs,
+    query: (args) => ({
+      where: args.where || undefined,
+      cursor: args.cursor || undefined,
+      take: args.take || undefined,
+      distinct: args.distinct || undefined,
+      skip: args.skip || undefined,
+      orderBy: args.orderBy || undefined,
+    }),
+  }),
+);
+
+export const CompanyCandidatesFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CandidateWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CandidateWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
+}))
+
+export const CompanyCandidatesFieldObject = defineRelationFunction('Company', (t) =>
+  defineRelationObject('Company', 'candidates', {
+    description: undefined,
+    nullable: false,
+    args: CompanyCandidatesFieldArgs,
     query: (args) => ({
       where: args.where || undefined,
       cursor: args.cursor || undefined,

@@ -34,7 +34,7 @@ import * as Company from './Company'
 // import * as Stage from './Stage'
 // import * as StageVisibility from './StageVisibility'
 // import * as StageMetadata from './StageMetadata'
-// import * as Candidate from './Candidate'
+import * as Candidate from './Candidate'
 // import * as CandidateTag from './CandidateTag'
 // import * as CandidateCustomFields from './CandidateCustomFields'
 // import * as Evaluation from './Evaluation'
@@ -46,14 +46,14 @@ import * as Company from './Company'
 import * as Objects from '../__generated__/objects'
 import { Cruds as AutoCruds } from '../__generated__/autocrud'
 
-type Model = Objects.Model;
+type Model = Objects.Model
 
 export const Cruds: Record<
   Objects.Model,
   {
-    Object: any;
-    queries: Record<string, Function>;
-    mutations: Record<string, Function>;
+    Object: any
+    queries: Record<string, Function>
+    mutations: Record<string, Function>
   }
 > = {
   ...AutoCruds,
@@ -72,11 +72,19 @@ export const Cruds: Record<
     queries: AutoCruds.Company.queries,
     mutations: AutoCruds.Company.mutations,
   },
+  Candidate: {
+    Object: AutoCruds.Candidate.Object,
+    queries: {
+      ...AutoCruds.Candidate.queries,
+      count: Candidate.countCandidateQueryObject,
+    },
+    mutations: AutoCruds.Candidate.mutations,
+  },
 }
 
 const crudEntries = Object.entries(Cruds)
 
-type ResolverType = 'Query' | 'Mutation';
+type ResolverType = 'Query' | 'Mutation'
 
 function generateResolversByType(type: ResolverType, opts?: CrudOptions) {
   return crudEntries
@@ -93,20 +101,18 @@ function generateResolversByType(type: ResolverType, opts?: CrudOptions) {
           const field = resolverObjectDefiner(t)
           const handledField = opts?.handleResolver
             ? opts.handleResolver({
-              field,
-              modelName: modelName as Model,
-              operationName,
-              resolverName,
-              t,
-              isPrismaField,
-              type,
-            })
+                field,
+                modelName: modelName as Model,
+                operationName,
+                resolverName,
+                t,
+                isPrismaField,
+                type,
+              })
             : field
 
           return {
-            [resolverName]: isPrismaField
-              ? t.prismaField(handledField)
-              : t.field(handledField),
+            [resolverName]: isPrismaField ? t.prismaField(handledField) : t.field(handledField),
           }
         }
 
@@ -139,22 +145,22 @@ export function generateAllResolvers(opts?: CrudOptions) {
 }
 
 type CrudOptions = {
-  include?: Model[];
-  exclude?: Model[];
+  include?: Model[]
+  exclude?: Model[]
   /**
    * Caution: This is not type safe
    * Wrap all queries/mutations to override args, run extra code in resolve function (ie: throw errors, logs), apply plugins, etc.
    */
   handleResolver?: (props: {
-    modelName: Model;
-    field: any;
-    operationName: string;
-    resolverName: string;
-    t: any;
-    isPrismaField: boolean;
-    type: ResolverType;
-  }) => any;
-};
+    modelName: Model
+    field: any
+    operationName: string
+    resolverName: string
+    t: any
+    isPrismaField: boolean
+    type: ResolverType
+  }) => any
+}
 
 const includeModel = (model: string, opts?: CrudOptions): boolean => {
   if (!opts) return true

@@ -1,0 +1,1 @@
+export { countCandidateQueryObject } from './queries'

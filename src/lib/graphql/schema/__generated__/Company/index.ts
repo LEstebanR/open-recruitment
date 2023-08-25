@@ -30,7 +30,8 @@ export {
   CompanyTasksFieldObject,
   CompanyOwnerFieldObject,
   CompanyOwnerIdFieldObject,
-  CompanyHiringRolesFieldObject
+  CompanyHiringRolesFieldObject,
+  CompanyCandidatesFieldObject
 } from './object.base';
 export {
   createManyCompanyMutation,

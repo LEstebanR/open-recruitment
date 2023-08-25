@@ -3,7 +3,6 @@ export {
   CandidateIdFieldObject,
   CandidateFirstNameFieldObject,
   CandidateLastNameFieldObject,
-  CandidateInitialsFieldObject,
   CandidateEmailFieldObject,
   CandidatePhoneFieldObject,
   CandidateSkillsFieldObject,
@@ -32,7 +31,9 @@ export {
   CandidateEvaluationFieldObject,
   CandidateTasksFieldObject,
   CandidateFollowsFieldObject,
-  CandidateSharedCandidateLinkFieldObject
+  CandidateSharedCandidateLinkFieldObject,
+  CandidateCompanyFieldObject,
+  CandidateCompanyIdFieldObject
 } from './object.base';
 export {
   createManyCandidateMutation,

@@ -239,8 +239,8 @@ export default interface PrismaTypes {
         Where: Prisma.CompanyWhereInput;
         Create: {};
         Update: {};
-        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles";
-        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles";
+        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles" | "candidates";
+        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles" | "candidates";
         Relations: {
             roles: {
                 Shape: Role[];
@@ -301,6 +301,10 @@ export default interface PrismaTypes {
             hiringRoles: {
                 Shape: HiringRole[];
                 Name: "HiringRole";
+            };
+            candidates: {
+                Shape: Candidate[];
+                Name: "Candidate";
             };
         };
     };
@@ -993,11 +997,11 @@ export default interface PrismaTypes {
         Where: Prisma.CandidateWhereInput;
         Create: {};
         Update: {};
-        RelationName: "referrer" | "cv" | "hiredAt" | "hiredBy" | "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink";
+        RelationName: "referrer" | "cv" | "hiredAt" | "hiredBy" | "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink" | "company";
         ListRelations: "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink";
         Relations: {
             referrer: {
-                Shape: TagSource;
+                Shape: TagSource | null;
                 Name: "TagSource";
             };
             cv: {
@@ -1047,6 +1051,10 @@ export default interface PrismaTypes {
             SharedCandidateLink: {
                 Shape: SharedCandidateLink[];
                 Name: "SharedCandidateLink";
+            };
+            company: {
+                Shape: Company;
+                Name: "Company";
             };
         };
     };
