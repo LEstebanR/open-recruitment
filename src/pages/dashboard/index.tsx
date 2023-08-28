@@ -9,7 +9,7 @@ import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { gql, useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
 import Loader from '@/components/UI/loader'
-import { events, titles, tagData, sourceData } from '@/utils/mockdata'
+import { events, sourceData, tagData, titles } from '@/utils/mockdata'
 import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
@@ -31,10 +31,12 @@ const GET_DATA = gql`
 const Dashboard: NextPageWithLayout = () => {
   const { data, loading } = useQuery(GET_DATA)
   const { data: session } = useSession()
-  const company = data?.me.hiringRoles.filter(
-    (company: { _typename: string; name: string; id: number }) =>
-      company.id === session?.user.selectedCompany
-  )[0].company
+  const company = session?.user?.selectedCompany
+    ? data?.me.hiringRoles.filter(
+        (company: { _typename: string; name: string; id: number }) =>
+          company.id === session?.user.selectedCompany
+      )[0].company
+    : {}
 
   useRedirectionFlag()
 
@@ -49,7 +51,7 @@ const Dashboard: NextPageWithLayout = () => {
               <p className="font-bold">{company.name}</p>
               <p>{data?.me.email}</p>
             </div>
-            {titles.map((title) => (
+            {titles.map((title: { icon: React.Component; title: string; number: number }) => (
               <div className="flex items-center gap-2 px-4 text-base" key={title.title}>
                 <title.icon className="h-6 w-6" />
                 <p>{title.title}</p>
