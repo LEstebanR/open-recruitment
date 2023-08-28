@@ -13,11 +13,11 @@ export const UserObject = definePrismaObject('User', {
       // Add custom fields
       customField: t.field({
         authz: {
-          rules: ['IsAuthenticated2'],
+          rules: ['IsAuthenticated'],
         },
-        type: 'String', resolve: () => 'Hello world!2',
+        type: 'String',
+        resolve: () => 'Hello world!2',
       }),
     }
   },
 })
-
