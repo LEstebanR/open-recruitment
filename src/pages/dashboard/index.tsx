@@ -51,7 +51,7 @@ const Dashboard: NextPageWithLayout = () => {
               <p className="font-bold">{company.name}</p>
               <p>{data?.me.email}</p>
             </div>
-            {titles.map((title: { icon: React.Component; title: string; number: number }) => (
+            {titles.map((title: { icon: React.JSX.Element; title: string; number: number }) => (
               <div className="flex items-center gap-2 px-4 text-base" key={title.title}>
                 <title.icon className="h-6 w-6" />
                 <p>{title.title}</p>
