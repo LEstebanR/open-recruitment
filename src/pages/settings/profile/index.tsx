@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { user } from '@/utils/mockdata'
 import Avatar from '@/components/UI/Avatar'
 import { Button } from '@/components/UI/Button'
@@ -12,7 +12,6 @@ import EditProfileModal from '@/components/modals/EditProfileModal'
 import UpdatePasswordModal from '@/components/modals/UpdatePasswordModal'
 import { GoCalendar, GoGear, GoKey, GoLock, GoMail, GoOrganization } from 'react-icons/go'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
-import LayoutAuthenticated from '@/components/layout/layout-authenticated'
 
 const tabs = [
   {

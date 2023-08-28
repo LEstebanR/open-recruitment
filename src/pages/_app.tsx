@@ -56,7 +56,7 @@ function Auth({ children, options }: { children: React.ReactNode; options: Compo
         .push(`/dashboard`)
         .then(() => Alert({ type: 'error', message: 'Not enough permissions!' }))
     }
-  }, [isUser, router, viewPermission])
+  }, [isUser, router, status, viewPermission])
 
   if (status === 'loading' || !viewPermission) {
     return options?.loading ? (

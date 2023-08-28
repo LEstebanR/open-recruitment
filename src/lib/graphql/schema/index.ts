@@ -1,7 +1,5 @@
 import { generateAllCrud } from './extended/crud'
 import { builder } from './builder'
-import { User, Company } from '@prisma/client'
-import { prisma } from '@/lib/prisma'
 
 generateAllCrud()
 
