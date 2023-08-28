@@ -1,1 +1,0 @@
-export { signUpUserMutationObject } from './signUp'
