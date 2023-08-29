@@ -6,7 +6,7 @@ export const countOfferQueryObject = defineQueryFunction(() =>
   defineQueryObject({
     type: 'Int',
     authz: {
-      rules: ['IsAuthenticated'],
+      rules: ['IsAuthenticated', 'UserBelongsToCompany'],
     },
     nullable: false,
     args: countOfferQueryArgs,

@@ -197,7 +197,7 @@ export const CandidateScalarFieldEnum = builder.enumType('CandidateScalarFieldEn
 });
 
 export const CandidateTagScalarFieldEnum = builder.enumType('CandidateTagScalarFieldEnum', {
-  values: ["id","candidateId","tagId"] as const,
+  values: ["candidateId","tagId"] as const,
 });
 
 export const CandidateCustomFieldsScalarFieldEnum = builder.enumType('CandidateCustomFieldsScalarFieldEnum', {
@@ -254,6 +254,10 @@ export const NullsOrder = builder.enumType('NullsOrder', {
 
 export const UserRoles = builder.enumType('UserRoles', {
   values: ["SUPERADMIN","DEFAULT"] as const,
+});
+
+export const TagSourceType = builder.enumType('TagSourceType', {
+  values: ["TAG_OFFER","TAG_CANDIDATE","SOURCE"] as const,
 });
 
 export const OfferPersonalItems = builder.enumType('OfferPersonalItems', {
@@ -1428,7 +1432,7 @@ export const TagSourceWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[TagSourceWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  type: t.field({"required":false,"type":StringFilter}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFilter}),
   companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   offerTags: t.field({"required":false,"type":OfferTagListRelationFilter}),
@@ -1459,7 +1463,7 @@ export const TagSourceWhereUniqueInputFields = (t: any) => ({
   OR: t.field({"required":false,"type":[TagSourceWhereInput]}),
   NOT: t.field({"required":false,"type":[TagSourceWhereInput]}),
   name: t.field({"required":false,"type":StringFilter}),
-  type: t.field({"required":false,"type":StringFilter}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFilter}),
   companyId: t.field({"required":false,"type":StringFilter}),
   company: t.field({"required":false,"type":CompanyWhereInput}),
   offerTags: t.field({"required":false,"type":OfferTagListRelationFilter}),
@@ -1491,7 +1495,7 @@ export const TagSourceScalarWhereWithAggregatesInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[TagSourceScalarWhereWithAggregatesInput]}),
   id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   name: t.field({"required":false,"type":StringWithAggregatesFilter}),
-  type: t.field({"required":false,"type":StringWithAggregatesFilter}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeWithAggregatesFilter}),
   companyId: t.field({"required":false,"type":StringWithAggregatesFilter}),
 });
 export const TagSourceScalarWhereWithAggregatesInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceScalarWhereWithAggregatesInput>>('TagSourceScalarWhereWithAggregatesInput').implement({
@@ -3450,7 +3454,6 @@ export const CandidateTagWhereInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CandidateTagWhereInput]}),
   OR: t.field({"required":false,"type":[CandidateTagWhereInput]}),
   NOT: t.field({"required":false,"type":[CandidateTagWhereInput]}),
-  id: t.field({"required":false,"type":IntFilter}),
   candidateId: t.field({"required":false,"type":IntFilter}),
   tagId: t.field({"required":false,"type":IntFilter}),
   candidate: t.field({"required":false,"type":CandidateWhereInput}),
@@ -3461,7 +3464,6 @@ export const CandidateTagWhereInput = builder.inputRef<PrismaUpdateOperationsInp
 });
 
 export const CandidateTagOrderByWithRelationInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
   candidate: t.field({"required":false,"type":CandidateOrderByWithRelationInput}),
@@ -3472,7 +3474,7 @@ export const CandidateTagOrderByWithRelationInput = builder.inputRef<PrismaUpdat
 });
 
 export const CandidateTagWhereUniqueInputFields = (t: any) => ({
-  id: t.int({"required":false}),
+  candidateId_tagId: t.field({"required":false,"type":CandidateTagCandidateIdTagIdCompoundUniqueInput}),
   AND: t.field({"required":false,"type":[CandidateTagWhereInput]}),
   OR: t.field({"required":false,"type":[CandidateTagWhereInput]}),
   NOT: t.field({"required":false,"type":[CandidateTagWhereInput]}),
@@ -3486,7 +3488,6 @@ export const CandidateTagWhereUniqueInput = builder.inputRef<PrismaUpdateOperati
 });
 
 export const CandidateTagOrderByWithAggregationInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
   _count: t.field({"required":false,"type":CandidateTagCountOrderByAggregateInput}),
@@ -3503,7 +3504,6 @@ export const CandidateTagScalarWhereWithAggregatesInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CandidateTagScalarWhereWithAggregatesInput]}),
   OR: t.field({"required":false,"type":[CandidateTagScalarWhereWithAggregatesInput]}),
   NOT: t.field({"required":false,"type":[CandidateTagScalarWhereWithAggregatesInput]}),
-  id: t.field({"required":false,"type":IntWithAggregatesFilter}),
   candidateId: t.field({"required":false,"type":IntWithAggregatesFilter}),
   tagId: t.field({"required":false,"type":IntWithAggregatesFilter}),
 });
@@ -4787,7 +4787,7 @@ export const DisqualifyReasonUpdateManyMutationInput = builder.inputRef<PrismaUp
 
 export const TagSourceCreateInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
@@ -4799,7 +4799,7 @@ export const TagSourceCreateInput = builder.inputRef<PrismaUpdateOperationsInput
 
 export const TagSourceUpdateInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
   company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
@@ -4812,7 +4812,7 @@ export const TagSourceUpdateInput = builder.inputRef<PrismaUpdateOperationsInput
 export const TagSourceCreateManyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   companyId: t.string({"required":true}),
 });
 export const TagSourceCreateManyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceCreateManyInput>>('TagSourceCreateManyInput').implement({
@@ -4821,7 +4821,7 @@ export const TagSourceCreateManyInput = builder.inputRef<PrismaUpdateOperationsI
 
 export const TagSourceUpdateManyMutationInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
 });
 export const TagSourceUpdateManyMutationInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceUpdateManyMutationInput>>('TagSourceUpdateManyMutationInput').implement({
   fields: TagSourceUpdateManyMutationInputFields,
@@ -5931,7 +5931,6 @@ export const CandidateTagUpdateInput = builder.inputRef<PrismaUpdateOperationsIn
 });
 
 export const CandidateTagCreateManyInputFields = (t: any) => ({
-  id: t.int({"required":false}),
   candidateId: t.int({"required":true}),
   tagId: t.int({"required":true}),
 });
@@ -7793,6 +7792,16 @@ export const JsonWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsI
   fields: JsonWithAggregatesFilterFields,
 });
 
+export const EnumTagSourceTypeFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":TagSourceType}),
+  in: t.field({"required":false,"type":[TagSourceType]}),
+  notIn: t.field({"required":false,"type":[TagSourceType]}),
+  not: t.field({"required":false,"type":TagSourceType}),
+});
+export const EnumTagSourceTypeFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumTagSourceTypeFilter>>('EnumTagSourceTypeFilter').implement({
+  fields: EnumTagSourceTypeFilterFields,
+});
+
 export const OfferTagListRelationFilterFields = (t: any) => ({
   every: t.field({"required":false,"type":OfferTagWhereInput}),
   some: t.field({"required":false,"type":OfferTagWhereInput}),
@@ -7867,6 +7876,19 @@ export const TagSourceSumOrderByAggregateInputFields = (t: any) => ({
 });
 export const TagSourceSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceSumOrderByAggregateInput>>('TagSourceSumOrderByAggregateInput').implement({
   fields: TagSourceSumOrderByAggregateInputFields,
+});
+
+export const EnumTagSourceTypeWithAggregatesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":TagSourceType}),
+  in: t.field({"required":false,"type":[TagSourceType]}),
+  notIn: t.field({"required":false,"type":[TagSourceType]}),
+  not: t.field({"required":false,"type":TagSourceType}),
+  _count: t.field({"required":false,"type":NestedIntFilter}),
+  _min: t.field({"required":false,"type":NestedEnumTagSourceTypeFilter}),
+  _max: t.field({"required":false,"type":NestedEnumTagSourceTypeFilter}),
+});
+export const EnumTagSourceTypeWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumTagSourceTypeWithAggregatesFilter>>('EnumTagSourceTypeWithAggregatesFilter').implement({
+  fields: EnumTagSourceTypeWithAggregatesFilterFields,
 });
 
 export const AuditLogCountOrderByAggregateInputFields = (t: any) => ({
@@ -9430,8 +9452,15 @@ export const CandidateSumOrderByAggregateInput = builder.inputRef<PrismaUpdateOp
   fields: CandidateSumOrderByAggregateInputFields,
 });
 
+export const CandidateTagCandidateIdTagIdCompoundUniqueInputFields = (t: any) => ({
+  candidateId: t.int({"required":true}),
+  tagId: t.int({"required":true}),
+});
+export const CandidateTagCandidateIdTagIdCompoundUniqueInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CandidateTagCandidateIdTagIdCompoundUniqueInput>>('CandidateTagCandidateIdTagIdCompoundUniqueInput').implement({
+  fields: CandidateTagCandidateIdTagIdCompoundUniqueInputFields,
+});
+
 export const CandidateTagCountOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
 });
@@ -9440,7 +9469,6 @@ export const CandidateTagCountOrderByAggregateInput = builder.inputRef<PrismaUpd
 });
 
 export const CandidateTagAvgOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
 });
@@ -9449,7 +9477,6 @@ export const CandidateTagAvgOrderByAggregateInput = builder.inputRef<PrismaUpdat
 });
 
 export const CandidateTagMaxOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
 });
@@ -9458,7 +9485,6 @@ export const CandidateTagMaxOrderByAggregateInput = builder.inputRef<PrismaUpdat
 });
 
 export const CandidateTagMinOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
 });
@@ -9467,7 +9493,6 @@ export const CandidateTagMinOrderByAggregateInput = builder.inputRef<PrismaUpdat
 });
 
 export const CandidateTagSumOrderByAggregateInputFields = (t: any) => ({
-  id: t.field({"required":false,"type":SortOrder}),
   candidateId: t.field({"required":false,"type":SortOrder}),
   tagId: t.field({"required":false,"type":SortOrder}),
 });
@@ -11395,6 +11420,13 @@ export const CandidateTagCreateNestedManyWithoutTagInputFields = (t: any) => ({
 });
 export const CandidateTagCreateNestedManyWithoutTagInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CandidateTagCreateNestedManyWithoutTagInput>>('CandidateTagCreateNestedManyWithoutTagInput').implement({
   fields: CandidateTagCreateNestedManyWithoutTagInputFields,
+});
+
+export const EnumTagSourceTypeFieldUpdateOperationsInputFields = (t: any) => ({
+  set: t.field({"required":false,"type":TagSourceType}),
+});
+export const EnumTagSourceTypeFieldUpdateOperationsInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.EnumTagSourceTypeFieldUpdateOperationsInput>>('EnumTagSourceTypeFieldUpdateOperationsInput').implement({
+  fields: EnumTagSourceTypeFieldUpdateOperationsInputFields,
 });
 
 export const CompanyUpdateOneRequiredWithoutTagSourcesNestedInputFields = (t: any) => ({
@@ -14267,6 +14299,29 @@ export const NestedJsonFilter = builder.inputRef<PrismaUpdateOperationsInputFilt
   fields: NestedJsonFilterFields,
 });
 
+export const NestedEnumTagSourceTypeFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":TagSourceType}),
+  in: t.field({"required":false,"type":[TagSourceType]}),
+  notIn: t.field({"required":false,"type":[TagSourceType]}),
+  not: t.field({"required":false,"type":TagSourceType}),
+});
+export const NestedEnumTagSourceTypeFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedEnumTagSourceTypeFilter>>('NestedEnumTagSourceTypeFilter').implement({
+  fields: NestedEnumTagSourceTypeFilterFields,
+});
+
+export const NestedEnumTagSourceTypeWithAggregatesFilterFields = (t: any) => ({
+  equals: t.field({"required":false,"type":TagSourceType}),
+  in: t.field({"required":false,"type":[TagSourceType]}),
+  notIn: t.field({"required":false,"type":[TagSourceType]}),
+  not: t.field({"required":false,"type":TagSourceType}),
+  _count: t.field({"required":false,"type":NestedIntFilter}),
+  _min: t.field({"required":false,"type":NestedEnumTagSourceTypeFilter}),
+  _max: t.field({"required":false,"type":NestedEnumTagSourceTypeFilter}),
+});
+export const NestedEnumTagSourceTypeWithAggregatesFilter = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.NestedEnumTagSourceTypeWithAggregatesFilter>>('NestedEnumTagSourceTypeWithAggregatesFilter').implement({
+  fields: NestedEnumTagSourceTypeWithAggregatesFilterFields,
+});
+
 export const NestedEnumOfferPersonalItemsFilterFields = (t: any) => ({
   equals: t.field({"required":false,"type":OfferPersonalItems}),
   in: t.field({"required":false,"type":[OfferPersonalItems]}),
@@ -16892,7 +16947,7 @@ export const DisqualifyReasonCreateManyCompanyInputEnvelope = builder.inputRef<P
 
 export const TagSourceCreateWithoutCompanyInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
@@ -17564,7 +17619,7 @@ export const TagSourceScalarWhereInputFields = (t: any) => ({
   NOT: t.field({"required":false,"type":[TagSourceScalarWhereInput]}),
   id: t.field({"required":false,"type":IntFilter}),
   name: t.field({"required":false,"type":StringFilter}),
-  type: t.field({"required":false,"type":StringFilter}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFilter}),
   companyId: t.field({"required":false,"type":StringFilter}),
 });
 export const TagSourceScalarWhereInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceScalarWhereInput>>('TagSourceScalarWhereInput').implement({
@@ -18727,7 +18782,6 @@ export const CandidateTagScalarWhereInputFields = (t: any) => ({
   AND: t.field({"required":false,"type":[CandidateTagScalarWhereInput]}),
   OR: t.field({"required":false,"type":[CandidateTagScalarWhereInput]}),
   NOT: t.field({"required":false,"type":[CandidateTagScalarWhereInput]}),
-  id: t.field({"required":false,"type":IntFilter}),
   candidateId: t.field({"required":false,"type":IntFilter}),
   tagId: t.field({"required":false,"type":IntFilter}),
 });
@@ -21529,7 +21583,7 @@ export const OfferCreateOrConnectWithoutOfferTagsInput = builder.inputRef<Prisma
 
 export const TagSourceCreateWithoutOfferTagsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
@@ -21626,7 +21680,7 @@ export const TagSourceUpdateToOneWithWhereWithoutOfferTagsInput = builder.inputR
 
 export const TagSourceUpdateWithoutOfferTagsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
   company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
@@ -23380,7 +23434,7 @@ export const StageUpdateWithoutMetadataInput = builder.inputRef<PrismaUpdateOper
 
 export const TagSourceCreateWithoutCandidateReferrerInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagCreateNestedManyWithoutTagInput}),
@@ -23808,7 +23862,7 @@ export const TagSourceUpdateToOneWithWhereWithoutCandidateReferrerInput = builde
 
 export const TagSourceUpdateWithoutCandidateReferrerInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
   company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
@@ -24303,7 +24357,7 @@ export const CandidateCreateOrConnectWithoutCandidateTagsInput = builder.inputRe
 
 export const TagSourceCreateWithoutCandidateTagsInputFields = (t: any) => ({
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
   company: t.field({"required":true,"type":CompanyCreateNestedOneWithoutTagSourcesInput}),
   offerTags: t.field({"required":false,"type":OfferTagCreateNestedManyWithoutTagInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateCreateNestedOneWithoutReferrerInput}),
@@ -24389,7 +24443,7 @@ export const TagSourceUpdateToOneWithWhereWithoutCandidateTagsInput = builder.in
 
 export const TagSourceUpdateWithoutCandidateTagsInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
   company: t.field({"required":false,"type":CompanyUpdateOneRequiredWithoutTagSourcesNestedInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
@@ -26478,7 +26532,7 @@ export const DisqualifyReasonCreateManyCompanyInput = builder.inputRef<PrismaUpd
 export const TagSourceCreateManyCompanyInputFields = (t: any) => ({
   id: t.int({"required":false}),
   name: t.string({"required":true}),
-  type: t.string({"required":true}),
+  type: t.field({"required":true,"type":TagSourceType}),
 });
 export const TagSourceCreateManyCompanyInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.TagSourceCreateManyCompanyInput>>('TagSourceCreateManyCompanyInput').implement({
   fields: TagSourceCreateManyCompanyInputFields,
@@ -26693,7 +26747,7 @@ export const DisqualifyReasonUpdateWithoutCompanyInput = builder.inputRef<Prisma
 
 export const TagSourceUpdateWithoutCompanyInputFields = (t: any) => ({
   name: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
-  type: t.field({"required":false,"type":StringFieldUpdateOperationsInput}),
+  type: t.field({"required":false,"type":EnumTagSourceTypeFieldUpdateOperationsInput}),
   offerTags: t.field({"required":false,"type":OfferTagUpdateManyWithoutTagNestedInput}),
   candidateReferrer: t.field({"required":false,"type":CandidateUpdateOneWithoutReferrerNestedInput}),
   candidateTags: t.field({"required":false,"type":CandidateTagUpdateManyWithoutTagNestedInput}),
@@ -26966,7 +27020,6 @@ export const OfferTagCreateManyTagInput = builder.inputRef<PrismaUpdateOperation
 });
 
 export const CandidateTagCreateManyTagInputFields = (t: any) => ({
-  id: t.int({"required":false}),
   candidateId: t.int({"required":true}),
 });
 export const CandidateTagCreateManyTagInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CandidateTagCreateManyTagInput>>('CandidateTagCreateManyTagInput').implement({
@@ -27451,7 +27504,6 @@ export const TalentPoolMatchCreateManyCandidateInput = builder.inputRef<PrismaUp
 });
 
 export const CandidateTagCreateManyCandidateInputFields = (t: any) => ({
-  id: t.int({"required":false}),
   tagId: t.int({"required":true}),
 });
 export const CandidateTagCreateManyCandidateInput = builder.inputRef<PrismaUpdateOperationsInputFilter<Prisma.CandidateTagCreateManyCandidateInput>>('CandidateTagCreateManyCandidateInput').implement({

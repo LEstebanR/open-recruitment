@@ -37,7 +37,7 @@ export const TagSourceNameFieldObject = defineFieldObject('TagSource', {
 });
 
 export const TagSourceTypeFieldObject = defineFieldObject('TagSource', {
-  type: "String",
+  type: Inputs.TagSourceType,
   description: undefined,
   nullable: false,
   resolve: (parent) => parent.type,

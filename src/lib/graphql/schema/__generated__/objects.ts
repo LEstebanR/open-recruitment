@@ -1243,7 +1243,6 @@ export {
 } from './Candidate';
 export {
   CandidateTagObject,
-  CandidateTagIdFieldObject,
   CandidateTagCandidateFieldObject,
   CandidateTagCandidateIdFieldObject,
   CandidateTagTagFieldObject,

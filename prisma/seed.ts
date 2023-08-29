@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, TagSourceType } from '@prisma/client'
 import { hash } from 'bcrypt'
 
 const prisma = new PrismaClient()
@@ -246,6 +246,76 @@ async function main() {
   })
 
   console.log(talentPool1)
+
+  const tags = ['Sample', 'Senior', 'Junior', 'Mid Level', 'Entry Level']
+  const sources = ['Indeed', 'Careers Site', 'Resume Sent', 'LinkedIn', 'Referral', 'Facebook']
+
+  const defaultTags = async (companyIdS: string) => {
+    const companyId = parseInt(companyIdS)
+
+    for (const type of ['TAG', 'SOURCE']) {
+      const names = type === 'TAG' ? tags : sources
+
+      let ti = 1
+      for (const name of names) {
+        await prisma.tagSource.upsert({
+          where: { id: companyId * 1000 + (type === 'TAG' ? 0 : 100) + ti },
+          update: {},
+          create: {
+            id: companyId * 1000 + (type === 'TAG' ? 0 : 100) + ti,
+            name: name,
+            type: type === 'TAG' ? TagSourceType.TAG_CANDIDATE : TagSourceType.SOURCE,
+            companyId: companyIdS,
+          },
+        })
+        ti++
+      }
+    }
+  }
+
+  for (const company of [company1, company2, company3]) {
+    await defaultTags(company.id)
+  }
+
+  // Set relation candidate - tag_candidate
+  await prisma.candidate.update({
+    where: { id: 1 },
+    data: {
+      candidateTags: {
+        connectOrCreate: [
+          { create: { tagId: 1001 }, where: { id: 1001 } },
+          { create: { tagId: 1002 }, where: { id: 1002 } },
+        ],
+      },
+    },
+  })
+
+  await prisma.candidate.update({
+    where: { id: 2 },
+    data: {
+      candidateTags: {
+        connectOrCreate: [
+          { create: { tagId: 1003 }, where: { id: 1003 } },
+          { create: { tagId: 1004 }, where: { id: 1004 } },
+        ],
+      },
+    },
+  })
+
+  // Set relation source - candidate/referral
+  await prisma.candidate.update({
+    where: { id: 1 },
+    data: {
+      referrerId: 1101,
+    },
+  })
+
+  await prisma.candidate.update({
+    where: { id: 2 },
+    data: {
+      referrerId: 1103,
+    },
+  })
 
   const adminPhoto =
     '1' ||

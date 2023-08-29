@@ -1,30 +1,19 @@
 import React, { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { gql, useQuery } from '@apollo/client'
+import { useApolloClient, useQuery } from '@apollo/client'
 import { Select } from '@/components/UI/select'
 import { HiBuildingOffice2 } from 'react-icons/hi2'
+import { GET_ME_COMPANIES } from '../graphql/queries'
 
 interface Company {
   id: string
   name: string
 }
 
-const GET_USER_COMPANIES = gql`
-  query getCurrentUserCompanies {
-    me {
-      hiringRoles {
-        company {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
 export function SelectCompany() {
+  const client = useApolloClient()
   const { data: session, update } = useSession()
-  const { data: query } = useQuery(GET_USER_COMPANIES)
+  const { data: query } = useQuery(GET_ME_COMPANIES)
   const [selectedCompanyId, setSelectedCompanyId] = React.useState<string>(() => {
     if (session?.user?.selectedCompany) return session?.user?.selectedCompany
     return 'placeholder'
@@ -65,7 +54,13 @@ export function SelectCompany() {
       <Select
         selected={selectedCompanyId}
         list={companies}
-        onChange={(value: string) => update({ selectedCompany: value })}
+        onChange={(value: string) =>
+          update({ selectedCompany: value }).then(async () => {
+            await client.refetchQueries({
+              include: 'all', // Consider using "active" instead!
+            })
+          })
+        }
       />
     </div>
   )

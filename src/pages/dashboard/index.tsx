@@ -6,33 +6,40 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import LayoutAuthenticated from '@/components/layout/layout-authenticated'
 import { useRedirectionFlag } from '@/hooks/redirection'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
 import Loader from '@/components/UI/loader'
-import { events, sourceData, tagData, titles } from '@/utils/mockdata'
+import { events, sourceData, tagData } from '@/utils/mockdata'
 import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
+import { GET_ME_DATA_AND_COMPANIES, GET_DASHBOARD_COUNTS } from '@/components/graphql/queries'
+import { BriefcaseIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline'
 
-const GET_DATA = gql`
-  query getData {
-    me {
-      hiringRoles {
-        company {
-          name
-        }
-        id
-      }
-      email
-    }
-  }
-`
+export const countComponents = [
+  {
+    icon: UserIcon,
+    title: 'Candidates',
+    query: 'countCandidate',
+  },
+  {
+    icon: BriefcaseIcon,
+    title: 'Job openings',
+    query: 'countOffer',
+  },
+  {
+    icon: UserGroupIcon,
+    title: 'Talent Pools',
+    query: 'countTalentPool',
+  },
+]
 
 const Dashboard: NextPageWithLayout = () => {
-  const { data, loading } = useQuery(GET_DATA)
   const { data: session } = useSession()
+  const { data: meCompany, loading } = useQuery(GET_ME_DATA_AND_COMPANIES)
+  const { data: counts, loading: loadingCounts } = useQuery(GET_DASHBOARD_COUNTS)
   const company = session?.user?.selectedCompany
-    ? data?.me.hiringRoles.filter(
+    ? meCompany?.me.hiringRoles.filter(
         (company: { _typename: string; name: string; id: number }) =>
           company.id === session?.user.selectedCompany
       )[0].company
@@ -49,13 +56,13 @@ const Dashboard: NextPageWithLayout = () => {
           <div className="grid w-full grid-cols-4 gap-1 divide-x-2">
             <div className="flex flex-col">
               <p className="font-bold">{company.name}</p>
-              <p>{data?.me.email}</p>
+              <p>{meCompany?.me.email}</p>
             </div>
-            {titles.map((title) => (
-              <div className="flex items-center gap-2 px-4 text-base" key={title.title}>
-                <title.icon className="h-6 w-6" />
-                <p>{title.title}</p>
-                <p className="font-bold">{title.number}</p>
+            {countComponents.map((countElement) => (
+              <div className="flex items-center gap-2 px-4 text-base" key={countElement.title}>
+                <countElement.icon className="h-6 w-6" />
+                <p>{countElement.title}</p>
+                <p className="font-bold">{loadingCounts ? 0 : counts[countElement.query] ?? 0}</p>
               </div>
             ))}
           </div>

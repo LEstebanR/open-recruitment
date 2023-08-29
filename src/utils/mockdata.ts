@@ -1,4 +1,4 @@
-import { BriefcaseIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline'
+import { BriefcaseIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export const user = {
   isAuthenticated: true,
@@ -131,24 +131,6 @@ export const events = [
     description: 'Frontend Developer',
     href: '#',
     icon: BriefcaseIcon,
-  },
-]
-
-export const titles = [
-  {
-    icon: UserIcon,
-    title: 'Candidates',
-    number: 14,
-  },
-  {
-    icon: BriefcaseIcon,
-    title: 'Job openings',
-    number: 2,
-  },
-  {
-    icon: UserGroupIcon,
-    title: 'Talent Pools',
-    number: 2,
   },
 ]
 

@@ -9,21 +9,13 @@ import {
 
 export const CandidateTagObject = definePrismaObject('CandidateTag', {
   description: undefined,
-  findUnique: ({ id }) => ({ id }),
+  findUnique: (fields) => ({ ...fields }),
   fields: (t) => ({
-    id: t.field(CandidateTagIdFieldObject),
     candidate: t.relation('candidate', CandidateTagCandidateFieldObject),
     candidateId: t.field(CandidateTagCandidateIdFieldObject),
     tag: t.relation('tag', CandidateTagTagFieldObject),
     tagId: t.field(CandidateTagTagIdFieldObject),
   }),
-});
-
-export const CandidateTagIdFieldObject = defineFieldObject('CandidateTag', {
-  type: "ID",
-  description: undefined,
-  nullable: false,
-  resolve: (parent) => String(parent.id),
 });
 
 export const CandidateTagCandidateFieldObject = defineRelationObject('CandidateTag', 'candidate', {

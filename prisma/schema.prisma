@@ -218,10 +218,16 @@ model DisqualifyReason {
   matches   Match[]
 }
 
+enum TagSourceType {
+  TAG_OFFER
+  TAG_CANDIDATE
+  SOURCE
+}
+
 model TagSource {
   id                Int            @id @default(autoincrement())
   name              String
-  type              String
+  type              TagSourceType
   company           Company        @relation(fields: [companyId], references: [id])
   companyId         String
   offerTags         OfferTag[]
@@ -554,11 +560,12 @@ model Candidate {
 }
 
 model CandidateTag {
-  id          Int       @id @default(autoincrement())
   candidate   Candidate @relation(fields: [candidateId], references: [id])
   candidateId Int
   tag         TagSource @relation(fields: [tagId], references: [id])
   tagId       Int
+
+  @@unique([candidateId, tagId])
 }
 
 model CandidateCustomFields {
