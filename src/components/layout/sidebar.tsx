@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { GoBriefcase, GoGraph, GoHome, GoInbox, GoPeople, GoPersonAdd, GoRss } from 'react-icons/go'
 import { IoMdSettings } from 'react-icons/io'
 import { Tooltip } from 'react-tooltip'
-import { classNames } from '@/components/utils'
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 
 const roots = [

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { builder } from '../builder'
-import utils from './utils'
+import { utils } from './utils'
 import * as User from './User'
 // import * as Account from './Account'
 // import * as Session from './Session'
@@ -13,7 +13,7 @@ import * as Company from './Company'
 // import * as CompanyMetadata from './CompanyMetadata'
 // import * as Department from './Department'
 // import * as DisqualifyReason from './DisqualifyReason'
-// import * as TagSource from './TagSource'
+import * as TagSource from './TagSource'
 // import * as AuditLog from './AuditLog'
 // import * as MeetingRoom from './MeetingRoom'
 // import * as EventSchedule from './EventSchedule'
@@ -95,6 +95,14 @@ export const Cruds: Record<
       count: TalentPool.countTalentPoolQueryObject,
     },
     mutations: AutoCruds.TalentPool.mutations,
+  },
+  TagSource: {
+    Object: AutoCruds.TagSource.Object,
+    queries: {
+      ...AutoCruds.TagSource.queries,
+      findMany: TagSource.findManyTagSourceQueryObject,
+    },
+    mutations: AutoCruds.TagSource.mutations,
   },
 }
 

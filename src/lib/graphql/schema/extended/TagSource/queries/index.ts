@@ -1,1 +1,1 @@
-export { countTagSourceQueryObject } from './count.base'
+export { findManyTagSourceQueryObject } from './findMany'

@@ -1,1 +1,1 @@
-export { countTagSourceQueryObject } from './queries'
+export { findManyTagSourceQueryObject } from './queries'

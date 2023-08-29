@@ -2,9 +2,9 @@ import React from 'react'
 import Link from 'next/link'
 import { Cog6ToothIcon } from '@heroicons/react/24/outline' // Importa el icono aquí
 
-type Tag = {
+export type Tag = {
   id: number
-  type: string
+  name: string
   number: number
 }
 
@@ -23,12 +23,17 @@ const FilterTag = ({ tagData, label }: FilterTagProps) => {
       {
         <div className="flex flex-wrap gap-2">
           {tagData.map((tag: Tag) => (
-            <Link href={`/candidates?tag=${tag.type}`} key={tag.id}>
+            <Link
+              href={`/candidates?${
+                label.toLowerCase() === 'source' ? 'source' : 'tag'
+              }=${tag.name.toLowerCase()}`}
+              key={tag.id}
+            >
               <div
                 className="flex items-center justify-center gap-2 divide-x-2 rounded-md border px-4 py-2"
                 key={tag.id}
               >
-                <p>{tag.type}</p>
+                <p>{tag.name}</p>
                 <p className="pl-2 font-bold">{tag.number}</p>
               </div>
             </Link>

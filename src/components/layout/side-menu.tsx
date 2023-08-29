@@ -17,7 +17,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { classNames } from '@/components/utils'
+import classNames from 'classnames'
 
 type childrenNavigationItem = {
   name: string
@@ -157,12 +157,20 @@ export default function SideMenu({ menu }: { menu?: string }) {
                 <Link
                   href={item.href}
                   className={classNames(
-                    router.asPath === item.href ? 'bg-gray-50' : 'hover:bg-gray-50',
+                    router.asPath === item.href
+                      ? 'bg-gray-100 text-primary-500'
+                      : 'hover:bg-gray-100',
                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700'
                   )}
                 >
                   {item.icon && (
-                    <item.icon className="h-6 w-6 shrink-0 text-gray-400" aria-hidden="true" />
+                    <item.icon
+                      className={classNames(
+                        router.asPath === item.href ? 'text-primary-500' : '',
+                        'h-6 w-6 shrink-0 text-gray-400'
+                      )}
+                      aria-hidden="true"
+                    />
                   )}
                   {item.name}
                 </Link>
@@ -190,7 +198,10 @@ export default function SideMenu({ menu }: { menu?: string }) {
                         >
                           {item.icon && (
                             <item.icon
-                              className="h-6 w-6 shrink-0 text-gray-400"
+                              className={classNames(
+                                router.asPath === item.href ? 'text-primary-500' : '',
+                                'h-6 w-6 shrink-0 text-gray-400'
+                              )}
                               aria-hidden="true"
                             />
                           )}
@@ -211,8 +222,8 @@ export default function SideMenu({ menu }: { menu?: string }) {
                                   href={subItem.href}
                                   className={classNames(
                                     router.asPath === subItem.href
-                                      ? 'bg-gray-50'
-                                      : 'hover:bg-gray-50',
+                                      ? 'bg-gray-100 text-primary-500'
+                                      : 'hover:bg-gray-100',
                                     'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
                                   )}
                                 >

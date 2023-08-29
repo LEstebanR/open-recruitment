@@ -13,7 +13,14 @@ import { events, sourceData, tagData } from '@/utils/mockdata'
 import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
-import { GET_ME_DATA_AND_COMPANIES, GET_DASHBOARD_COUNTS } from '@/components/graphql/queries'
+import type { Tag as filterTagType } from '@/components/dashboard/filter-tag'
+
+import {
+  GET_ME_DATA_AND_COMPANIES,
+  GET_DASHBOARD_COUNTS,
+  get_tagSources_variables,
+  GET_TAGSOURCES,
+} from '@/components/graphql/queries'
 import { BriefcaseIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export const countComponents = [
@@ -34,10 +41,35 @@ export const countComponents = [
   },
 ]
 
+const filterTagSourceData = (tagData: any): filterTagType[] => {
+  const filterTags: filterTagType[] = []
+
+  if (tagData) {
+    tagData.findManyTagSource?.map(
+      (tag: { id: number; name: string; candidateTags: Record<string, string>[] }) => {
+        filterTags.push({
+          id: tag?.id,
+          name: tag?.name,
+          number: tag?.candidateTags?.length ?? 0,
+        })
+      }
+    )
+  }
+
+  return filterTags
+}
+
 const Dashboard: NextPageWithLayout = () => {
   const { data: session } = useSession()
   const { data: meCompany, loading } = useQuery(GET_ME_DATA_AND_COMPANIES)
   const { data: counts, loading: loadingCounts } = useQuery(GET_DASHBOARD_COUNTS)
+  const { data: tagData, loading: loadingTags } = useQuery(GET_TAGSOURCES, {
+    variables: get_tagSources_variables(),
+  })
+  const { data: sourceData, loading: loadingSources } = useQuery(GET_TAGSOURCES, {
+    variables: get_tagSources_variables(6, 'SOURCE'),
+  })
+
   const company = session?.user?.selectedCompany
     ? meCompany?.me.hiringRoles.filter(
         (company: { _typename: string; name: string; id: number }) =>
@@ -69,8 +101,8 @@ const Dashboard: NextPageWithLayout = () => {
           <RecentEvents events={events} />
           <AppliedGraph />
           <div className="grid w-full grid-cols-2 gap-1">
-            <FilterTag tagData={tagData} label="Tag" />
-            <FilterTag tagData={sourceData} label="Source" />
+            <FilterTag tagData={filterTagSourceData(tagData)} label="Tag" />
+            <FilterTag tagData={filterTagSourceData(sourceData)} label="Source" />
           </div>
         </div>
       )}

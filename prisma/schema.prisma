@@ -233,6 +233,8 @@ model TagSource {
   offerTags         OfferTag[]
   candidateReferrer Candidate?     @relation("referrer")
   candidateTags     CandidateTag[]
+
+  @@unique([companyId, type, name])
 }
 
 model AuditLog {

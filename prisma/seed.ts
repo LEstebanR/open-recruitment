@@ -283,8 +283,14 @@ async function main() {
     data: {
       candidateTags: {
         connectOrCreate: [
-          { create: { tagId: 1001 }, where: { id: 1001 } },
-          { create: { tagId: 1002 }, where: { id: 1002 } },
+          {
+            create: { tagId: 1001 },
+            where: { candidateId_tagId: { tagId: 1001, candidateId: 1 } },
+          },
+          {
+            create: { tagId: 1002 },
+            where: { candidateId_tagId: { tagId: 1002, candidateId: 1 } },
+          },
         ],
       },
     },
@@ -295,8 +301,18 @@ async function main() {
     data: {
       candidateTags: {
         connectOrCreate: [
-          { create: { tagId: 1003 }, where: { id: 1003 } },
-          { create: { tagId: 1004 }, where: { id: 1004 } },
+          {
+            create: { tagId: 1002 },
+            where: { candidateId_tagId: { tagId: 1002, candidateId: 2 } },
+          },
+          {
+            create: { tagId: 1003 },
+            where: { candidateId_tagId: { tagId: 1003, candidateId: 2 } },
+          },
+          {
+            create: { tagId: 1004 },
+            where: { candidateId_tagId: { tagId: 1004, candidateId: 2 } },
+          },
         ],
       },
     },
