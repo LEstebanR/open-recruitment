@@ -557,6 +557,8 @@ model Candidate {
   SharedCandidateLink SharedCandidateLink[]
   company             Company                 @relation(fields: [companyId], references: [id])
   companyId           String
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
 
   @@unique([email, companyId])
 }

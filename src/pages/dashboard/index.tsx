@@ -67,7 +67,7 @@ const Dashboard: NextPageWithLayout = () => {
     variables: get_tagSources_variables(),
   })
   const { data: sourceData, loading: loadingSources } = useQuery(GET_TAGSOURCES, {
-    variables: get_tagSources_variables(6, 'SOURCE'),
+    variables: get_tagSources_variables(5, 'SOURCE'),
   })
 
   const company = session?.user?.selectedCompany
