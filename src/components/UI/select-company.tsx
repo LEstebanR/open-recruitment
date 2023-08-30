@@ -26,6 +26,8 @@ export function SelectCompany() {
     await client.refetchQueries({
       include: ['GET_TAGSOURCES'], // Consider using "active" instead!
       updateCache(cache) {
+        console.log('cahceuodate')
+        console.log(cache)
         cache.evict({ fieldName: 'GET_TAGSOURCES' })
       },
       onQueryUpdated(observableQuery) {
