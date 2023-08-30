@@ -30,9 +30,17 @@ export function SelectCompany() {
       )
     } else if (selectedCompany) {
       localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
-      update({ selectedCompany: selectedCompany }).then()
+      update({ selectedCompany: selectedCompany }).then(async () => {
+        await client.refetchQueries({
+          include: 'all', // Consider using "active" instead!
+        })
+      })
     } else if (query?.me.hiringRoles) {
-      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then()
+      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then(async () => {
+        await client.refetchQueries({
+          include: 'all', // Consider using "active" instead!
+        })
+      })
     }
   }, [session?.user.selectedCompany, query?.me?.hiringRoles, session?.user.email, update])
 
