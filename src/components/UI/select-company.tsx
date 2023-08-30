@@ -29,6 +29,7 @@ export function SelectCompany() {
         console.log('cahceuodate')
         console.log(cache)
         cache.evict({ fieldName: 'GET_TAGSOURCES' })
+        cache.reset()
       },
       onQueryUpdated(observableQuery) {
         // Logging and/or debugger breakpoints can be useful in development to
@@ -47,6 +48,7 @@ export function SelectCompany() {
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
     if (session?.user?.selectedCompany) {
+      refetchAll()
       setSelectedCompanyId(session.user.selectedCompany)
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
