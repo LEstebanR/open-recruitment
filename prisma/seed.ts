@@ -191,7 +191,7 @@ async function main() {
       email: 'candidate2@admin.com',
       phone: '1234123123',
       educationLevel: 'Bachelors degree',
-      socials: ['https://twitter.com/@candidate1'],
+      socials: ['https://twitter.com/@candidate2'],
       salaryExpectation: '5000',
       companyId: company1.id,
       birthDate: new Date('1993-01-01'),
@@ -207,14 +207,46 @@ async function main() {
       email: 'candidate3@admin.com',
       phone: '1234123123',
       educationLevel: 'Bachelors degree',
-      socials: ['https://twitter.com/@candidate1'],
+      socials: ['https://twitter.com/@candidate3'],
       salaryExpectation: '5000',
       companyId: company1.id,
       birthDate: new Date('1993-01-01'),
     },
   })
 
-  console.log(candidate3)
+  const candidate4 = await prisma.candidate.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      firstName: 'Candidate 4',
+      lastName: 'Number 4',
+      email: 'candidate4@admin.com',
+      phone: '1234123123',
+      educationLevel: 'High School',
+      socials: ['https://twitter.com/@candidate4'],
+      salaryExpectation: '1500',
+      companyId: company1.id,
+      birthDate: new Date('1994-01-01'),
+    },
+  })
+
+  const candidate5 = await prisma.candidate.upsert({
+    where: { id: 5 },
+    update: {},
+    create: {
+      firstName: 'Candidate 5',
+      lastName: 'Number 5',
+      email: 'candidate5@admin.com',
+      phone: '1234123123',
+      educationLevel: 'Postgraduate',
+      socials: ['https://twitter.com/@candidate5'],
+      salaryExpectation: '10000',
+      companyId: company1.id,
+      birthDate: new Date('1995-01-01'),
+    },
+  })
+
+  console.log(candidate5)
 
   const offer1 = await prisma.offer.upsert({
     where: { id: 1 },

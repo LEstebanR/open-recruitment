@@ -22,6 +22,9 @@ export function SelectCompany() {
   const refetchAll = useCallback(async () => {
     await client.refetchQueries({
       include: 'all', // Consider using "active" instead!
+      updateCache(cache) {
+        cache.evict({ fieldName: 'GET_TAGSOURCES' })
+      },
     })
   }, [client])
 
