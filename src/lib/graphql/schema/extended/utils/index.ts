@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { me } from './me'
 
 export const utils = {
@@ -13,13 +14,13 @@ export const defaultPrismaQueryOptions = async ({
   method,
   defaultValue = {},
 }: {
-  query?
-  context
-  args
-  prisma
-  model
-  method
-  defaultValue?
+  query?: any
+  context: any
+  args: any
+  prisma: any
+  model: any
+  method: any
+  defaultValue?: any
 }) => {
   const selectedCompany = context?.session?.user?.selectedCompany
   const whereCompanyFromSession = {

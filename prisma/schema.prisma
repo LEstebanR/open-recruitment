@@ -569,7 +569,7 @@ model CandidateTag {
   tag         TagSource @relation(fields: [tagId], references: [id])
   tagId       Int
 
-  @@unique([candidateId, tagId])
+  @@id([candidateId, tagId])
 }
 
 model CandidateCustomFields {
