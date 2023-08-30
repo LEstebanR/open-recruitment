@@ -48,7 +48,7 @@ export function SelectCompany() {
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
     if (session?.user?.selectedCompany) {
-      refetchAll()
+      //refetchAll()
       setSelectedCompanyId(session.user.selectedCompany)
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
