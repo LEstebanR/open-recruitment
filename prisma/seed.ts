@@ -211,6 +211,7 @@ async function main() {
       salaryExpectation: '5000',
       companyId: company1.id,
       birthDate: new Date('1993-01-01'),
+      createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
     },
   })
 
@@ -227,6 +228,7 @@ async function main() {
       salaryExpectation: '1500',
       companyId: company1.id,
       birthDate: new Date('1994-01-01'),
+      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     },
   })
 
@@ -243,6 +245,7 @@ async function main() {
       salaryExpectation: '10000',
       companyId: company1.id,
       birthDate: new Date('1995-01-01'),
+      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
     },
   })
 

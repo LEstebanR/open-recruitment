@@ -70,6 +70,9 @@ const Dashboard: NextPageWithLayout = () => {
     variables: get_tagSources_variables(5, 'SOURCE'),
   })
 
+  console.log('render dashdoard')
+  console.log(tagData)
+
   const company = session?.user?.selectedCompany
     ? meCompany?.me.hiringRoles.filter(
         (company: { _typename: string; name: string; id: number }) =>

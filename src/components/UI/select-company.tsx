@@ -19,6 +19,8 @@ export function SelectCompany() {
     return 'placeholder'
   })
 
+  console.log('re-render select-company')
+
   const refetchAll = useCallback(async () => {
     console.log('asdfasdfasdfasdfasdf')
     await client.refetchQueries({
@@ -38,6 +40,8 @@ export function SelectCompany() {
   }, [client])
 
   useEffect(() => {
+    console.log('use-effect select-company')
+
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
     if (session?.user?.selectedCompany) {
