@@ -38,31 +38,52 @@ export const GET_DASHBOARD_COUNTS = gql`
 export const GET_TAGSOURCES = gql`
   query GET_TAGSOURCES(
     $where: TagSourceWhereInput
+    $where2: TagSourceWhereInput
     $take: Int
     $orderBy: [TagSourceOrderByWithRelationInput!]
+    $orderBy2: [TagSourceOrderByWithRelationInput!]
     $distinct: [CandidateTagScalarFieldEnum!]
   ) {
-    findManyTagSource(where: $where, take: $take, orderBy: $orderBy) {
+    tags: findManyTagSource(where: $where, take: $take, orderBy: $orderBy) {
       id
       name
-      candidateTags(distinct: $distinct) {
+      count: candidateTags(distinct: $distinct) {
         candidateId
+      }
+    }
+    sources: findManyTagSource(where: $where2, take: $take, orderBy: $orderBy2) {
+      id
+      name
+      count: candidateReferrer {
+        id
       }
     }
   }
 `
 
-export const get_tagSources_variables = (take = 5, type = 'TAG_CANDIDATE', order = 'desc') => {
+export const get_tagSources_variables = (take = 5, order = 'desc') => {
   return {
     where: {
       type: {
-        equals: type,
+        equals: 'TAG_CANDIDATE',
+      },
+    },
+    where2: {
+      type: {
+        equals: 'SOURCE',
       },
     },
     take: take,
     orderBy: [
       {
         candidateTags: {
+          _count: order,
+        },
+      },
+    ],
+    orderBy2: [
+      {
+        candidateReferrer: {
           _count: order,
         },
       },

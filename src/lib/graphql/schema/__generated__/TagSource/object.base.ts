@@ -17,7 +17,7 @@ export const TagSourceObject = definePrismaObject('TagSource', {
     company: t.relation('company', TagSourceCompanyFieldObject),
     companyId: t.field(TagSourceCompanyIdFieldObject),
     offerTags: t.relation('offerTags', TagSourceOfferTagsFieldObject(t)),
-    candidateReferrer: t.relation('candidateReferrer', TagSourceCandidateReferrerFieldObject),
+    candidateReferrer: t.relation('candidateReferrer', TagSourceCandidateReferrerFieldObject(t)),
     candidateTags: t.relation('candidateTags', TagSourceCandidateTagsFieldObject(t)),
   }),
 });
@@ -82,12 +82,30 @@ export const TagSourceOfferTagsFieldObject = defineRelationFunction('TagSource',
   }),
 );
 
-export const TagSourceCandidateReferrerFieldObject = defineRelationObject('TagSource', 'candidateReferrer', {
-  description: undefined,
-  nullable: true,
-  args: undefined,
-  query: undefined,
-});
+export const TagSourceCandidateReferrerFieldArgs = builder.args((t) => ({
+  where: t.field({ type: Inputs.CandidateWhereInput, required: false }),
+  orderBy: t.field({ type: [Inputs.CandidateOrderByWithRelationInput], required: false }),
+  cursor: t.field({ type: Inputs.CandidateWhereUniqueInput, required: false }),
+  take: t.field({ type: 'Int', required: false }),
+  skip: t.field({ type: 'Int', required: false }),
+  distinct: t.field({ type: [Inputs.CandidateScalarFieldEnum], required: false }),
+}))
+
+export const TagSourceCandidateReferrerFieldObject = defineRelationFunction('TagSource', (t) =>
+  defineRelationObject('TagSource', 'candidateReferrer', {
+    description: undefined,
+    nullable: false,
+    args: TagSourceCandidateReferrerFieldArgs,
+    query: (args) => ({
+      where: args.where || undefined,
+      cursor: args.cursor || undefined,
+      take: args.take || undefined,
+      distinct: args.distinct || undefined,
+      skip: args.skip || undefined,
+      orderBy: args.orderBy || undefined,
+    }),
+  }),
+);
 
 export const TagSourceCandidateTagsFieldArgs = builder.args((t) => ({
   where: t.field({ type: Inputs.CandidateTagWhereInput, required: false }),

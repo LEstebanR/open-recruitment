@@ -473,7 +473,9 @@ CREATE TABLE "Candidate" (
 -- CreateTable
 CREATE TABLE "CandidateTag" (
     "candidateId" INTEGER NOT NULL,
-    "tagId" INTEGER NOT NULL
+    "tagId" INTEGER NOT NULL,
+
+    CONSTRAINT "CandidateTag_pkey" PRIMARY KEY ("candidateId","tagId")
 );
 
 -- CreateTable
@@ -600,16 +602,10 @@ CREATE UNIQUE INDEX "Offer_pipelineTemplateId_key" ON "Offer"("pipelineTemplateI
 CREATE UNIQUE INDEX "Offer_autoConfirmationEmailId_key" ON "Offer"("autoConfirmationEmailId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Candidate_referrerId_key" ON "Candidate"("referrerId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Candidate_cvId_key" ON "Candidate"("cvId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Candidate_email_companyId_key" ON "Candidate"("email", "companyId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CandidateTag_candidateId_tagId_key" ON "CandidateTag"("candidateId", "tagId");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_photoId_fkey" FOREIGN KEY ("photoId") REFERENCES "Attachment"("id") ON DELETE SET NULL ON UPDATE CASCADE;

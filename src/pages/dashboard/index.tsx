@@ -9,7 +9,7 @@ import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
 import Loader from '@/components/UI/loader'
-import { events, sourceData, tagData } from '@/utils/mockdata'
+import { events } from '@/utils/mockdata'
 import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
@@ -41,19 +41,19 @@ export const countComponents = [
   },
 ]
 
-const filterTagSourceData = (tagData: any): filterTagType[] => {
+const filterTagSourceData = (
+  tagSource: { id: number; name: string; count: Record<string, string>[] }[] | undefined
+): filterTagType[] => {
   const filterTags: filterTagType[] = []
 
-  if (tagData) {
-    tagData.findManyTagSource?.map(
-      (tag: { id: number; name: string; candidateTags: Record<string, string>[] }) => {
-        filterTags.push({
-          id: tag?.id,
-          name: tag?.name,
-          number: tag?.candidateTags?.length ?? 0,
-        })
-      }
-    )
+  if (tagSource) {
+    tagSource.map((tag: { id: number; name: string; count: Record<string, string>[] }) => {
+      filterTags.push({
+        id: tag?.id,
+        name: tag?.name,
+        number: tag?.count?.length ?? 0,
+      })
+    })
   }
 
   return filterTags
@@ -63,15 +63,12 @@ const Dashboard: NextPageWithLayout = () => {
   const { data: session } = useSession()
   const { data: meCompany, loading } = useQuery(GET_ME_DATA_AND_COMPANIES)
   const { data: counts, loading: loadingCounts } = useQuery(GET_DASHBOARD_COUNTS)
-  const { data: tagData, loading: loadingTags } = useQuery(GET_TAGSOURCES, {
+  const { data: tagSourceData } = useQuery(GET_TAGSOURCES, {
     variables: get_tagSources_variables(),
-  })
-  const { data: sourceData, loading: loadingSources } = useQuery(GET_TAGSOURCES, {
-    variables: get_tagSources_variables(5, 'SOURCE'),
   })
 
   console.log('render dashdoard')
-  console.log(tagData)
+  console.log(tagSourceData)
 
   const company = session?.user?.selectedCompany
     ? meCompany?.me.hiringRoles.filter(
@@ -104,8 +101,8 @@ const Dashboard: NextPageWithLayout = () => {
           <RecentEvents events={events} />
           <AppliedGraph />
           <div className="grid w-full grid-cols-2 gap-1">
-            <FilterTag tagData={filterTagSourceData(tagData)} label="Tag" />
-            <FilterTag tagData={filterTagSourceData(sourceData)} label="Source" />
+            <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
+            <FilterTag tagData={filterTagSourceData(tagSourceData?.sources)} label="Source" />
           </div>
         </div>
       )}

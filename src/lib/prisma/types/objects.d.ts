@@ -407,7 +407,7 @@ export default interface PrismaTypes {
         Create: {};
         Update: {};
         RelationName: "company" | "offerTags" | "candidateReferrer" | "candidateTags";
-        ListRelations: "offerTags" | "candidateTags";
+        ListRelations: "offerTags" | "candidateReferrer" | "candidateTags";
         Relations: {
             company: {
                 Shape: Company;
@@ -418,7 +418,7 @@ export default interface PrismaTypes {
                 Name: "OfferTag";
             };
             candidateReferrer: {
-                Shape: Candidate | null;
+                Shape: Candidate[];
                 Name: "Candidate";
             };
             candidateTags: {

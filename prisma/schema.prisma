@@ -231,7 +231,7 @@ model TagSource {
   company           Company        @relation(fields: [companyId], references: [id])
   companyId         String
   offerTags         OfferTag[]
-  candidateReferrer Candidate?     @relation("referrer")
+  candidateReferrer Candidate[]    @relation("referrer")
   candidateTags     CandidateTag[]
 
   @@unique([companyId, type, name])
@@ -534,7 +534,7 @@ model Candidate {
   coverLetter         String?
   birthDate           DateTime
   referrer            TagSource?              @relation("referrer", fields: [referrerId], references: [id])
-  referrerId          Int?                    @unique
+  referrerId          Int?
   cv                  Attachment?             @relation(fields: [cvId], references: [id])
   cvId                Int?                    @unique
   educationLevel      String? // Should enum

@@ -364,7 +364,28 @@ async function main() {
   await prisma.candidate.update({
     where: { id: 2 },
     data: {
+      referrerId: 1102,
+    },
+  })
+
+  await prisma.candidate.update({
+    where: { id: 3 },
+    data: {
+      referrerId: 1102,
+    },
+  })
+
+  await prisma.candidate.update({
+    where: { id: 4 },
+    data: {
       referrerId: 1103,
+    },
+  })
+
+  await prisma.candidate.update({
+    where: { id: 5 },
+    data: {
+      referrerId: 1104,
     },
   })
 
