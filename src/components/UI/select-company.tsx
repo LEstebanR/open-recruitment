@@ -24,21 +24,21 @@ export function SelectCompany() {
   const refetchAll = useCallback(async () => {
     console.log('asdfasdfasdfasdfasdf')
     await client.refetchQueries({
-      include: ['GET_TAGSOURCES'], // Consider using "active" instead!
-      updateCache(cache) {
-        console.log('cahceuodate')
-        console.log(cache)
-        cache.evict({ fieldName: 'GET_TAGSOURCES' })
-        cache.reset()
-      },
-      onQueryUpdated(observableQuery) {
-        // Logging and/or debugger breakpoints can be useful in development to
-        // understand what client.refetchQueries is doing.
-        console.log(`Examining ObservableQuery ${observableQuery.queryName}`)
-        // Proceed with the default refetching behavior, as if onQueryUpdated
-        // was not provided.
-        return true
-      },
+      include: ['all'], // Consider using "active" instead!
+      //updateCache(cache) {
+      //  console.log('cahceuodate')
+      //  console.log(cache)
+      //  cache.evict({ fieldName: 'GET_TAGSOURCES' })
+      //  cache.reset()
+      //},
+      //onQueryUpdated(observableQuery) {
+      //  // Logging and/or debugger breakpoints can be useful in development to
+      //  // understand what client.refetchQueries is doing.
+      //  console.log(`Examining ObservableQuery ${observableQuery.queryName}`)
+      //  // Proceed with the default refetching behavior, as if onQueryUpdated
+      //  // was not provided.
+      //  return true
+      //},
     })
   }, [client])
 
@@ -48,7 +48,7 @@ export function SelectCompany() {
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
     if (session?.user?.selectedCompany) {
-      //refetchAll()
+      refetchAll()
       setSelectedCompanyId(session.user.selectedCompany)
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
