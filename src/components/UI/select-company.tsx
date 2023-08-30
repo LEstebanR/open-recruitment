@@ -20,10 +20,19 @@ export function SelectCompany() {
   })
 
   const refetchAll = useCallback(async () => {
+    console.log('asdfasdfasdfasdfasdf')
     await client.refetchQueries({
-      include: 'all', // Consider using "active" instead!
+      include: ['GET_TAGSOURCES'], // Consider using "active" instead!
       updateCache(cache) {
         cache.evict({ fieldName: 'GET_TAGSOURCES' })
+      },
+      onQueryUpdated(observableQuery) {
+        // Logging and/or debugger breakpoints can be useful in development to
+        // understand what client.refetchQueries is doing.
+        console.log(`Examining ObservableQuery ${observableQuery.queryName}`)
+        // Proceed with the default refetching behavior, as if onQueryUpdated
+        // was not provided.
+        return true
       },
     })
   }, [client])
