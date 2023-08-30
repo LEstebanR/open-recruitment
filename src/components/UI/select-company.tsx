@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { Select } from '@/components/UI/select'
@@ -19,6 +19,12 @@ export function SelectCompany() {
     return 'placeholder'
   })
 
+  const refetchAll = useCallback(async () => {
+    await client.refetchQueries({
+      include: 'all', // Consider using "active" instead!
+    })
+  }, [client])
+
   useEffect(() => {
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
@@ -30,19 +36,17 @@ export function SelectCompany() {
       )
     } else if (selectedCompany) {
       localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
-      update({ selectedCompany: selectedCompany }).then(async () => {
-        await client.refetchQueries({
-          include: 'all', // Consider using "active" instead!
-        })
-      })
+      update({ selectedCompany: selectedCompany }).then(refetchAll)
     } else if (query?.me.hiringRoles) {
-      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then(async () => {
-        await client.refetchQueries({
-          include: 'all', // Consider using "active" instead!
-        })
-      })
+      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then(refetchAll)
     }
-  }, [session?.user.selectedCompany, query?.me?.hiringRoles, session?.user.email, update])
+  }, [
+    session?.user?.selectedCompany,
+    query?.me?.hiringRoles,
+    session?.user?.email,
+    update,
+    refetchAll,
+  ])
 
   let companies = [{ label: 'Select a Company...', value: 'placeholder', placeholder: true }]
 
@@ -62,13 +66,7 @@ export function SelectCompany() {
       <Select
         selected={selectedCompanyId}
         list={companies}
-        onChange={(value: string) =>
-          update({ selectedCompany: value }).then(async () => {
-            await client.refetchQueries({
-              include: 'all', // Consider using "active" instead!
-            })
-          })
-        }
+        onChange={(value: string) => update({ selectedCompany: value }).then(refetchAll)}
       />
     </div>
   )
