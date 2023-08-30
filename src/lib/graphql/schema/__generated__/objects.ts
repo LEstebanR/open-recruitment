@@ -1218,6 +1218,8 @@ export {
   CandidateSharedCandidateLinkFieldObject,
   CandidateCompanyFieldObject,
   CandidateCompanyIdFieldObject,
+  CandidateCreatedAtFieldObject,
+  CandidateUpdatedAtFieldObject,
   createManyCandidateMutation,
   createOneCandidateMutation,
   deleteManyCandidateMutation,

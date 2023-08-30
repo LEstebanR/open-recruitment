@@ -45,6 +45,8 @@ export const CandidateObject = definePrismaObject('Candidate', {
     SharedCandidateLink: t.relation('SharedCandidateLink', CandidateSharedCandidateLinkFieldObject(t)),
     company: t.relation('company', CandidateCompanyFieldObject),
     companyId: t.field(CandidateCompanyIdFieldObject),
+    createdAt: t.field(CandidateCreatedAtFieldObject),
+    updatedAt: t.field(CandidateUpdatedAtFieldObject),
   }),
 });
 
@@ -446,4 +448,18 @@ export const CandidateCompanyIdFieldObject = defineFieldObject('Candidate', {
   description: undefined,
   nullable: false,
   resolve: (parent) => parent.companyId,
+});
+
+export const CandidateCreatedAtFieldObject = defineFieldObject('Candidate', {
+  type: Inputs.DateTime,
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.createdAt,
+});
+
+export const CandidateUpdatedAtFieldObject = defineFieldObject('Candidate', {
+  type: Inputs.DateTime,
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.updatedAt,
 });

@@ -33,7 +33,9 @@ export {
   CandidateFollowsFieldObject,
   CandidateSharedCandidateLinkFieldObject,
   CandidateCompanyFieldObject,
-  CandidateCompanyIdFieldObject
+  CandidateCompanyIdFieldObject,
+  CandidateCreatedAtFieldObject,
+  CandidateUpdatedAtFieldObject
 } from './object.base';
 export {
   createManyCandidateMutation,
