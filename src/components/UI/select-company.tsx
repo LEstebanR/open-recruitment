@@ -21,7 +21,7 @@ export function SelectCompany() {
 
   const refetchAll = useCallback(async () => {
     await client.refetchQueries({
-      include: 'active', // Consider using "active" instead!
+      include: 'all', // Consider using "active" instead!
       updateCache(cache) {
         cache.reset()
       },
@@ -40,7 +40,7 @@ export function SelectCompany() {
     const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
 
     if (session?.user?.selectedCompany) {
-      refetchAll().then()
+      refetchAll()
       setSelectedCompanyId(session.user.selectedCompany)
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),

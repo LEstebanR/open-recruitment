@@ -1,13 +1,23 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useEffect, useMemo, useReducer } from 'react'
 import { Select } from '../UI/select'
 import { Chart, GoogleChartOptions } from 'react-google-charts'
 import { appliesData } from '../../utils/mockdata'
-import { subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'
+import {
+  endOfMonth,
+  endOfWeek,
+  format,
+  parseISO,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  subDays,
+} from 'date-fns'
 import { useQuery } from '@apollo/client'
 import {
   GET_CANDIDATES_CREATED_AT_BY_DATE,
   get_candidates_created_at_by_date_variables,
 } from '../graphql/queries'
+import { useSession } from 'next-auth/react'
 
 export const filterGraphOptions = [
   { label: 'Last 7 days', value: 'last7days' },
@@ -60,7 +70,58 @@ function reducerTimeRange(state: GoogleChartOptions, action: string) {
   }
 }
 
-const AppliedGraph = () => {
+const dateFormat = 'MM-dd-yyyy'
+
+function countRecordsByDay(createdAtStrings: string[]): [string, number][] {
+  const countsByDay: Record<string, number> = {}
+
+  createdAtStrings.forEach((createdAtString) => {
+    const createdAtDate = parseISO(createdAtString)
+    const localDate = startOfDay(createdAtDate) // Adjust to the local date by setting time to 00:00:00
+    const localDateString = format(localDate, dateFormat)
+
+    if (!countsByDay[localDateString]) {
+      countsByDay[localDateString] = 1
+    } else {
+      countsByDay[localDateString]++
+    }
+  })
+
+  // Convert countsByDay to an array of arrays with [date, count]
+  const resultArray: [string, number][] = Object.entries(countsByDay)
+
+  // Sort the resultArray by date (first element of each sub-array)
+  resultArray.sort((a, b) => a[0].localeCompare(b[0]))
+
+  return resultArray
+}
+
+function fillMissingDaysWithDefault(
+  countsArray: [string, number][],
+  startDate: Date,
+  endDate: Date,
+  defaultCount: number
+): [string, number][] {
+  const filledCountsArray: [string, number][] = []
+  const currentDate = new Date(startDate)
+
+  while (currentDate <= endDate) {
+    const dateString = format(currentDate, dateFormat)
+    const existingEntry = countsArray.find(([date]) => date === dateString)
+
+    if (existingEntry) {
+      filledCountsArray.push(existingEntry)
+    } else {
+      filledCountsArray.push([dateString, defaultCount])
+    }
+
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+
+  return filledCountsArray
+}
+
+const AppliedGraph: React.FC = () => {
   const [selectedGraphFilter, setSelectedGraphFilter] = React.useState('last30days')
   const [chartOptions, dispatchTimeRange] = useReducer(
     reducerTimeRange,
@@ -84,17 +145,39 @@ const AppliedGraph = () => {
         chartOptions?.hAxis?.minValue,
         chartOptions?.hAxis?.maxValue
       )
-    )
+    ).then()
   }, [chartOptions, refetch])
 
-  const dataChart = React.useMemo(() => {
-    if (loadingCandidatesCreatedAt) return [['Day', 'Applicants']]
-    const data = dataCandidatesCreatedAt?.candidatesCreatedAtByDate?.map((item) => [
-      new Date(item.date), // TODO: CURRENT
-      item.count,
-    ])
-    return [['Day', 'Applicants'], ...data]
-  }, [dataCandidatesCreatedAt?.candidatesCreatedAtByDate, loadingCandidatesCreatedAt])
+  const dataChart = useMemo(() => {
+    const defaultDataChart = [
+      ['Day', 'Applicants'],
+      [new Date().toLocaleDateString(), 0],
+    ]
+
+    if (loadingCandidatesCreatedAt) return defaultDataChart
+
+    let data: [string, number][] = []
+
+    if (dataCandidatesCreatedAt?.findManyCandidate?.length) {
+      data = fillMissingDaysWithDefault(
+        countRecordsByDay(
+          dataCandidatesCreatedAt.findManyCandidate.map(
+            (item: { createdAt: string }) => item.createdAt
+          )
+        ),
+        chartOptions?.hAxis?.minValue,
+        chartOptions?.hAxis?.maxValue,
+        0
+      )
+    }
+
+    return data.length > 0 ? [['Day', 'Applicants'], ...data] : defaultDataChart
+  }, [
+    chartOptions?.hAxis?.maxValue,
+    chartOptions?.hAxis?.minValue,
+    dataCandidatesCreatedAt?.findManyCandidate,
+    loadingCandidatesCreatedAt,
+  ])
 
   return (
     <div className="w-full rounded border">
