@@ -91,7 +91,11 @@ const Dashboard: NextPageWithLayout = () => {
               <div className="flex items-center gap-2 px-4 text-base" key={countElement.title}>
                 <countElement.icon className="h-6 w-6" />
                 <p>{countElement.title}</p>
-                <p className="font-bold">{loadingCounts ? 0 : counts[countElement.query] ?? 0}</p>
+                <p className="font-bold">
+                  {!loadingCounts && counts && counts[countElement.query]
+                    ? counts[countElement.query]
+                    : 0}
+                </p>
               </div>
             ))}
           </div>
