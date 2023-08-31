@@ -82,13 +82,6 @@ export const days = [
   },
 ]
 
-export const filterGraphOptions = [
-  { label: 'Last 7 days', value: 'last7days' },
-  { label: 'Last 30 days', value: 'last30days' },
-  { label: 'This week', value: 'thisWeek' },
-  { label: 'This month', value: 'thisMonth' },
-]
-
 export const events = [
   {
     id: 1,
@@ -206,34 +199,5 @@ export const sourceData = [
 export const dataChart = [
   ['Day', 'Applicants'],
   [new Date(2023, 7, 1), 2],
-  [new Date(2023, 7, 2), 3],
-  [new Date(2023, 7, 3), 0],
-  [new Date(2023, 7, 4), 5],
-  [new Date(2023, 7, 5), 0],
-  [new Date(2023, 7, 6), 7],
-  [new Date(2023, 7, 7), 6],
-  [new Date(2023, 7, 8), 4],
-  [new Date(2023, 7, 9), 3],
-  [new Date(2023, 7, 10), 2],
-  [new Date(2023, 7, 11), 2],
-  [new Date(2023, 7, 12), 2],
-  [new Date(2023, 7, 13), 1],
-  [new Date(2023, 7, 14), 0],
-  [new Date(2023, 7, 15), 0],
-  [new Date(2023, 7, 16), 1],
-  [new Date(2023, 7, 17), 2],
-  [new Date(2023, 7, 18), 5],
-  [new Date(2023, 7, 19), 3],
-  [new Date(2023, 7, 20), 1],
-  [new Date(2023, 7, 21), 2],
-  [new Date(2023, 7, 22), 3],
-  [new Date(2023, 7, 23), 3],
-  [new Date(2023, 7, 24), 1],
-  [new Date(2023, 7, 25), 2],
-  [new Date(2023, 7, 26), 0],
-  [new Date(2023, 7, 27), 9],
-  [new Date(2023, 7, 28), 1],
-  [new Date(2023, 7, 29), 2],
-  [new Date(2023, 7, 30), 8],
   [new Date(2023, 7, 31), 9],
 ]

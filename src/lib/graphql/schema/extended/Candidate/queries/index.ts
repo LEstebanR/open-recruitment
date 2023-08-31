@@ -1,1 +1,2 @@
-export { countCandidateQueryObject } from './count.base'
+export { countCandidateQueryObject } from './count'
+export { findManyCandidateQueryObject } from './findMany'

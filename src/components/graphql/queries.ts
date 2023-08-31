@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { subDays } from 'date-fns'
 
 export const GET_ME_DATA_AND_COMPANIES = gql`
   query GET_ME_DATA_AND_COMPANIES {
@@ -89,5 +90,27 @@ export const get_tagSources_variables = (take = 5, order = 'desc') => {
       },
     ],
     distinct: 'candidateId',
+  }
+}
+
+export const GET_CANDIDATES_CREATED_AT_BY_DATE = gql`
+  query GET_CANDIDATES_CREATED_AT_BY_DATE($where: CandidateWhereInput) {
+    findManyCandidate(where: $where) {
+      createdAt
+    }
+  }
+`
+
+export const get_candidates_created_at_by_date_variables = (
+  initialDate: Date = subDays(new Date(), 30),
+  finalDate?: Date
+) => {
+  return {
+    where: {
+      createdAt: {
+        ...(initialDate ? { gte: initialDate } : {}),
+        ...(finalDate ? { lte: finalDate } : {}),
+      },
+    },
   }
 }

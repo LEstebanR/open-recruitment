@@ -1,1 +1,1 @@
-export { countCandidateQueryObject } from './queries'
+export { countCandidateQueryObject, findManyCandidateQueryObject } from './queries'
