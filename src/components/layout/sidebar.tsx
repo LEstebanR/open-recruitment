@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { GoBriefcase, GoGraph, GoHome, GoInbox, GoPeople, GoPersonAdd, GoRss } from 'react-icons/go'
 import { IoMdSettings } from 'react-icons/io'
 import { Tooltip } from 'react-tooltip'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 
 const roots = [
@@ -53,9 +53,9 @@ const Sidebar: React.FC = () => {
           <li key={item.name}>
             <Link href={item.href} data-tooltip-id="my-tooltip" data-tooltip-content={item.name}>
               <item.icon
-                className={classNames(
+                className={clsx(
                   router.asPath === item.href ? 'text-primary-500 drop-shadow-lg' : '',
-                  'w-8 h-8 text-gray-500 hover:text-black'
+                  'h-8 w-8 text-gray-500 hover:text-black'
                 )}
               ></item.icon>
             </Link>
@@ -67,7 +67,7 @@ const Sidebar: React.FC = () => {
       </ul>
       <Link href="/settings" data-tooltip-id="my-tooltip" data-tooltip-content="settings">
         <IoMdSettings
-          className={classNames(
+          className={clsx(
             router.asPath === '/settings' ? 'text-primary-500 drop-shadow-lg' : '',
             'h-8 w-8 text-gray-500 hover:text-black'
           )}

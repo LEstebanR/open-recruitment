@@ -1,18 +1,22 @@
 import React from 'react'
-import classNames from 'classnames'
+import clsx, { ClassValue } from 'clsx'
 
-const Loader: { size: string; className: any } = ({ size = 'h-32 w-32', className }) => {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <div
-        className={classNames(
-          size,
-          className,
-          'animate-spin rounded-full border-y-2 border-gray-900'
-        )}
-      ></div>
-    </div>
+const Loader: React.FC<{ size?: string; className?: ClassValue; fullScreen?: boolean }> = ({
+  size = 'h-32 w-32',
+  className,
+  fullScreen = true,
+}) => {
+  const spinner = (
+    <div
+      className={clsx(size, className, 'animate-spin rounded-full border-y-2 border-gray-900')}
+    ></div>
   )
+
+  if (fullScreen) {
+    return <div className="flex h-screen items-center justify-center">{spinner}</div>
+  }
+
+  return spinner
 }
 
 export default Loader

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 export function Select({
   selected,
@@ -38,10 +38,10 @@ export function Select({
                   <Listbox.Option
                     key={element.value}
                     className={({ active }) =>
-                      classNames(
+                      clsx(
                         active ? 'bg-primary-500 text-white' : 'text-gray-900',
-                        element.placeholder ? 'opacity-50 cursor-not-allowed' : '',
-                        'relative cursor-default select-none py-2 px-2 sm:pl-8 sm:pr-4'
+                        element.placeholder ? 'cursor-not-allowed opacity-50' : '',
+                        'relative cursor-default select-none p-2 sm:pl-8 sm:pr-4'
                       )
                     }
                     value={element.value}
@@ -50,7 +50,7 @@ export function Select({
                     {({ selected, active }) => (
                       <>
                         <span
-                          className={classNames(
+                          className={clsx(
                             selected ? 'font-semibold' : 'font-normal',
                             'block truncate'
                           )}
@@ -60,9 +60,9 @@ export function Select({
 
                         {selected ? (
                           <span
-                            className={classNames(
+                            className={clsx(
                               active ? 'text-white' : 'tex-primary-600',
-                              'absolute inset-y-0 left-0 items-center pl-1.5 hidden sm:flex'
+                              'absolute inset-y-0 left-0 hidden items-center pl-1.5 sm:flex'
                             )}
                           >
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />

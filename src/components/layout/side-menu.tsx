@@ -17,7 +17,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 type childrenNavigationItem = {
   name: string
@@ -156,16 +156,16 @@ export default function SideMenu({ menu }: { menu?: string }) {
               {!item.children && item.href ? (
                 <Link
                   href={item.href}
-                  className={classNames(
+                  className={clsx(
                     router.asPath === item.href
                       ? 'bg-gray-100 text-primary-500'
                       : 'hover:bg-gray-100',
-                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700'
+                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700'
                   )}
                 >
                   {item.icon && (
                     <item.icon
-                      className={classNames(
+                      className={clsx(
                         router.asPath === item.href ? 'text-primary-500' : '',
                         'h-6 w-6 shrink-0 text-gray-400'
                       )}
@@ -198,7 +198,7 @@ export default function SideMenu({ menu }: { menu?: string }) {
                         >
                           {item.icon && (
                             <item.icon
-                              className={classNames(
+                              className={clsx(
                                 router.asPath === item.href ? 'text-primary-500' : '',
                                 'h-6 w-6 shrink-0 text-gray-400'
                               )}
@@ -207,7 +207,7 @@ export default function SideMenu({ menu }: { menu?: string }) {
                           )}
                           {item.name}
                           <ChevronRightIcon
-                            className={classNames(
+                            className={clsx(
                               open ? 'rotate-90 text-gray-500' : 'text-gray-400',
                               'ml-auto h-5 w-5 shrink-0'
                             )}
@@ -220,11 +220,11 @@ export default function SideMenu({ menu }: { menu?: string }) {
                               <li key={subItem.name}>
                                 <Link
                                   href={subItem.href}
-                                  className={classNames(
+                                  className={clsx(
                                     router.asPath === subItem.href
                                       ? 'bg-gray-100 text-primary-500'
                                       : 'hover:bg-gray-100',
-                                    'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
+                                    'block rounded-md py-2 pl-9 pr-2 text-sm leading-6 text-gray-700'
                                   )}
                                 >
                                   {subItem.name}
