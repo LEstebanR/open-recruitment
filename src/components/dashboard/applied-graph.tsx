@@ -17,7 +17,8 @@ import {
   GET_CANDIDATES_CREATED_AT_BY_DATE,
   get_candidates_created_at_by_date_variables,
 } from '../graphql/queries'
-import { useSession } from 'next-auth/react'
+import { countRecordsByDay } from '../utils/data-parsing'
+import type { Tag as filterTagType } from '@/components/dashboard/filter-tag'
 
 export const filterGraphOptions = [
   { label: 'Last 7 days', value: 'last7days' },
@@ -26,18 +27,22 @@ export const filterGraphOptions = [
   { label: 'This month', value: 'thisMonth' },
 ]
 
+const dateFormat = 'MM-dd-yyyy'
+
 const baseChartOptions: GoogleChartOptions = {
   backgroundColor: '#fff',
   legend: { position: 'none' },
-  vAxis: { minValue: 0, maxValue: 10, gridlines: { count: 5 } },
+  vAxis: { minValue: 0, gridlines: { interval: [1] }, viewWindow: { min: 0 } },
   hAxis: {
-    format: 'M/d/yy',
-    gridlines: { count: 15 },
+    format: dateFormat,
+    gridlines: { interval: [1] },
+    minorGridlines: { count: 0 },
   },
   chartArea: { width: '95%', height: '80%' },
+  pointSize: 5,
 }
 
-function reducerTimeRange(state: GoogleChartOptions, action: string) {
+function reducerChartOptions(state: GoogleChartOptions, action: string) {
   const currentDate = new Date()
   let dates = null
 
@@ -66,66 +71,36 @@ function reducerTimeRange(state: GoogleChartOptions, action: string) {
     hAxis: {
       ...(state.hAxis ?? {}),
       ...(dates ? { minValue: dates.start, maxValue: dates.end } : {}),
+      ...(dates ? { viewWindow: { min: dates.start, max: dates.end } } : {}),
     },
   }
 }
 
-const dateFormat = 'MM-dd-yyyy'
-
-function countRecordsByDay(createdAtStrings: string[]): [string, number][] {
-  const countsByDay: Record<string, number> = {}
-
-  createdAtStrings.forEach((createdAtString) => {
-    const createdAtDate = parseISO(createdAtString)
-    const localDate = startOfDay(createdAtDate) // Adjust to the local date by setting time to 00:00:00
-    const localDateString = format(localDate, dateFormat)
-
-    if (!countsByDay[localDateString]) {
-      countsByDay[localDateString] = 1
-    } else {
-      countsByDay[localDateString]++
-    }
-  })
-
-  // Convert countsByDay to an array of arrays with [date, count]
-  const resultArray: [string, number][] = Object.entries(countsByDay)
-
-  // Sort the resultArray by date (first element of each sub-array)
-  resultArray.sort((a, b) => a[0].localeCompare(b[0]))
-
-  return resultArray
-}
-
-function fillMissingDaysWithDefault(
-  countsArray: [string, number][],
+const filterTagSourceDataByDate = (
+  tagSource: { id: number; name: string; list: Record<string, string>[] }[] | undefined,
   startDate: Date,
-  endDate: Date,
-  defaultCount: number
-): [string, number][] {
-  const filledCountsArray: [string, number][] = []
-  const currentDate = new Date(startDate)
+  endDate: Date
+): filterTagType[] => {
+  const filterTags: filterTagType[] = []
 
-  while (currentDate <= endDate) {
-    const dateString = format(currentDate, dateFormat)
-    const existingEntry = countsArray.find(([date]) => date === dateString)
+  if (tagSource) {
+    tagSource.map((tag: { id: number; name: string; list: Record<string, string>[] }) =>
+      tag.list.map((createObj) => {
+        const createdAtDate = parseISO(createObj.createdAt)
+        const localDate = startOfDay(createdAtDate) // Adjust to the local date by setting time to 00:00:00
+        const localDateString = format(localDate, dateFormat)
+      })
+    )
 
-    if (existingEntry) {
-      filledCountsArray.push(existingEntry)
-    } else {
-      filledCountsArray.push([dateString, defaultCount])
-    }
-
-    currentDate.setDate(currentDate.getDate() + 1)
+    return filterTags
   }
-
-  return filledCountsArray
 }
 
 const AppliedGraph: React.FC = () => {
   const [selectedGraphFilter, setSelectedGraphFilter] = React.useState('last30days')
-  const [chartOptions, dispatchTimeRange] = useReducer(
-    reducerTimeRange,
-    reducerTimeRange(baseChartOptions, selectedGraphFilter)
+  const [chartOptions, dispatchCartOptions] = useReducer(
+    reducerChartOptions,
+    reducerChartOptions(baseChartOptions, selectedGraphFilter)
   )
 
   const {
@@ -149,35 +124,27 @@ const AppliedGraph: React.FC = () => {
   }, [chartOptions, refetch])
 
   const dataChart = useMemo(() => {
-    const defaultDataChart = [
-      ['Day', 'Applicants'],
-      [new Date().toLocaleDateString(), 0],
+    const header = [
+      { type: 'date', label: 'Day' },
+      { type: 'number', label: 'Applicants' },
     ]
+    const defaultDataChart = [header, [new Date(), 0]]
 
     if (loadingCandidatesCreatedAt) return defaultDataChart
 
-    let data: [string, number][] = []
+    let data: [Date, number][] = []
 
     if (dataCandidatesCreatedAt?.findManyCandidate?.length) {
-      data = fillMissingDaysWithDefault(
-        countRecordsByDay(
-          dataCandidatesCreatedAt.findManyCandidate.map(
-            (item: { createdAt: string }) => item.createdAt
-          )
+      data = countRecordsByDay(
+        dataCandidatesCreatedAt.findManyCandidate.map(
+          (item: { createdAt: string }) => item.createdAt
         ),
-        chartOptions?.hAxis?.minValue,
-        chartOptions?.hAxis?.maxValue,
-        0
+        dateFormat
       )
     }
 
-    return data.length > 0 ? [['Day', 'Applicants'], ...data] : defaultDataChart
-  }, [
-    chartOptions?.hAxis?.maxValue,
-    chartOptions?.hAxis?.minValue,
-    dataCandidatesCreatedAt?.findManyCandidate,
-    loadingCandidatesCreatedAt,
-  ])
+    return data.length > 0 ? [header, ...data] : defaultDataChart
+  }, [dataCandidatesCreatedAt?.findManyCandidate, loadingCandidatesCreatedAt])
 
   return (
     <div className="w-full rounded border">
@@ -188,7 +155,7 @@ const AppliedGraph: React.FC = () => {
           selected={selectedGraphFilter}
           onChange={(e) => {
             setSelectedGraphFilter(e)
-            dispatchTimeRange(e)
+            dispatchCartOptions(e)
           }}
         />
       </div>

@@ -56,7 +56,7 @@ export const GET_TAGSOURCES = gql`
       id
       name
       count: candidateReferrer {
-        id
+        createdAt
       }
     }
   }
