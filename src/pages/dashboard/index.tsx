@@ -14,6 +14,7 @@ import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
 import type { Tag as filterTagType } from '@/components/dashboard/filter-tag'
+import Link from 'next/link'
 
 import {
   GET_ME_DATA_AND_COMPANIES,
@@ -105,8 +106,12 @@ const Dashboard: NextPageWithLayout = () => {
           <RecentEvents events={events} />
           <AppliedGraph />
           <div className="grid w-full grid-cols-2 gap-1">
-            <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
-            <FilterTag tagData={filterTagSourceData(tagSourceData?.sources)} label="Source" />
+            <Link href="/settings/tags?tab=tags">
+              <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
+            </Link>
+            <Link href="/settings/tags?tab=sources">
+              <FilterTag tagData={filterTagSourceData(tagSourceData?.sources)} label="Source" />
+            </Link>
           </div>
         </div>
       )}

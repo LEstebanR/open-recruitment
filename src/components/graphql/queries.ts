@@ -97,6 +97,9 @@ export const GET_CANDIDATES_CREATED_AT_BY_DATE = gql`
   query GET_CANDIDATES_CREATED_AT_BY_DATE($where: CandidateWhereInput) {
     findManyCandidate(where: $where) {
       createdAt
+      referrer {
+        name
+      }
     }
   }
 `
