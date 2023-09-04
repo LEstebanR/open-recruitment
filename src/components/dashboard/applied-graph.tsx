@@ -8,7 +8,6 @@ import {
   get_candidates_created_at_by_date_variables,
 } from '../graphql/queries'
 import { countRecordsByDay } from '../utils/data-parsing'
-import type { Tag as filterTagType } from '@/components/dashboard/filter-tag'
 import Link from 'next/link'
 
 export const filterGraphOptions = [
@@ -67,56 +66,51 @@ function reducerChartOptions(state: GoogleChartOptions, action: string) {
   }
 }
 
-// const filterTagSourceDataByDate = (
-//   tagSource: { id: number; name: string; list: Record<string, string>[] }[] | undefined,
-//   startDate: Date,
-//   endDate: Date
-// ): filterTagType[] => {
-//   const filterTags: filterTagType[] = []
-
-//   if (tagSource) {
-//     tagSource.map((tag: { id: number; name: string; list: Record<string, string>[] }) =>
-//       tag.list.map((createObj) => {
-//         const createdAtDate = parseISO(createObj.createdAt)
-//         const localDate = startOfDay(createdAtDate) // Adjust to the local date by setting time to 00:00:00
-//         const localDateString = format(localDate, dateFormat)
-//       })
-//     )
-
-//     return filterTags
-//   }
-// }
-
 const filterTagSourceDataByReferrer = (candidatesData: { referrer: { name: string } }[]) => {
-  const filterTags: { type: string; label: string; number?: number }[] = [
-    {
-      type: 'Careers Site',
-      label: 'Applied via Careers Site',
-    },
-    {
-      type: 'LinkedIn',
-      label: 'Aplieed via LinkedIn',
-    },
-    {
-      type: 'Manual',
-      label: 'Applied manually',
-    },
-    {
-      type: 'Source',
-      label: 'Source',
-    },
-  ]
+  const filterTags = new Map<string, { type: string; label: string; count: number }>()
 
-  if (candidatesData) {
-    filterTags.map((tag: { type: string; label: string; number?: number | undefined }) => {
-      const filtered = candidatesData.filter(
-        (candidate: { referrer: { name: string } }) => candidate.referrer.name === tag.type
-      )
-      tag.number = filtered.length
-    })
+  filterTags.set('careers site', {
+    type: 'Careers Site',
+    label: 'Applied via Careers Site',
+    count: 0,
+  })
+
+  filterTags.set('linkedin', {
+    type: 'LinkedIn',
+    label: 'Applied via LinkedIn',
+    count: 0,
+  })
+
+  filterTags.set('resume sent', {
+    type: 'Resume Sent',
+    label: 'Applied manually',
+    count: 0,
+  })
+
+  filterTags.set('referral', {
+    type: 'Referral',
+    label: 'Source',
+    count: 0,
+  })
+
+  if (!candidatesData) return Array.from(filterTags.values())
+
+  for (const candidate of candidatesData) {
+    const referrerName = candidate.referrer.name
+    const type = referrerName.toLowerCase()
+
+    if (!filterTags.has(type)) {
+      filterTags.set(type, { type: type, label: referrerName, count: 0 })
+    }
+
+    const tag = filterTags.get(type)
+    if (tag) {
+      tag.count++
+    }
   }
 
-  return filterTags
+  // Convert the Map values to an array and sort it
+  return Array.from(filterTags.values()).sort((a, b) => b.count - a.count)
 }
 
 const AppliedGraph: React.FC = () => {
@@ -195,14 +189,16 @@ const AppliedGraph: React.FC = () => {
         />
       </div>
       <div className="mt-4 grid w-full grid-cols-4 gap-1 divide-x-2">
-        {filterTagSourceDataByReferrer(dataCandidatesCreatedAt?.findManyCandidate).map((apply) => (
-          <Link href={'#'} key={apply.type}>
-            <div className="flex h-12 flex-col items-center justify-between">
-              <p>{apply.label}</p>
-              <p className="font-bold">{apply.number}</p>
-            </div>
-          </Link>
-        ))}
+        {filterTagSourceDataByReferrer(dataCandidatesCreatedAt?.findManyCandidate)
+          .slice(0, 4)
+          .map((apply) => (
+            <Link href={`/candidates?source=${apply.type.toLowerCase()}`} key={apply.type}>
+              <div className="flex h-12 flex-col items-center justify-between">
+                <p>{apply.label ? apply.label : apply.type}</p>
+                <p className="font-bold">{apply.count ?? 0}</p>
+              </div>
+            </Link>
+          ))}
       </div>
     </div>
   )
