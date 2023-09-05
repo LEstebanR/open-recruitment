@@ -19,6 +19,9 @@ export function SelectCompany() {
     return 'placeholder'
   })
 
+  console.log('re-render select-company.tsx')
+  console.log('selectedCompanyId', selectedCompanyId)
+
   const refetchAll = useCallback(async () => {
     await client.refetchQueries({
       include: 'all', // Consider using "active" instead!
@@ -37,28 +40,30 @@ export function SelectCompany() {
   }, [client])
 
   useEffect(() => {
-    const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
-
     if (session?.user?.selectedCompany) {
-      refetchAll()
       setSelectedCompanyId(session.user.selectedCompany)
+      refetchAll().then()
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
         session.user.selectedCompany
       )
-    } else if (selectedCompany) {
-      localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
-      update({ selectedCompany: selectedCompany }).then(refetchAll)
-    } else if (query?.me.hiringRoles) {
-      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then(refetchAll)
     }
-  }, [
-    session?.user?.selectedCompany,
-    query?.me?.hiringRoles,
-    session?.user?.email,
-    update,
-    refetchAll,
-  ])
+  }, [refetchAll, session?.user?.email, session?.user?.selectedCompany])
+
+  useEffect(() => {
+    if (!selectedCompanyId || selectedCompanyId === 'placeholder') {
+      const selectedCompanyFromLS = localStorage.getItem(
+        btoa('selectedCompany' + session?.user.email)
+      )
+
+      if (selectedCompanyFromLS) {
+        localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
+        update({ selectedCompany: selectedCompanyFromLS }).then()
+      } else if (query?.me?.hiringRoles) {
+        update({ selectedCompany: query.me.hiringRoles[0].company.id }).then()
+      }
+    }
+  }, [query?.me?.hiringRoles, refetchAll, selectedCompanyId, session?.user?.email, update])
 
   let companies = [{ label: 'Select a Company...', value: 'placeholder', placeholder: true }]
 
