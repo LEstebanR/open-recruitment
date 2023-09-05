@@ -1,0 +1,1 @@
+export { findManyAuditLogQueryObject } from './findMany'

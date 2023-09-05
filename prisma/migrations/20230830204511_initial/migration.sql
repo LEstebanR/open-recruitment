@@ -2,6 +2,9 @@
 CREATE TYPE "UserRoles" AS ENUM ('SUPERADMIN', 'DEFAULT');
 
 -- CreateEnum
+CREATE TYPE "TagSourceType" AS ENUM ('TAG_OFFER', 'TAG_CANDIDATE', 'SOURCE');
+
+-- CreateEnum
 CREATE TYPE "OfferPersonalItems" AS ENUM ('REQUIRED', 'OPTIONAL', 'NONE');
 
 -- CreateEnum
@@ -177,7 +180,7 @@ CREATE TABLE "DisqualifyReason" (
 CREATE TABLE "TagSource" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "TagSourceType" NOT NULL,
     "companyId" TEXT NOT NULL,
 
     CONSTRAINT "TagSource_pkey" PRIMARY KEY ("id")
@@ -294,32 +297,32 @@ CREATE TABLE "Offer" (
     "deparmentId" INTEGER,
     "recruiterId" INTEGER,
     "hiringManagerId" INTEGER,
-    "description" TEXT NOT NULL,
-    "requirements" TEXT NOT NULL,
-    "locationCountry" TEXT NOT NULL,
-    "locationState" TEXT NOT NULL,
-    "locationCity" TEXT NOT NULL,
-    "locationStreet" TEXT NOT NULL,
-    "zipcode" TEXT NOT NULL,
-    "remote" BOOLEAN NOT NULL,
-    "jobType" TEXT NOT NULL,
-    "jobCategory" TEXT NOT NULL,
-    "jobReqEducation" TEXT NOT NULL,
-    "jobReqExperience" TEXT NOT NULL,
-    "jobHoursMin" INTEGER NOT NULL,
-    "jobHoursMax" INTEGER NOT NULL,
-    "jobSalaryMin" INTEGER NOT NULL,
-    "jobSalaryMax" INTEGER NOT NULL,
-    "jobSalaryPeriod" TEXT NOT NULL,
-    "jobSalaryCurrency" TEXT NOT NULL,
-    "personalInfoCv" "OfferPersonalItems" NOT NULL,
-    "personalInfoCoverLetter" "OfferPersonalItems" NOT NULL,
-    "personalInfoPhoto" "OfferPersonalItems" NOT NULL,
-    "personalInfoPhone" "OfferPersonalItems" NOT NULL,
-    "screeningQuestionsTemplateId" INTEGER NOT NULL,
-    "pipelineTemplateId" INTEGER NOT NULL,
-    "autoConfirmationEmailId" INTEGER NOT NULL,
-    "isPublished" BOOLEAN NOT NULL,
+    "description" TEXT,
+    "requirements" TEXT,
+    "locationCountry" TEXT,
+    "locationState" TEXT,
+    "locationCity" TEXT,
+    "locationStreet" TEXT,
+    "zipcode" TEXT,
+    "remote" BOOLEAN NOT NULL DEFAULT false,
+    "jobType" TEXT,
+    "jobCategory" TEXT,
+    "jobReqEducation" TEXT,
+    "jobReqExperience" TEXT,
+    "jobHoursMin" INTEGER,
+    "jobHoursMax" INTEGER,
+    "jobSalaryMin" INTEGER,
+    "jobSalaryMax" INTEGER,
+    "jobSalaryPeriod" TEXT,
+    "jobSalaryCurrency" TEXT,
+    "personalInfoCv" "OfferPersonalItems" NOT NULL DEFAULT 'NONE',
+    "personalInfoCoverLetter" "OfferPersonalItems" NOT NULL DEFAULT 'NONE',
+    "personalInfoPhoto" "OfferPersonalItems" NOT NULL DEFAULT 'NONE',
+    "personalInfoPhone" "OfferPersonalItems" NOT NULL DEFAULT 'NONE',
+    "screeningQuestionsTemplateId" INTEGER,
+    "pipelineTemplateId" INTEGER,
+    "autoConfirmationEmailId" INTEGER,
+    "isPublished" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Offer_pkey" PRIMARY KEY ("id")
 );
@@ -368,8 +371,9 @@ CREATE TABLE "Membership" (
 -- CreateTable
 CREATE TABLE "TalentPool" (
     "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "companyId" TEXT NOT NULL,
 
     CONSTRAINT "TalentPool_pkey" PRIMARY KEY ("id")
 );
@@ -443,34 +447,35 @@ CREATE TABLE "Candidate" (
     "id" SERIAL NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "initials" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "phone" TEXT,
     "skills" TEXT[],
-    "mainLanguage" TEXT NOT NULL,
+    "mainLanguage" TEXT NOT NULL DEFAULT 'en',
     "languages" TEXT[],
-    "coverLetter" TEXT NOT NULL,
+    "coverLetter" TEXT,
     "birthDate" TIMESTAMP(3) NOT NULL,
-    "referrerId" INTEGER NOT NULL,
+    "referrerId" INTEGER,
     "cvId" INTEGER,
-    "educationLevel" TEXT NOT NULL,
+    "educationLevel" TEXT,
     "socials" TEXT[],
     "links" TEXT[],
-    "salaryExpectation" TEXT NOT NULL,
-    "isHired" BOOLEAN NOT NULL,
+    "salaryExpectation" TEXT,
+    "isHired" BOOLEAN,
     "hiredAtId" INTEGER,
     "hiredById" INTEGER,
+    "companyId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Candidate_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "CandidateTag" (
-    "id" SERIAL NOT NULL,
     "candidateId" INTEGER NOT NULL,
     "tagId" INTEGER NOT NULL,
 
-    CONSTRAINT "CandidateTag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "CandidateTag_pkey" PRIMARY KEY ("candidateId","tagId")
 );
 
 -- CreateTable
@@ -579,6 +584,9 @@ CREATE UNIQUE INDEX "HiringRole_userId_companyId_key" ON "HiringRole"("userId", 
 CREATE UNIQUE INDEX "SubscriptionData_companyId_key" ON "SubscriptionData"("companyId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "TagSource_companyId_type_name_key" ON "TagSource"("companyId", "type", "name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Offer_recruiterId_key" ON "Offer"("recruiterId");
 
 -- CreateIndex
@@ -594,13 +602,10 @@ CREATE UNIQUE INDEX "Offer_pipelineTemplateId_key" ON "Offer"("pipelineTemplateI
 CREATE UNIQUE INDEX "Offer_autoConfirmationEmailId_key" ON "Offer"("autoConfirmationEmailId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Candidate_email_key" ON "Candidate"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Candidate_referrerId_key" ON "Candidate"("referrerId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Candidate_cvId_key" ON "Candidate"("cvId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Candidate_email_companyId_key" ON "Candidate"("email", "companyId");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_photoId_fkey" FOREIGN KEY ("photoId") REFERENCES "Attachment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -702,13 +707,13 @@ ALTER TABLE "Offer" ADD CONSTRAINT "Offer_recruiterId_fkey" FOREIGN KEY ("recrui
 ALTER TABLE "Offer" ADD CONSTRAINT "Offer_hiringManagerId_fkey" FOREIGN KEY ("hiringManagerId") REFERENCES "HiringRole"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Offer" ADD CONSTRAINT "Offer_screeningQuestionsTemplateId_fkey" FOREIGN KEY ("screeningQuestionsTemplateId") REFERENCES "Template"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Offer" ADD CONSTRAINT "Offer_screeningQuestionsTemplateId_fkey" FOREIGN KEY ("screeningQuestionsTemplateId") REFERENCES "Template"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Offer" ADD CONSTRAINT "Offer_pipelineTemplateId_fkey" FOREIGN KEY ("pipelineTemplateId") REFERENCES "Template"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Offer" ADD CONSTRAINT "Offer_pipelineTemplateId_fkey" FOREIGN KEY ("pipelineTemplateId") REFERENCES "Template"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Offer" ADD CONSTRAINT "Offer_autoConfirmationEmailId_fkey" FOREIGN KEY ("autoConfirmationEmailId") REFERENCES "Template"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Offer" ADD CONSTRAINT "Offer_autoConfirmationEmailId_fkey" FOREIGN KEY ("autoConfirmationEmailId") REFERENCES "Template"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OfferFile" ADD CONSTRAINT "OfferFile_offerId_fkey" FOREIGN KEY ("offerId") REFERENCES "Offer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -744,6 +749,9 @@ ALTER TABLE "Membership" ADD CONSTRAINT "Membership_roleId_fkey" FOREIGN KEY ("r
 ALTER TABLE "Membership" ADD CONSTRAINT "Membership_offerId_fkey" FOREIGN KEY ("offerId") REFERENCES "Offer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TalentPool" ADD CONSTRAINT "TalentPool_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "TalentPoolFile" ADD CONSTRAINT "TalentPoolFile_talentPoolId_fkey" FOREIGN KEY ("talentPoolId") REFERENCES "TalentPool"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -774,7 +782,7 @@ ALTER TABLE "StageVisibility" ADD CONSTRAINT "StageVisibility_stageId_fkey" FORE
 ALTER TABLE "StageMetadata" ADD CONSTRAINT "StageMetadata_stageId_fkey" FOREIGN KEY ("stageId") REFERENCES "Stage"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_referrerId_fkey" FOREIGN KEY ("referrerId") REFERENCES "TagSource"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_referrerId_fkey" FOREIGN KEY ("referrerId") REFERENCES "TagSource"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_cvId_fkey" FOREIGN KEY ("cvId") REFERENCES "Attachment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -784,6 +792,9 @@ ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_hiredAtId_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_hiredById_fkey" FOREIGN KEY ("hiredById") REFERENCES "HiringRole"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Candidate" ADD CONSTRAINT "Candidate_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CandidateTag" ADD CONSTRAINT "CandidateTag_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "Candidate"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

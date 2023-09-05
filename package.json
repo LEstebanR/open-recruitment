@@ -16,7 +16,7 @@
     "prismaDBReset": "dotenv -e .env.local -- npx prisma db push --force-reset && dotenv -e .env.local -- npx prisma db seed",
     "prismaStudio": "dotenv -e .env.local -- npx prisma studio",
     "vercelBuildReset": "npx prisma migrate reset --force && npx prisma generate && next build",
-    "vercelBuild": "npx prisma generate && npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/20230803070824_initial/migration.sql&& next build"
+    "vercelBuild": "npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-schema-datamodel prisma/schema.prisma --script > down.sql && npx prisma generate && next build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
@@ -27,7 +27,8 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
-    "clsx": "1.2.1",
+    "clsx": "^1.2.1",
+    "date-fns": "^2.30.0",
     "eslint-config-next": "13.4.2",
     "framer-motion": "10.12.16",
     "graphql": "^16.6.0",
@@ -37,6 +38,7 @@
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-google-charts": "^4.0.1",
     "react-icons": "4.10.1",
     "react-phone-input-2": "^2.15.1",
     "react-tooltip": "5.18.0",
@@ -70,10 +72,17 @@
     "prettier": "2.8.8",
     "prettier-plugin-prisma": "4.13.0",
     "prisma": "^5.2.0",
+    "prisma-generator-pothos-codegen": "^0.6.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "overrides": {
+    "prisma-generator-pothos-codegen": {
+      "@prisma/client": "$@prisma/client",
+      "prisma": "$prisma"
+    }
   }
 }

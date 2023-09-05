@@ -1,6 +1,5 @@
 export {
   CandidateTagObject,
-  CandidateTagIdFieldObject,
   CandidateTagCandidateFieldObject,
   CandidateTagCandidateIdFieldObject,
   CandidateTagTagFieldObject,

@@ -17,7 +17,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { classNames } from '@/components/utils'
+import clsx from 'clsx'
 
 type childrenNavigationItem = {
   name: string
@@ -36,7 +36,7 @@ type Navigation = Record<string, NavigationItem[]>
 
 const navigation: Navigation = {
   dashboard: [
-    { name: 'Overview', href: '/', icon: HomeIcon },
+    { name: 'Overview', href: '/dashboard', icon: HomeIcon },
     { name: 'Calendar', href: '/', icon: CalendarIcon },
     { name: 'Events', href: '/', icon: ChartPieIcon },
     { name: 'Evaluations', href: '/', icon: DocumentDuplicateIcon },
@@ -148,7 +148,7 @@ export default function SideMenu({ menu }: { menu?: string }) {
   )
 
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white pt-3">
+    <div className="flex grow flex-col gap-y-5 overflow-y-auto  border-gray-200 bg-white pt-3">
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col">
           {navigation[path].map((item) => (
@@ -156,13 +156,21 @@ export default function SideMenu({ menu }: { menu?: string }) {
               {!item.children && item.href ? (
                 <Link
                   href={item.href}
-                  className={classNames(
-                    router.asPath === item.href ? 'bg-gray-50' : 'hover:bg-gray-50',
-                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700'
+                  className={clsx(
+                    router.asPath === item.href
+                      ? 'bg-gray-100 text-primary-500'
+                      : 'hover:bg-gray-100',
+                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700'
                   )}
                 >
                   {item.icon && (
-                    <item.icon className="h-6 w-6 shrink-0 text-gray-400" aria-hidden="true" />
+                    <item.icon
+                      className={clsx(
+                        router.asPath === item.href ? 'text-primary-500' : '',
+                        'h-6 w-6 shrink-0 text-gray-400'
+                      )}
+                      aria-hidden="true"
+                    />
                   )}
                   {item.name}
                 </Link>
@@ -190,13 +198,16 @@ export default function SideMenu({ menu }: { menu?: string }) {
                         >
                           {item.icon && (
                             <item.icon
-                              className="h-6 w-6 shrink-0 text-gray-400"
+                              className={clsx(
+                                router.asPath === item.href ? 'text-primary-500' : '',
+                                'h-6 w-6 shrink-0 text-gray-400'
+                              )}
                               aria-hidden="true"
                             />
                           )}
                           {item.name}
                           <ChevronRightIcon
-                            className={classNames(
+                            className={clsx(
                               open ? 'rotate-90 text-gray-500' : 'text-gray-400',
                               'ml-auto h-5 w-5 shrink-0'
                             )}
@@ -209,11 +220,11 @@ export default function SideMenu({ menu }: { menu?: string }) {
                               <li key={subItem.name}>
                                 <Link
                                   href={subItem.href}
-                                  className={classNames(
+                                  className={clsx(
                                     router.asPath === subItem.href
-                                      ? 'bg-gray-50'
-                                      : 'hover:bg-gray-50',
-                                    'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
+                                      ? 'bg-gray-100 text-primary-500'
+                                      : 'hover:bg-gray-100',
+                                    'block rounded-md py-2 pl-9 pr-2 text-sm leading-6 text-gray-700'
                                   )}
                                 >
                                   {subItem.name}

@@ -15,11 +15,11 @@ generator pothos {
   output       = "../src/lib/prisma/types/objects.d.ts"
 }
 
-// generator pothosCrud {
-//   // Suggested codegen
-//   provider            = "prisma-generator-pothos-codegen"
-//   generatorConfigPath = "../src/lib/graphql/schema/config.js"
-// }
+generator pothosCrud {
+  // Suggested codegen
+  provider            = "prisma-generator-pothos-codegen"
+  generatorConfigPath = "../src/lib/graphql/schema/config.js"
+}
 
 model User {
   id                String       @id @default(cuid())
@@ -179,6 +179,8 @@ model Company {
   owner                 User               @relation("owner", fields: [ownerId], references: [id])
   ownerId               String
   hiringRoles           HiringRole[]
+  candidates            Candidate[]
+  TalentPool            TalentPool[]
 }
 
 model SubscriptionData {
@@ -216,15 +218,23 @@ model DisqualifyReason {
   matches   Match[]
 }
 
+enum TagSourceType {
+  TAG_OFFER
+  TAG_CANDIDATE
+  SOURCE
+}
+
 model TagSource {
   id                Int            @id @default(autoincrement())
   name              String
-  type              String
+  type              TagSourceType
   company           Company        @relation(fields: [companyId], references: [id])
   companyId         String
   offerTags         OfferTag[]
-  candidateReferrer Candidate?     @relation("referrer")
+  candidateReferrer Candidate[]    @relation("referrer")
   candidateTags     CandidateTag[]
+
+  @@unique([companyId, type, name])
 }
 
 model AuditLog {
@@ -338,35 +348,35 @@ model Offer {
   recruiterId                  Int?               @unique
   hiringManager                HiringRole?        @relation("hiringManager", fields: [hiringManagerId], references: [id])
   hiringManagerId              Int?               @unique
-  description                  String
-  requirements                 String
-  locationCountry              String
-  locationState                String
-  locationCity                 String
-  locationStreet               String
-  zipcode                      String
-  remote                       Boolean
-  jobType                      String
-  jobCategory                  String
-  jobReqEducation              String
-  jobReqExperience             String
-  jobHoursMin                  Int
-  jobHoursMax                  Int
-  jobSalaryMin                 Int
-  jobSalaryMax                 Int
-  jobSalaryPeriod              String
-  jobSalaryCurrency            String
-  personalInfoCv               OfferPersonalItems
-  personalInfoCoverLetter      OfferPersonalItems
-  personalInfoPhoto            OfferPersonalItems
-  personalInfoPhone            OfferPersonalItems
-  screeningQuestionsTemplate   Template           @relation("screeningQuestionsTemplate", fields: [screeningQuestionsTemplateId], references: [id])
-  screeningQuestionsTemplateId Int                @unique
-  pipelineTemplate             Template           @relation("pipelineTemplate", fields: [pipelineTemplateId], references: [id])
-  pipelineTemplateId           Int                @unique
-  autoConfirmationEmail        Template           @relation("autoConfirmationEmail", fields: [autoConfirmationEmailId], references: [id])
-  autoConfirmationEmailId      Int                @unique
-  isPublished                  Boolean
+  description                  String?
+  requirements                 String?
+  locationCountry              String?
+  locationState                String?
+  locationCity                 String?
+  locationStreet               String?
+  zipcode                      String?
+  remote                       Boolean            @default(false)
+  jobType                      String?
+  jobCategory                  String?
+  jobReqEducation              String?
+  jobReqExperience             String?
+  jobHoursMin                  Int?
+  jobHoursMax                  Int?
+  jobSalaryMin                 Int?
+  jobSalaryMax                 Int?
+  jobSalaryPeriod              String?
+  jobSalaryCurrency            String?
+  personalInfoCv               OfferPersonalItems @default(NONE)
+  personalInfoCoverLetter      OfferPersonalItems @default(NONE)
+  personalInfoPhoto            OfferPersonalItems @default(NONE)
+  personalInfoPhone            OfferPersonalItems @default(NONE)
+  screeningQuestionsTemplate   Template?          @relation("screeningQuestionsTemplate", fields: [screeningQuestionsTemplateId], references: [id])
+  screeningQuestionsTemplateId Int?               @unique
+  pipelineTemplate             Template?          @relation("pipelineTemplate", fields: [pipelineTemplateId], references: [id])
+  pipelineTemplateId           Int?               @unique
+  autoConfirmationEmail        Template?          @relation("autoConfirmationEmail", fields: [autoConfirmationEmailId], references: [id])
+  autoConfirmationEmailId      Int?               @unique
+  isPublished                  Boolean            @default(false)
   auditLogs                    AuditLog[]
   files                        OfferFile[]
   offerTags                    OfferTag[]
@@ -431,11 +441,13 @@ model Membership {
 
 model TalentPool {
   id          Int               @id @default(autoincrement())
-  title       String
-  description String
+  name        String
+  description String?
   files       TalentPoolFile[]
   matches     TalentPoolMatch[]
   follows     Follow[]
+  company     Company           @relation(fields: [companyId], references: [id])
+  companyId   String
 }
 
 model TalentPoolFile {
@@ -514,23 +526,22 @@ model Candidate {
   id                  Int                     @id @default(autoincrement())
   firstName           String
   lastName            String
-  initials            String
-  email               String                  @unique
-  phone               String
+  email               String
+  phone               String?
   skills              String[]
-  mainLanguage        String
+  mainLanguage        String                  @default("en")
   languages           String[]
-  coverLetter         String
+  coverLetter         String?
   birthDate           DateTime
-  referrer            TagSource               @relation("referrer", fields: [referrerId], references: [id])
-  referrerId          Int                     @unique
+  referrer            TagSource?              @relation("referrer", fields: [referrerId], references: [id])
+  referrerId          Int?
   cv                  Attachment?             @relation(fields: [cvId], references: [id])
   cvId                Int?                    @unique
-  educationLevel      String // Should enum
+  educationLevel      String? // Should enum
   socials             String[]
   links               String[]
-  salaryExpectation   String
-  isHired             Boolean
+  salaryExpectation   String?
+  isHired             Boolean?
   hiredAt             Offer?                  @relation(fields: [hiredAtId], references: [id])
   hiredAtId           Int?
   hiredBy             HiringRole?             @relation(fields: [hiredById], references: [id])
@@ -544,14 +555,21 @@ model Candidate {
   tasks               Task[]
   follows             Follow[]
   SharedCandidateLink SharedCandidateLink[]
+  company             Company                 @relation(fields: [companyId], references: [id])
+  companyId           String
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+
+  @@unique([email, companyId])
 }
 
 model CandidateTag {
-  id          Int       @id @default(autoincrement())
   candidate   Candidate @relation(fields: [candidateId], references: [id])
   candidateId Int
   tag         TagSource @relation(fields: [tagId], references: [id])
   tagId       Int
+
+  @@id([candidateId, tagId])
 }
 
 model CandidateCustomFields {

@@ -239,8 +239,8 @@ export default interface PrismaTypes {
         Where: Prisma.CompanyWhereInput;
         Create: {};
         Update: {};
-        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles";
-        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles";
+        RelationName: "roles" | "subscription" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "owner" | "hiringRoles" | "candidates" | "TalentPool";
+        ListRelations: "roles" | "meetingRooms" | "metadata" | "eventSchedule" | "events" | "departments" | "disqualifyReasons" | "tagSources" | "auditLogs" | "offers" | "templates" | "tasks" | "hiringRoles" | "candidates" | "TalentPool";
         Relations: {
             roles: {
                 Shape: Role[];
@@ -301,6 +301,14 @@ export default interface PrismaTypes {
             hiringRoles: {
                 Shape: HiringRole[];
                 Name: "HiringRole";
+            };
+            candidates: {
+                Shape: Candidate[];
+                Name: "Candidate";
+            };
+            TalentPool: {
+                Shape: TalentPool[];
+                Name: "TalentPool";
             };
         };
     };
@@ -399,7 +407,7 @@ export default interface PrismaTypes {
         Create: {};
         Update: {};
         RelationName: "company" | "offerTags" | "candidateReferrer" | "candidateTags";
-        ListRelations: "offerTags" | "candidateTags";
+        ListRelations: "offerTags" | "candidateReferrer" | "candidateTags";
         Relations: {
             company: {
                 Shape: Company;
@@ -410,7 +418,7 @@ export default interface PrismaTypes {
                 Name: "OfferTag";
             };
             candidateReferrer: {
-                Shape: Candidate | null;
+                Shape: Candidate[];
                 Name: "Candidate";
             };
             candidateTags: {
@@ -645,15 +653,15 @@ export default interface PrismaTypes {
                 Name: "HiringRole";
             };
             screeningQuestionsTemplate: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             pipelineTemplate: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             autoConfirmationEmail: {
-                Shape: Template;
+                Shape: Template | null;
                 Name: "Template";
             };
             auditLogs: {
@@ -804,7 +812,7 @@ export default interface PrismaTypes {
         Where: Prisma.TalentPoolWhereInput;
         Create: {};
         Update: {};
-        RelationName: "files" | "matches" | "follows";
+        RelationName: "files" | "matches" | "follows" | "company";
         ListRelations: "files" | "matches" | "follows";
         Relations: {
             files: {
@@ -818,6 +826,10 @@ export default interface PrismaTypes {
             follows: {
                 Shape: Follow[];
                 Name: "Follow";
+            };
+            company: {
+                Shape: Company;
+                Name: "Company";
             };
         };
     };
@@ -993,11 +1005,11 @@ export default interface PrismaTypes {
         Where: Prisma.CandidateWhereInput;
         Create: {};
         Update: {};
-        RelationName: "referrer" | "cv" | "hiredAt" | "hiredBy" | "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink";
+        RelationName: "referrer" | "cv" | "hiredAt" | "hiredBy" | "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink" | "company";
         ListRelations: "auditLogs" | "offers" | "talentPools" | "candidateTags" | "customFields" | "evaluation" | "tasks" | "follows" | "SharedCandidateLink";
         Relations: {
             referrer: {
-                Shape: TagSource;
+                Shape: TagSource | null;
                 Name: "TagSource";
             };
             cv: {
@@ -1047,6 +1059,10 @@ export default interface PrismaTypes {
             SharedCandidateLink: {
                 Shape: SharedCandidateLink[];
                 Name: "SharedCandidateLink";
+            };
+            company: {
+                Shape: Company;
+                Name: "Company";
             };
         };
     };

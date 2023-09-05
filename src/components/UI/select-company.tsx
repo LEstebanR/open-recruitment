@@ -1,51 +1,66 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { gql, useQuery } from '@apollo/client'
+import { useApolloClient, useQuery } from '@apollo/client'
 import { Select } from '@/components/UI/select'
 import { HiBuildingOffice2 } from 'react-icons/hi2'
+import { GET_ME_COMPANIES } from '../graphql/queries'
 
 interface Company {
   id: string
   name: string
 }
 
-const GET_USER_COMPANIES = gql`
-  query getCurrentUserCompanies {
-    me {
-      hiringRoles {
-        company {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
 export function SelectCompany() {
+  const client = useApolloClient()
   const { data: session, update } = useSession()
-  const { data: query } = useQuery(GET_USER_COMPANIES)
+  const { data: query } = useQuery(GET_ME_COMPANIES)
   const [selectedCompanyId, setSelectedCompanyId] = React.useState<string>(() => {
     if (session?.user?.selectedCompany) return session?.user?.selectedCompany
     return 'placeholder'
   })
 
-  useEffect(() => {
-    const selectedCompany = localStorage.getItem(btoa('selectedCompany' + session?.user.email))
+  const refetchAll = useCallback(async () => {
+    await client.refetchQueries({
+      include: 'all', // Consider using "active" instead!
+      updateCache(cache) {
+        cache.reset()
+      },
+      //onQueryUpdated(observableQuery) {
+      //  // Logging and/or debugger breakpoints can be useful in development to
+      //  // understand what client.refetchQueries is doing.
+      //  console.log(`Examining ObservableQuery ${observableQuery.queryName}`)
+      //  // Proceed with the default refetching behavior, as if onQueryUpdated
+      //  // was not provided.
+      //  return true
+      //},
+    })
+  }, [client])
 
+  useEffect(() => {
     if (session?.user?.selectedCompany) {
       setSelectedCompanyId(session.user.selectedCompany)
+      refetchAll().then()
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
         session.user.selectedCompany
       )
-    } else if (selectedCompany) {
-      localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
-      update({ selectedCompany: selectedCompany }).then()
-    } else if (query?.me.hiringRoles) {
-      update({ selectedCompany: query.me.hiringRoles[0].company.id }).then()
     }
-  }, [session?.user.selectedCompany, query?.me?.hiringRoles, session?.user.email, update])
+  }, [refetchAll, session?.user?.email, session?.user?.selectedCompany])
+
+  useEffect(() => {
+    if (!selectedCompanyId || selectedCompanyId === 'placeholder') {
+      const selectedCompanyFromLS = localStorage.getItem(
+        btoa('selectedCompany' + session?.user.email)
+      )
+
+      if (selectedCompanyFromLS) {
+        localStorage.removeItem(btoa('selectedCompany' + session?.user.email))
+        update({ selectedCompany: selectedCompanyFromLS }).then()
+      } else if (query?.me?.hiringRoles) {
+        update({ selectedCompany: query.me.hiringRoles[0].company.id }).then()
+      }
+    }
+  }, [query?.me?.hiringRoles, refetchAll, selectedCompanyId, session?.user?.email, update])
 
   let companies = [{ label: 'Select a Company...', value: 'placeholder', placeholder: true }]
 
@@ -65,7 +80,7 @@ export function SelectCompany() {
       <Select
         selected={selectedCompanyId}
         list={companies}
-        onChange={(value: string) => update({ selectedCompany: value })}
+        onChange={(value: string) => update({ selectedCompany: value }).then(refetchAll)}
       />
     </div>
   )

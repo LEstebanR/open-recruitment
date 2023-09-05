@@ -23,12 +23,9 @@ function MobileNavLink({ children, ...props }: MobileNavLinkProps) {
   )
 }
 
-export function MobileNavLinks({
-  links,
-  className,
-}: NavLinks & { className?: string }) {
+export function MobileNavLinks({ links, className }: NavLinks & { className?: string }) {
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-4 sm:hidden ${className}`}>
       {links.map(([href, text]) => (
         <MobileNavLink key={href} href={href}>
           {text}

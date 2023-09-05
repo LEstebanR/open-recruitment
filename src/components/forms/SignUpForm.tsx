@@ -3,21 +3,10 @@ import { Button } from '../UI/Button'
 import { PhoneField, SelectField, TextField } from '../UI/Fields'
 import Link from 'next/link'
 import BackgroundIllustration from '../layout/BackgroundIlustration'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import Alert from '@/components/alert'
 import { signIn } from 'next-auth/react'
-
-const SIGNUP_MUTATION = gql`
-  mutation createUserAndCompany($data: UserSignUpInput!) {
-    signUpUser(data: $data) {
-      id
-      email
-      companies {
-        id
-      }
-    }
-  }
-`
+import { SIGNUP_MUTATION } from '../graphql/mutations'
 
 const SignUpForm = () => {
   const [name, setName] = useState('')

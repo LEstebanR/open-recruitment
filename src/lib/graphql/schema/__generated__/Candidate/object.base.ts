@@ -14,7 +14,6 @@ export const CandidateObject = definePrismaObject('Candidate', {
     id: t.field(CandidateIdFieldObject),
     firstName: t.field(CandidateFirstNameFieldObject),
     lastName: t.field(CandidateLastNameFieldObject),
-    initials: t.field(CandidateInitialsFieldObject),
     email: t.field(CandidateEmailFieldObject),
     phone: t.field(CandidatePhoneFieldObject),
     skills: t.field(CandidateSkillsFieldObject),
@@ -44,6 +43,10 @@ export const CandidateObject = definePrismaObject('Candidate', {
     tasks: t.relation('tasks', CandidateTasksFieldObject(t)),
     follows: t.relation('follows', CandidateFollowsFieldObject(t)),
     SharedCandidateLink: t.relation('SharedCandidateLink', CandidateSharedCandidateLinkFieldObject(t)),
+    company: t.relation('company', CandidateCompanyFieldObject),
+    companyId: t.field(CandidateCompanyIdFieldObject),
+    createdAt: t.field(CandidateCreatedAtFieldObject),
+    updatedAt: t.field(CandidateUpdatedAtFieldObject),
   }),
 });
 
@@ -68,13 +71,6 @@ export const CandidateLastNameFieldObject = defineFieldObject('Candidate', {
   resolve: (parent) => parent.lastName,
 });
 
-export const CandidateInitialsFieldObject = defineFieldObject('Candidate', {
-  type: "String",
-  description: undefined,
-  nullable: false,
-  resolve: (parent) => parent.initials,
-});
-
 export const CandidateEmailFieldObject = defineFieldObject('Candidate', {
   type: "String",
   description: undefined,
@@ -85,7 +81,7 @@ export const CandidateEmailFieldObject = defineFieldObject('Candidate', {
 export const CandidatePhoneFieldObject = defineFieldObject('Candidate', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.phone,
 });
 
@@ -113,7 +109,7 @@ export const CandidateLanguagesFieldObject = defineFieldObject('Candidate', {
 export const CandidateCoverLetterFieldObject = defineFieldObject('Candidate', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.coverLetter,
 });
 
@@ -126,7 +122,7 @@ export const CandidateBirthDateFieldObject = defineFieldObject('Candidate', {
 
 export const CandidateReferrerFieldObject = defineRelationObject('Candidate', 'referrer', {
   description: undefined,
-  nullable: false,
+  nullable: true,
   args: undefined,
   query: undefined,
 });
@@ -134,7 +130,7 @@ export const CandidateReferrerFieldObject = defineRelationObject('Candidate', 'r
 export const CandidateReferrerIdFieldObject = defineFieldObject('Candidate', {
   type: "Int",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.referrerId,
 });
 
@@ -155,7 +151,7 @@ export const CandidateCvIdFieldObject = defineFieldObject('Candidate', {
 export const CandidateEducationLevelFieldObject = defineFieldObject('Candidate', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.educationLevel,
 });
 
@@ -176,14 +172,14 @@ export const CandidateLinksFieldObject = defineFieldObject('Candidate', {
 export const CandidateSalaryExpectationFieldObject = defineFieldObject('Candidate', {
   type: "String",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.salaryExpectation,
 });
 
 export const CandidateIsHiredFieldObject = defineFieldObject('Candidate', {
   type: "Boolean",
   description: undefined,
-  nullable: false,
+  nullable: true,
   resolve: (parent) => parent.isHired,
 });
 
@@ -439,3 +435,31 @@ export const CandidateSharedCandidateLinkFieldObject = defineRelationFunction('C
     }),
   }),
 );
+
+export const CandidateCompanyFieldObject = defineRelationObject('Candidate', 'company', {
+  description: undefined,
+  nullable: false,
+  args: undefined,
+  query: undefined,
+});
+
+export const CandidateCompanyIdFieldObject = defineFieldObject('Candidate', {
+  type: "String",
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.companyId,
+});
+
+export const CandidateCreatedAtFieldObject = defineFieldObject('Candidate', {
+  type: Inputs.DateTime,
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.createdAt,
+});
+
+export const CandidateUpdatedAtFieldObject = defineFieldObject('Candidate', {
+  type: Inputs.DateTime,
+  description: undefined,
+  nullable: false,
+  resolve: (parent) => parent.updatedAt,
+});

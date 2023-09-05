@@ -22,7 +22,3 @@ export const getChildrenOnDisplayName = (children: ReactNode, displayName: strin
     return childDisplayName === displayName ? child : null
   })
 }
-
-export function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}

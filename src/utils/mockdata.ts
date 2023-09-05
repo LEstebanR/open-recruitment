@@ -1,3 +1,5 @@
+import { BriefcaseIcon, UserIcon } from '@heroicons/react/24/outline'
+
 export const user = {
   isAuthenticated: true,
   name: 'John Doe',
@@ -77,5 +79,73 @@ export const days = [
   {
     label: 'Friday',
     value: 'friday',
+  },
+]
+
+export const events = [
+  {
+    id: 1,
+    type: 'candidate',
+    description: 'Jhon Doe',
+    href: '#',
+    icon: UserIcon,
+  },
+  {
+    id: 2,
+    type: 'job',
+    description: 'Frontend Developer',
+    href: '#',
+    icon: BriefcaseIcon,
+  },
+  {
+    id: 1,
+    type: 'candidate',
+    description: 'Jhon Doe',
+    href: '#',
+    icon: UserIcon,
+  },
+  {
+    id: 2,
+    type: 'job',
+    description: 'Frontend Developer',
+    href: '#',
+    icon: BriefcaseIcon,
+  },
+  {
+    id: 1,
+    type: 'candidate',
+    description: 'Jhon Doe',
+    href: '#',
+    icon: UserIcon,
+  },
+  {
+    id: 2,
+    type: 'job',
+    description: 'Frontend Developer',
+    href: '#',
+    icon: BriefcaseIcon,
+  },
+]
+
+export const appliesData = [
+  {
+    id: 1,
+    type: 'Applied via carrers site',
+    number: 2,
+  },
+  {
+    id: 2,
+    type: 'Applied via email',
+    number: 1,
+  },
+  {
+    id: 3,
+    type: 'Added manually',
+    number: 4,
+  },
+  {
+    id: 4,
+    type: 'Sourced',
+    number: 0,
   },
 ]

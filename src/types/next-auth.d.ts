@@ -1,21 +1,23 @@
-import { DefaultSession } from 'next-auth'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import NextAuth, { DefaultSession } from 'next-auth'
+import { JWT } from 'next-auth/jwt'
 
 declare module 'next-auth/jwt' {
-  interface JWT extends JWT {
+  interface JWT {
     selectedCompany?: string
     userRole?: string
   }
 }
 
 declare module 'next-auth' {
-  interface User extends User {
+  interface User {
     userRole?: string
     photo?: {
       path?: string
     }
   }
 
-  interface Session extends DefaultSession {
+  interface Session {
     user: {
       userRole?: string
       selectedCompany?: string
