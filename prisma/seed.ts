@@ -29,6 +29,20 @@ async function main() {
   })
   console.log({ user1 })
 
+  const adminPhoto =
+    '1' ||
+    (await prisma.attachment.upsert({
+      where: { id: 1 },
+      update: {},
+      create: {
+        contentType: 'profilePhoto',
+        filename: 'photo1.png',
+        path: '/images/photo1.png',
+        uploaderId: 1,
+        updatedAt: new Date(),
+      },
+    }))
+
   const user2 = await prisma.user.upsert({
     where: { email: 'peter@admin.ad' },
     update: {},
@@ -389,19 +403,85 @@ async function main() {
     },
   })
 
-  const adminPhoto =
-    '1' ||
-    (await prisma.attachment.upsert({
-      where: { id: 1 },
-      update: {},
-      create: {
-        contentType: 'profilePhoto',
-        filename: 'photo1.png',
-        path: '/images/photo1.png',
-        uploaderId: 1,
-        updatedAt: new Date(),
+  // upsert an audit log
+  const auditLog1 = await prisma.auditLog.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      actor: user1.firstName + ' ' + user1.lastName,
+      actorType: 'user',
+      ip: '192.168.0.1',
+      action: 'Create Candidate',
+      eventDetails: {
+        user: {
+          id: user1.id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+        candidate: {
+          email: candidate1.email,
+          id: candidate1.id,
+          name: candidate1.firstName + ' ' + candidate1.lastName,
+        },
       },
-    }))
+      userId: hiringRole1.id,
+      companyId: company1.id,
+      createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    },
+  })
+
+  const auditLog2 = await prisma.auditLog.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      actor: user1.firstName + ' ' + user1.lastName,
+      actorType: 'user',
+      ip: '192.168.0.5',
+      action: 'Create Offer',
+      eventDetails: {
+        user: {
+          id: user1.id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+        offer: {
+          id: offer1.id,
+          name: offer1.name,
+        },
+      },
+      userId: hiringRole1.id,
+      companyId: company1.id,
+      createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+    },
+  })
+
+  const auditLog3 = await prisma.auditLog.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      actor: user2.firstName + ' ' + user2.lastName,
+      actorType: 'user',
+      ip: '192.168.0.10',
+      action: 'Update Offer',
+      eventDetails: {
+        user: {
+          id: user2.id,
+          email: user2.email,
+          firstName: user2.firstName,
+          lastName: user2.lastName,
+        },
+        offer: {
+          id: offer2.id,
+          name: offer2.name,
+        },
+      },
+      userId: hiringRole4.id,
+      companyId: company1.id,
+      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    },
+  })
 }
 
 main()

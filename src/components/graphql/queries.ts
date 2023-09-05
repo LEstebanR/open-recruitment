@@ -117,3 +117,28 @@ export const get_candidates_created_at_by_date_variables = (
     },
   }
 }
+
+export const GET_RECENTLY_WORK_ON = gql`
+  query GET_RECENTLY_WORK_ON($where: AuditLogWhereInput) {
+    findManyAuditLog(where: $where) {
+      eventDetails
+    }
+  }
+`
+
+export const get_recently_work_on_variables = (userEmail: string) => {
+  return {
+    where: {
+      actorType: {
+        equals: 'user',
+      },
+      user: {
+        user: {
+          email: {
+            equals: userEmail,
+          },
+        },
+      },
+    },
+  }
+}

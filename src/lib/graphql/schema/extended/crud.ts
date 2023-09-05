@@ -14,7 +14,7 @@ import * as Company from './Company'
 // import * as Department from './Department'
 // import * as DisqualifyReason from './DisqualifyReason'
 import * as TagSource from './TagSource'
-// import * as AuditLog from './AuditLog'
+import * as AuditLog from './AuditLog'
 // import * as MeetingRoom from './MeetingRoom'
 // import * as EventSchedule from './EventSchedule'
 // import * as EventScheduleInterviewer from './EventScheduleInterviewer'
@@ -104,6 +104,14 @@ export const Cruds: Record<
       findMany: TagSource.findManyTagSourceQueryObject,
     },
     mutations: AutoCruds.TagSource.mutations,
+  },
+  AuditLog: {
+    Object: AutoCruds.AuditLog.Object,
+    queries: {
+      ...AutoCruds.AuditLog.queries,
+      findMany: AuditLog.findManyAuditLogQueryObject,
+    },
+    mutations: AutoCruds.AuditLog.mutations,
   },
 }
 

@@ -1,17 +1,17 @@
 import React from 'react'
 import Link from 'next/link'
 
-type Event = {
+export type RecentlyWorkOnType = {
   icon: React.ForwardRefExoticComponent<Omit<React.SVGProps<SVGSVGElement>, 'ref'>>
   description: string
   href: string
 }
 
-type RecentEventsProps = {
-  events: Event[]
+type RecentWorkOnProps = {
+  logs: RecentlyWorkOnType[]
 }
 
-const RecentEvents = ({ events }: RecentEventsProps) => {
+const RecentlyWorkedOn = ({ logs }: RecentWorkOnProps) => {
   return (
     <div className="w-full rounded border p-4">
       <span className="flex gap-1">
@@ -19,8 +19,8 @@ const RecentEvents = ({ events }: RecentEventsProps) => {
         <p>Recently, you worked on...</p>
       </span>
       <div className="mt-4 flex flex-wrap gap-2">
-        {events.map((event: Event, index: number) => (
-          <Link href={event.href} key={index}>
+        {logs.map((event: RecentlyWorkOnType) => (
+          <Link href={event.href} key={event.href}>
             <div className="flex w-full items-center justify-between rounded-md border bg-white px-4 py-2 shadow-md">
               <div className="flex items-center gap-2">
                 <event.icon className="h-6 w-6 text-gray-400" aria-hidden="true" />
@@ -34,4 +34,4 @@ const RecentEvents = ({ events }: RecentEventsProps) => {
   )
 }
 
-export default RecentEvents
+export default RecentlyWorkedOn

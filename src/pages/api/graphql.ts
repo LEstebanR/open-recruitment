@@ -9,51 +9,20 @@ import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
+import { getUserRoleData } from '@/utils/backend'
+import { Session, DefaultSession } from 'next-auth'
 
-export interface IContext {
-  abc: string
-  isAdminRequest?: boolean
-  session: {
-    user: {
-      id: string
-      name: string
-      email: string
-      userRole?: string
-      selectedCompany?: string
-    }
-    expires: string
-  } | null
+interface ExtendedSession extends Session {
+  user: {
+    permissions?: string[]
+    hiringRoleId?: number
+  } & DefaultSession['user']
 }
 
-/* authz rules
-const IsAuthenticated = preExecRule({
-  error: 'User is not authenticated',
-})((context: IContext) => !!context.session?.user)
-
-const IsAdmin = preExecRule({
-  error: 'User is not admin',
-})((context: IContext) => context.session?.user?.role === 'Admin')
-
-const CanReadPost = postExecRule({
-  error: 'Access denied',
-  selectionSet: '{ status author { id } }',
-})(
-  (
-    context: IContext,
-    fieldArgs: unknown,
-    post: { status: string; author: { id: string } },
-  ) => post.status === 'public' || context.session?.user?.id === post.author.id,
-)
-
-/*
-const CanPublishPost = preExecRule()(
-  async (context: IContext, fieldArgs: { postId: string }) => {
-    const post = await Promise.resolve(
-      posts.find(({ id }) => id === fieldArgs.postId),
-    )
-    return !post || post.authorId === context.user?.id
-  },
-)*/
+export interface IContext {
+  isAdminRequest?: boolean
+  session: ExtendedSession | null
+}
 
 const server = new ApolloServer({
   schema,
@@ -70,9 +39,27 @@ const server = new ApolloServer({
 
 export default startServerAndCreateNextHandler(server, {
   context: async (req, res): Promise<IContext> => {
+    const session = await getServerSession(req, res, authOptions)
+    let permissions: string[] = []
+    let hiringRoleId: number | null = null
+
+    if (session?.user?.email && session?.user?.selectedCompany) {
+      const userRoleData = await getUserRoleData(session.user.email, session.user.selectedCompany)
+      hiringRoleId = userRoleData?.hiringRole?.id ?? null
+      permissions = userRoleData?.permissions ?? []
+    }
+
     return {
-      abc: '2',
-      session: await getServerSession(req, res, authOptions),
+      session: session
+        ? {
+            ...session,
+            user: {
+              ...session?.user,
+              permissions,
+              hiringRoleId,
+            },
+          }
+        : null,
     }
   },
 })

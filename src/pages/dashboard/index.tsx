@@ -9,20 +9,20 @@ import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
 import Loader from '@/components/UI/loader'
-import { events } from '@/utils/mockdata'
-import RecentEvents from '@/components/dashboard/recent-events'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
-import type { Tag as filterTagType } from '@/components/dashboard/filter-tag'
-import Link from 'next/link'
+import type { Tag as FilterTagType } from '@/components/dashboard/filter-tag'
 
 import {
   GET_ME_DATA_AND_COMPANIES,
   GET_DASHBOARD_COUNTS,
   get_tagSources_variables,
   GET_TAGSOURCES,
+  get_recently_work_on_variables,
+  GET_RECENTLY_WORK_ON,
 } from '@/components/graphql/queries'
 import { BriefcaseIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline'
+import RecentlyWorkOn, { RecentlyWorkOnType } from '@/components/dashboard/recently-work-on'
 
 export const countComponents = [
   {
@@ -44,8 +44,8 @@ export const countComponents = [
 
 const filterTagSourceData = (
   tagSource: { id: number; name: string; count: Record<string, string>[] }[] | undefined
-): filterTagType[] => {
-  const filterTags: filterTagType[] = []
+): FilterTagType[] => {
+  const filterTags: FilterTagType[] = []
 
   if (tagSource) {
     tagSource.map((tag: { id: number; name: string; count: Record<string, string>[] }) => {
@@ -60,6 +60,41 @@ const filterTagSourceData = (
   return filterTags
 }
 
+const filterLogData = (
+  logs: { eventDetails: { candidate?: object; offer?: object } }[] | undefined
+): RecentlyWorkOnType[] => {
+  const filtered: RecentlyWorkOnType[] = []
+
+  if (logs) {
+    logs.map(
+      ({
+        eventDetails,
+      }: {
+        eventDetails: {
+          candidate?: { id?: number; name?: string }
+          offer?: { id?: number; name?: string }
+        }
+      }) => {
+        if (eventDetails?.candidate) {
+          filtered.push({
+            icon: UserIcon,
+            description: eventDetails.candidate.name ?? '',
+            href: `/candidate/${eventDetails.candidate.id}`,
+          })
+        } else if (eventDetails?.offer) {
+          filtered.push({
+            icon: BriefcaseIcon,
+            description: eventDetails.offer.name ?? '',
+            href: `/offer/${eventDetails.offer.id}`,
+          })
+        }
+      }
+    )
+  }
+
+  return filtered
+}
+
 const Dashboard: NextPageWithLayout = () => {
   const { data: session } = useSession()
   const { data: meCompany, loading } = useQuery(GET_ME_DATA_AND_COMPANIES)
@@ -67,11 +102,14 @@ const Dashboard: NextPageWithLayout = () => {
   const { data: tagSourceData } = useQuery(GET_TAGSOURCES, {
     variables: get_tagSources_variables(),
   })
+  const { data: logData } = useQuery(GET_RECENTLY_WORK_ON, {
+    variables: get_recently_work_on_variables(session?.user?.email),
+  })
 
   const company = session?.user?.selectedCompany
     ? meCompany?.me.hiringRoles.filter(
-        (company: { _typename: string; name: string; id: number }) =>
-          company.id === session?.user.selectedCompany
+        (company: { _typename: string; name: string; id: string }) =>
+          company.id === session?.user?.selectedCompany
       )[0].company
     : {}
 
@@ -103,15 +141,11 @@ const Dashboard: NextPageWithLayout = () => {
               </div>
             ))}
           </div>
-          <RecentEvents events={events} />
+          <RecentlyWorkOn logs={filterLogData(logData?.findManyAuditLog)} />
           <AppliedGraph />
           <div className="grid w-full grid-cols-2 gap-1">
-            <Link href="/settings/tags?tab=tags">
-              <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
-            </Link>
-            <Link href="/settings/tags?tab=sources">
-              <FilterTag tagData={filterTagSourceData(tagSourceData?.sources)} label="Source" />
-            </Link>
+            <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
+            <FilterTag tagData={filterTagSourceData(tagSourceData?.sources)} label="Source" />
           </div>
         </div>
       )}
