@@ -20,6 +20,6 @@ declare module 'next-auth' {
     user: {
       userRole?: string
       selectedCompany?: string
-    } & DefaultSession['user']
+    } & defaultSession['user']
   }
 }
