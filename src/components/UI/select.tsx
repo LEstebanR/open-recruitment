@@ -61,7 +61,7 @@ export function Select({
                         {selected ? (
                           <span
                             className={clsx(
-                              active ? 'text-white' : 'tex-primary-600',
+                              active ? 'text-white' : 'text-primary-600',
                               'absolute inset-y-0 left-0 hidden items-center pl-1.5 sm:flex'
                             )}
                           >

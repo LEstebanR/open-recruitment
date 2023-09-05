@@ -6,7 +6,6 @@ import { prisma } from '@/lib/prisma'
 import PrismaTypes from '@/lib/prisma/types/objects'
 import AuthzPlugin from '@pothos/plugin-authz'
 import * as rules from '@/lib/graphql/schema/rules'
-import { Session } from 'next-auth'
 import type { IContext } from '@/pages/api/graphql'
 
 // TODO: Context

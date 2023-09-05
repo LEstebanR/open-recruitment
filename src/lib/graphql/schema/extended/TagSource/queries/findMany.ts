@@ -14,7 +14,7 @@ export const findManyTagSourceQueryObject = defineQueryFunction(() =>
     },
     nullable: false,
     args: findManyTagSourceQueryArgs,
-    resolve: async (query, _root, args, _context, _info) =>
+    resolve: async (query, _root, args, _context) =>
       await defaultPrismaQueryOptions({
         query,
         context: _context,
