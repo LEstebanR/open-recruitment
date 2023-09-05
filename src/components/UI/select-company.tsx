@@ -39,6 +39,7 @@ export function SelectCompany() {
   useEffect(() => {
     if (session?.user?.selectedCompany) {
       setSelectedCompanyId(session.user.selectedCompany)
+      refetchAll().then()
       localStorage.setItem(
         btoa('selectedCompany' + session.user.email),
         session.user.selectedCompany
