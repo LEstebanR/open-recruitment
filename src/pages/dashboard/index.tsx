@@ -141,7 +141,9 @@ const Dashboard: NextPageWithLayout = () => {
               </div>
             ))}
           </div>
-          <RecentlyWorkOn logs={filterLogData(logData?.findManyAuditLog)} />
+          {logData?.findManyAuditLog?.length > 0 && (
+            <RecentlyWorkOn logs={filterLogData(logData?.findManyAuditLog)} />
+          )}
           <AppliedGraph />
           <div className="grid w-full grid-cols-2 gap-1">
             <FilterTag tagData={filterTagSourceData(tagSourceData?.tags)} label="Tag" />
