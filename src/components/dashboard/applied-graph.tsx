@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import { Select } from '../UI/select'
 import { Chart, GoogleChartOptions } from 'react-google-charts'
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays } from 'date-fns'
@@ -9,6 +9,7 @@ import {
 } from '../graphql/queries'
 import { countRecordsByDay } from '../utils/data-parsing'
 import Link from 'next/link'
+import Loader from '@/components/UI/loader'
 
 export const filterGraphOptions = [
   { label: 'Last 7 days', value: 'last7days' },
@@ -114,7 +115,8 @@ const filterTagSourceDataByReferrer = (candidatesData: { referrer: { name: strin
 }
 
 const AppliedGraph: React.FC = () => {
-  const [selectedGraphFilter, setSelectedGraphFilter] = React.useState('last30days')
+  const [selectedGraphFilter, setSelectedGraphFilter] = useState('last30days')
+  const [forceUpdate, setForceUpdate] = useState<object>()
   const [chartOptions, dispatchCartOptions] = useReducer(
     reducerChartOptions,
     reducerChartOptions(baseChartOptions, selectedGraphFilter)
@@ -160,6 +162,7 @@ const AppliedGraph: React.FC = () => {
       )
     }
 
+    setForceUpdate({})
     return data.length > 0 ? [header, ...data] : defaultDataChart
   }, [dataCandidatesCreatedAt?.findManyCandidate, loadingCandidatesCreatedAt])
 
@@ -178,15 +181,16 @@ const AppliedGraph: React.FC = () => {
       </div>
 
       <div className="flex items-center justify-center">
-        <Chart
-          width={'100%'}
-          height={'300px'}
-          chartType="AreaChart"
-          loader={<div>Loading Chart</div>}
-          data={dataChart}
-          options={chartOptions}
-          rootProps={{ 'data-testid': '1' }}
-        />
+        {forceUpdate && (
+          <Chart
+            width={'100%'}
+            height={'300px'}
+            chartType="AreaChart"
+            loader={<Loader size={'h-60 w-60'} className={'m-5'} fullScreen={false} />}
+            data={dataChart}
+            options={chartOptions}
+          />
+        )}
       </div>
       <div className="mt-4 grid w-full grid-cols-4 gap-1 divide-x-2">
         {filterTagSourceDataByReferrer(dataCandidatesCreatedAt?.findManyCandidate)

@@ -155,7 +155,13 @@ const Dashboard: NextPageWithLayout = () => {
 
 Dashboard.auth = {
   permission: 'SUPERADMIN',
-  loading: <LayoutAuthenticated>Dashboard Loading</LayoutAuthenticated>,
+  loading: (
+    <LayoutAuthenticated>
+      <LayoutSideMenu>
+        <Loader />
+      </LayoutSideMenu>
+    </LayoutAuthenticated>
+  ),
 }
 
 export default Dashboard

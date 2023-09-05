@@ -19,9 +19,6 @@ export function SelectCompany() {
     return 'placeholder'
   })
 
-  console.log('re-render select-company.tsx')
-  console.log('selectedCompanyId', selectedCompanyId)
-
   const refetchAll = useCallback(async () => {
     await client.refetchQueries({
       include: 'all', // Consider using "active" instead!
