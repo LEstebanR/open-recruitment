@@ -126,7 +126,7 @@ export const GET_RECENTLY_WORK_ON = gql`
   }
 `
 
-export const get_recently_work_on_variables = (userEmail: string) => {
+export const get_recently_work_on_variables = (userEmail?: string | null) => {
   return {
     where: {
       actorType: {

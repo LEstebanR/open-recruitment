@@ -34,14 +34,17 @@ export const findManyAuditLogQueryObject = defineQueryFunction(() =>
         }
       }
 
-      return prisma.auditLog.findMany({
-        where: whereCompanyFromSession,
-        cursor: args.cursor || undefined,
-        take: args.take || undefined,
-        distinct: args.distinct || undefined,
-        skip: args.skip || undefined,
-        orderBy: args.orderBy || undefined,
-      })
+      return !selectedCompany
+        ? []
+        : await prisma.auditLog.findMany({
+            ...query,
+            where: whereCompanyFromSession,
+            cursor: args.cursor || undefined,
+            take: args.take || undefined,
+            distinct: args.distinct || undefined,
+            skip: args.skip || undefined,
+            orderBy: args.orderBy || undefined,
+          })
     },
   })
 )

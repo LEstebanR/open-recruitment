@@ -22,6 +22,7 @@ export const findManyCandidateQueryObject = defineQueryFunction(() =>
         prisma,
         model: 'candidate',
         method: 'findMany',
+        defaultValue: [],
       }),
   })
 )

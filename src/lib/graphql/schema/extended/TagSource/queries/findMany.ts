@@ -22,6 +22,7 @@ export const findManyTagSourceQueryObject = defineQueryFunction(() =>
         prisma,
         model: 'tagSource',
         method: 'findMany',
+        defaultValue: [],
       }),
   })
 )

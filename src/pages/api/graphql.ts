@@ -10,13 +10,13 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
 import { getUserRoleData } from '@/utils/backend'
-import { Session, DefaultSession } from 'next-auth'
+import { Session } from 'next-auth'
 
 interface ExtendedSession extends Session {
   user: {
-    permissions?: string[]
-    hiringRoleId?: number
-  } & DefaultSession['user']
+    permissions?: string[] | null
+    hiringRoleId?: number | null
+  } & Session['user']
 }
 
 export interface IContext {

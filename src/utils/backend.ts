@@ -32,7 +32,7 @@ export const getUserCompanies = async (userEmail: string): Promise<string[]> => 
 }
 
 export const userBelongsToCompany = async (
-  userEmail: string | undefined,
+  userEmail: string | null | undefined,
   companyId: string | undefined
 ): Promise<boolean> => {
   const userCompanies = userEmail ? await getUserCompanies(userEmail) : []
