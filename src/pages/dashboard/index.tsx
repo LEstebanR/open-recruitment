@@ -8,7 +8,7 @@ import { useRedirectionFlag } from '@/hooks/redirection'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
-import Loader from '@/components/UI/loader'
+import Loader from '@/components/ui/loader'
 import AppliedGraph from '@/components/dashboard/applied-graph'
 import FilterTag from '@/components/dashboard/filter-tag'
 import type { Tag as FilterTagType } from '@/components/dashboard/filter-tag'
@@ -101,6 +101,7 @@ const Dashboard: NextPageWithLayout = () => {
   const { data: counts, loading: loadingCounts } = useQuery(GET_DASHBOARD_COUNTS)
   const { data: tagSourceData } = useQuery(GET_TAGSOURCES, {
     variables: get_tagSources_variables(),
+    fetchPolicy: 'cache-and-network',
   })
   const { data: logData } = useQuery(GET_RECENTLY_WORK_ON, {
     variables: get_recently_work_on_variables(session?.user?.email),

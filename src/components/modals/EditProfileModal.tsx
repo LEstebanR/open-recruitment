@@ -1,8 +1,14 @@
 import React from 'react'
-import ModalContainner from './ModalContainner'
-import { PhoneField, SelectField, TextField, TimezoneSelect, UploadFile } from '../UI/Fields'
+import ModalContainer from './modal-container'
+import {
+  PhoneField,
+  SelectField,
+  TextField,
+  TimezoneSelect,
+  UploadFile,
+} from '@/components/ui/fields'
 import { languages, days } from '@/utils/mockdata'
-import { Button } from '../UI/Button'
+import { Button } from '@/components/ui/Button'
 import { GoTrash } from 'react-icons/go'
 import { Tooltip } from 'react-tooltip'
 
@@ -13,7 +19,7 @@ type props = {
 
 const EditProfileModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
   return (
-    <ModalContainner isOpen={isOpen} setIsOpen={setIsOpen} title="Edit profile">
+    <ModalContainer isOpen={isOpen} setIsOpen={setIsOpen} title="Edit profile">
       <div className="my-4 flex flex-col gap-4">
         <TextField id="name" label="First Name" />
         <TextField id="last_name" label="Last Name" />
@@ -53,7 +59,7 @@ const EditProfileModal: React.FC<props> = ({ isOpen, setIsOpen }) => {
           Save
         </Button>
       </div>
-    </ModalContainner>
+    </ModalContainer>
   )
 }
 

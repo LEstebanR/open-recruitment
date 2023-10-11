@@ -1,13 +1,22 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
+import { omit } from 'lodash'
 
 export const SIGNUP_MUTATION = gql`
-  mutation createUserAndCompany($data: UserSignUpInput!) {
+  mutation SIGNUP_MUTATION($data: UserSignUpInput!) {
     signUpUser(data: $data) {
       id
       email
       companies {
         id
       }
+    }
+  }
+`
+
+export const ADD_CANDIDATE_MUTATION = gql`
+  mutation ADD_CANDIDATE_MUTATION($data: CandidateCreateInputExtended!) {
+    createOneCandidate(data: $data) {
+      id
     }
   }
 `

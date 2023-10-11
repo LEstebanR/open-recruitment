@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql, OperationVariables } from '@apollo/client'
 import { subDays } from 'date-fns'
 
 export const GET_ME_DATA_AND_COMPANIES = gql`
@@ -142,3 +142,134 @@ export const get_recently_work_on_variables = (userEmail?: string | null) => {
     },
   }
 }
+
+export const GET_HUB_CANDIDATES = gql`
+  query GET_HUB_CANDIDATES($where: CandidateWhereInput) {
+    findManyCandidate(where: $where, orderBy: { createdAt: desc }) {
+      id: id
+      name: name
+      averageScore: averageScore
+      jobFitScore
+      job: offers {
+        id
+        stage {
+          id
+          category
+        }
+        offer {
+          id
+          name
+        }
+      }
+      dateCreated: createdAt
+      source: name
+      tag: name
+      talentPool: talentPools {
+        talentPool {
+          id
+          name
+        }
+      }
+      disqualifiedBy: name
+      disqualifyDate: name
+      integrations: name
+      lastActivity: name
+      hireDate: createdAt
+      startDate: name
+      autoFitEnabled: name
+      status: lastName
+    }
+  }
+`
+
+export const get_hub_candidates_variables = (variables: OperationVariables) => {
+  return { where: {} }
+}
+
+export const GET_CANDIDATE_BY_ID = gql`
+  query GET_CANDIDATE_BY_ID($where: CandidateWhereInput!) {
+    findManyCandidate(where: $where) {
+      email
+      phone
+    }
+  }
+`
+
+export const get_candidate_by_id_variables = (id?: number | string) => {
+  return {
+    where: {
+      id: {
+        equals: id,
+      },
+    },
+  }
+}
+
+export const GET_ADD_CANDIDATE_DROPDOWNS = gql`
+  query GET_ADD_CANDIDATE_DROPDOWNS {
+    tags: findManyTagSource(where: { type: { equals: TAG_CANDIDATE } }) {
+      id
+      name
+      type
+    }
+    sources: findManyTagSource(where: { type: { equals: SOURCE } }) {
+      id
+      name
+      type
+    }
+    jobs: findManyOffer {
+      id
+      name
+    }
+    talentPools: findManyTalentPool {
+      id
+      name
+    }
+  }
+`
+
+export const GET_HUB_JOBS = gql`
+  query GET_HUB_JOBS {
+    findManyOffer(orderBy: { createdAt: desc }) {
+      id: id
+      name: name
+      candidates: matches {
+        candidate {
+          id
+          name
+        }
+        isHired
+      }
+      department: department {
+        id
+        name
+      }
+      location: locationCity
+      region: locationCountry
+      scheduledPublish: createdAt
+      scheduledClose: createdAt
+      tags: offerTags {
+        tag {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_HUB_POOLS = gql`
+  query GET_HUB_POOLS {
+    findManyTalentPool(orderBy: { createdAt: desc }) {
+      id: id
+      name: name
+      candidates: matches {
+        candidate {
+          id
+          name
+        }
+      }
+      createdAt: createdAt
+    }
+  }
+`

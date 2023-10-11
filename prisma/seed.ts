@@ -285,6 +285,22 @@ async function main() {
 
   console.log(offer2)
 
+  const stage1 = await prisma.stage.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      category: 'Test Stage 1',
+    },
+  })
+
+  const stage2 = await prisma.stage.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      category: 'Test Stage 2',
+    },
+  })
+
   const talentPool1 = await prisma.talentPool.upsert({
     where: { id: 1 },
     update: {},
@@ -295,6 +311,45 @@ async function main() {
   })
 
   console.log(talentPool1)
+
+  const match1 = await prisma.match.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      candidateId: candidate1.id,
+      offerId: offer1.id,
+      stageId: stage1.id,
+    },
+  })
+
+  const match2 = await prisma.match.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      candidateId: candidate2.id,
+      offerId: offer2.id,
+      stageId: stage2.id,
+    },
+  })
+
+  const match3 = await prisma.match.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      candidateId: candidate2.id,
+      offerId: offer1.id,
+      stageId: stage2.id,
+    },
+  })
+
+  const talentPoolMatch1 = await prisma.talentPoolMatch.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      candidateId: candidate1.id,
+      talentPoolId: talentPool1.id,
+    },
+  })
 
   const tags = ['Sample', 'Senior', 'Junior', 'Mid Level', 'Entry Level']
   const sources = ['Indeed', 'Careers Site', 'Resume Sent', 'LinkedIn', 'Referral', 'Facebook']
@@ -361,6 +416,29 @@ async function main() {
           {
             create: { tagId: 1004 },
             where: { candidateId_tagId: { tagId: 1004, candidateId: 2 } },
+          },
+        ],
+      },
+    },
+  })
+
+  // Set relation offer - tag
+  await prisma.offer.update({
+    where: { id: offer1.id },
+    data: {
+      offerTags: {
+        connectOrCreate: [
+          {
+            create: { tagId: 1002 },
+            where: { offerId_tagId: { tagId: 1002, offerId: offer1.id } },
+          },
+          {
+            create: { tagId: 1003 },
+            where: { offerId_tagId: { tagId: 1003, offerId: offer1.id } },
+          },
+          {
+            create: { tagId: 1004 },
+            where: { offerId_tagId: { tagId: 1004, offerId: offer1.id } },
           },
         ],
       },

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { Select } from '../UI/select'
+import { Select } from '@/components/ui/select'
 import { Chart, GoogleChartOptions } from 'react-google-charts'
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays } from 'date-fns'
 import { useQuery } from '@apollo/client'
@@ -9,7 +9,7 @@ import {
 } from '../graphql/queries'
 import { countRecordsByDay } from '../utils/data-parsing'
 import Link from 'next/link'
-import Loader from '@/components/UI/loader'
+import Loader from '@/components/ui/loader'
 
 export const filterGraphOptions = [
   { label: 'Last 7 days', value: 'last7days' },
@@ -31,6 +31,11 @@ const baseChartOptions: GoogleChartOptions = {
   },
   chartArea: { width: '95%', height: '80%' },
   pointSize: 5,
+  animation: {
+    startup: true,
+    easing: 'linear',
+    duration: 300,
+  },
 }
 
 function reducerChartOptions(state: GoogleChartOptions, action: string) {
@@ -97,7 +102,7 @@ const filterTagSourceDataByReferrer = (candidatesData: { referrer: { name: strin
   if (!candidatesData) return Array.from(filterTags.values())
 
   for (const candidate of candidatesData) {
-    const referrerName = candidate.referrer.name
+    const referrerName = candidate.referrer?.name ?? 'Resume Sent'
     const type = referrerName.toLowerCase()
 
     if (!filterTags.has(type)) {

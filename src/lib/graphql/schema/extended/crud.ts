@@ -73,19 +73,23 @@ export const Cruds: Record<
     mutations: AutoCruds.Company.mutations,
   },
   Candidate: {
-    Object: AutoCruds.Candidate.Object,
+    Object: Candidate.CandidateObject,
     queries: {
       ...AutoCruds.Candidate.queries,
       count: Candidate.countCandidateQueryObject,
       findMany: Candidate.findManyCandidateQueryObject,
     },
-    mutations: AutoCruds.Candidate.mutations,
+    mutations: {
+      ...AutoCruds.Candidate.mutations,
+      createOne: Candidate.createOneCandidateMutationObject,
+    },
   },
   Offer: {
     Object: AutoCruds.Offer.Object,
     queries: {
       ...AutoCruds.Offer.queries,
       count: Offer.countOfferQueryObject,
+      findMany: Offer.findManyOfferQueryObject,
     },
     mutations: AutoCruds.Offer.mutations,
   },
@@ -94,6 +98,7 @@ export const Cruds: Record<
     queries: {
       ...AutoCruds.TalentPool.queries,
       count: TalentPool.countTalentPoolQueryObject,
+      findMany: TalentPool.findManyTalentPoolQueryObject,
     },
     mutations: AutoCruds.TalentPool.mutations,
   },
