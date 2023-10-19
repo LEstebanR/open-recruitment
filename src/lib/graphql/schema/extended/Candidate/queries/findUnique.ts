@@ -3,17 +3,17 @@ import {
   defineQueryFunction,
   defineQueryPrismaObject,
 } from '@/lib/graphql/schema/__generated__/utils'
-import { findManyCandidateQueryArgs } from '@/lib/graphql/schema/__generated__/Candidate/queries/findMany.base'
+import { findUniqueCandidateQueryArgs } from '@/lib/graphql/schema/__generated__/Candidate/queries/findUnique.base'
 import { defaultPrismaQueryOptions } from '@/lib/graphql/schema/extended/utils'
 
-export const findManyCandidateQueryObject = defineQueryFunction(() =>
+export const findUniqueCandidateQueryObject = defineQueryFunction(() =>
   defineQueryPrismaObject({
-    type: ['Candidate'],
+    type: 'Candidate',
     authz: {
       rules: ['IsAuthenticated'],
     },
-    nullable: false,
-    args: findManyCandidateQueryArgs,
+    nullable: true,
+    args: findUniqueCandidateQueryArgs,
     resolve: async (query, _root, args, _context) =>
       await defaultPrismaQueryOptions({
         query,
@@ -21,8 +21,8 @@ export const findManyCandidateQueryObject = defineQueryFunction(() =>
         args,
         prisma,
         model: 'candidate',
-        method: 'findMany',
-        defaultValue: [],
+        method: 'findUnique',
+        defaultValue: {},
       }),
   })
 )

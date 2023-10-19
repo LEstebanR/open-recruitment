@@ -1,17 +1,17 @@
 import React, { FC } from 'react'
-import { CandidateType, LogType } from '../../modals/view-candidate-modal'
-import { PhoneIcon, XMarkIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
+import { LogType } from '../../../modals/view-candidate-modal'
+import { EnvelopeIcon, PhoneIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { PlusIcon } from '@heroicons/react/20/solid'
-import { log } from 'console'
 import Avatar from '@/components/ui/Avatar'
-import { subDays } from 'date-fns'
+import { CandidateType } from '@/components/views/candidate/candidate-view'
 
 type Props = {
-  candidate: CandidateType
-  logs: LogType[]
+  candidate?: CandidateType
+  logs?: LogType[]
 }
 
 const overviewTab: FC<Props> = ({ candidate, logs }) => {
+  if (!candidate || !logs) return null
   return (
     <div className="flex flex-col gap-4 ">
       <div className="flex items-center gap-2">

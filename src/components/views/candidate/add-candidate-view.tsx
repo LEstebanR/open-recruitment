@@ -2,7 +2,7 @@ import { PhoneField, TextField, UploadAvatar, UploadFile } from '@/components/ui
 import React, { useCallback, useContext, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { useApolloClient, useMutation, useQuery } from '@apollo/client'
-import { ADD_CANDIDATE_MUTATION } from '@/components/graphql/mutations'
+import { ADD_CANDIDATE_MUTATION } from '@/graphql-operations/mutations'
 import Alert from '@/components/alert'
 import { omit } from 'lodash'
 import Loader from '@/components/ui/loader'
@@ -13,7 +13,7 @@ import {
   GET_ADD_CANDIDATE_DROPDOWNS,
   GET_HUB_CANDIDATES,
   GET_TAGSOURCES,
-} from '@/components/graphql/queries'
+} from '@/graphql-operations/queries'
 
 const optionsDefault = [
   { value: 1, label: 'Durward Reynolds' },

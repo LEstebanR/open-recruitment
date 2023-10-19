@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { LayoutSideMenu } from '@/components/layout/main/layout-side-menu'
 import { createHubTable, DefaultColumnsExtendedProps } from '@/components/table/hub-table'
 import { useLazyQuery, useQuery } from '@apollo/client'
-import { GET_CANDIDATE_BY_ID, GET_HUB_CANDIDATES } from '@/components/graphql/queries'
-import ViewCandidateModal, { CandidateType } from '@/components/modals/view-candidate-modal'
+import { GET_CANDIDATE_BY_ID, GET_HUB_CANDIDATES } from '@/graphql-operations/queries'
+import ViewCandidateModal from '@/components/modals/view-candidate-modal'
 import { AUDIT_LOGS } from '@/utils/mockdata'
 import AddCandidate from '@/components/table/actions/add-candidate'
+import { CandidateType } from '@/components/views/candidate/candidate-view'
 
 export type Person = {
   id: number
@@ -220,29 +221,7 @@ const Page = () => {
     defaultColumns
   )
 
-  const [currentCandidate, setCurrentCandidate] = useState<CandidateType | null>(null)
-  const [currentRow, setCurrentRow] = useState<Person | null>(null)
-  const [
-    loadCandidate,
-    {
-      called: calledCandidate,
-      loading: loadingCandidate,
-      data: dataCandidate,
-      refetch: refetchCandidate,
-    },
-  ] = useLazyQuery(GET_CANDIDATE_BY_ID, {
-    fetchPolicy: 'cache-and-network',
-    variables: { where: { id: { equals: currentRow ? Number(currentRow.id) : 0 } } },
-  })
-
-  useEffect(() => {
-    const action = !calledCandidate ? loadCandidate : refetchCandidate
-    if (currentRow && currentRow?.id) {
-      action().then(() => {
-        setCurrentCandidate(rowToCandidate(currentRow, dataCandidate))
-      })
-    }
-  }, [calledCandidate, currentRow, currentRow?.id, dataCandidate, loadCandidate, refetchCandidate])
+  const [currentCandidate, setCurrentCandidate] = useState<number | undefined>(undefined)
 
   return (
     <LayoutSideMenu>
@@ -256,10 +235,7 @@ const Page = () => {
         table={table}
         tableStates={tableStates}
         rowOnClick={async (row) => {
-          setCurrentRow(row.original)
-          if (row.original.id !== currentCandidate?.id) {
-            setCurrentCandidate(null)
-          }
+          setCurrentCandidate(row.original.id)
           setSeeCandidate(true)
         }}
       >
@@ -270,32 +246,10 @@ const Page = () => {
       <ViewCandidateModal
         isOpen={seeCandidate}
         setIsOpen={setSeeCandidate}
-        candidate={currentCandidate}
-        logs={AUDIT_LOGS}
+        candidateId={currentCandidate}
       />
     </LayoutSideMenu>
   )
-}
-
-const rowToCandidate = (row: Person, data: any): CandidateType => {
-  const candidate = {
-    id: row.id,
-    name: row.name,
-    email: data?.findManyCandidate[0]?.email,
-    phone: data?.findManyCandidate[0]?.phone,
-    tagSource: {
-      tag: [
-        { id: 'tag1', name: 'tag1' },
-        { id: 'tag2', name: 'tag2' },
-      ],
-      source: [
-        { id: 'source1', name: 'source1' },
-        { id: 'source2', name: 'source2' },
-      ],
-    },
-  }
-
-  return candidate
 }
 
 Page.auth = {}

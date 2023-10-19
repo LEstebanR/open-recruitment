@@ -187,8 +187,10 @@ export const get_hub_candidates_variables = (variables: OperationVariables) => {
 }
 
 export const GET_CANDIDATE_BY_ID = gql`
-  query GET_CANDIDATE_BY_ID($where: CandidateWhereInput!) {
-    findManyCandidate(where: $where) {
+  query GET_CANDIDATE_BY_ID($where: CandidateWhereUniqueInput!) {
+    findUniqueCandidate(where: $where) {
+      id
+      name
       email
       phone
     }
@@ -198,9 +200,7 @@ export const GET_CANDIDATE_BY_ID = gql`
 export const get_candidate_by_id_variables = (id?: number | string) => {
   return {
     where: {
-      id: {
-        equals: id,
-      },
+      id: id,
     },
   }
 }
