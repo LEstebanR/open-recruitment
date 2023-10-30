@@ -64,7 +64,7 @@ export function SelectCompany() {
 
   let companies = [{ label: 'Select a Company...', value: 'placeholder', placeholder: true }]
 
-  if (query?.me.hiringRoles) {
+  if (query?.me?.hiringRoles) {
     companies = [
       ...companies,
       ...query.me.hiringRoles.map((hr: { company: Company }) => ({
@@ -76,7 +76,7 @@ export function SelectCompany() {
 
   return (
     <div className="flex items-center">
-      <HiBuildingOffice2 className="mr-2 h-6 w-6" />
+      <HiBuildingOffice2 className="mr-2 h-6 w-6 text-gray-600" />
       <Select
         selected={selectedCompanyId}
         list={companies}
