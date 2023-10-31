@@ -27,7 +27,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 type option = {
-  value: string
+  value: string | number
   label: string
 }
 
@@ -40,7 +40,7 @@ interface SelectFieldProps {
   required?: boolean
   name?: string
   options: option[]
-  setOption?: (option: option) => void
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
 interface PhoneFieldProps {
@@ -96,14 +96,14 @@ export function SelectField({
   id,
   label,
   className,
-  setOption,
+  onChange,
   placeholder,
   ...props
 }: SelectFieldProps) {
   return (
     <div className={className}>
       {label && <Label id={id}>{label}</Label>}
-      <select id={id} {...props} className={clsx(formClasses, 'pr-8')}>
+      <select id={id} {...props} className={clsx(formClasses, 'pr-8')} onChange={onChange}>
         {placeholder && <option value={props.options[0].value}>{placeholder}</option>}
         {props.options.map((option: option) => (
           <option key={option.value} value={option.value}>
@@ -307,6 +307,40 @@ export function UploadAvatar({ id, label, onChange, file, deleteFilePreview }: U
           <p id={id}>Remove</p>
         </button>
       )}
+    </div>
+  )
+}
+
+interface TextareaFieldProps {
+  id: string
+  label?: string
+  className?: string
+  placeholder?: string
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+}
+
+export function TextareaField({
+  id,
+  label,
+  className,
+  placeholder,
+  onChange,
+  ...props
+}: TextareaFieldProps) {
+  return (
+    <div className={className}>
+      {label && <Label id={id}>{label}</Label>}
+      <textarea
+        id={id}
+        placeholder={placeholder}
+        {...props}
+        className={clsx(
+          formClasses,
+          'resize-none',
+          'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing.2)-1px)]'
+        )}
+        onChange={onChange}
+      />
     </div>
   )
 }
