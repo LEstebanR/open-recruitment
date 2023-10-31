@@ -6,7 +6,11 @@ export const GET_ME_DATA_AND_COMPANIES = gql`
     me {
       hiringRoles {
         company {
+          id
           name
+          logo {
+            path
+          }
         }
         id
       }
@@ -22,6 +26,9 @@ export const GET_ME_COMPANIES = gql`
         company {
           id
           name
+          logo {
+            path
+          }
         }
       }
     }
@@ -96,6 +103,7 @@ export const get_tagSources_variables = (take = 5, order = 'desc') => {
 export const GET_CANDIDATES_CREATED_AT_BY_DATE = gql`
   query GET_CANDIDATES_CREATED_AT_BY_DATE($where: CandidateWhereInput) {
     findManyCandidate(where: $where) {
+      id
       createdAt
       referrer {
         name
@@ -148,23 +156,32 @@ export const GET_HUB_CANDIDATES = gql`
     findManyCandidate(where: $where, orderBy: { createdAt: desc }) {
       id: id
       name: name
-      averageScore: averageScore
+      averageScore
       jobFitScore
-      job: offers {
+      candidateJobs: offers(orderBy: { offer: { createdAt: desc } }) {
         id
-        stage {
-          id
-          category
-        }
-        offer {
+        job: offer {
           id
           name
+          pipelineTemplate {
+            id
+            stages(orderBy: { position: asc }) {
+              id
+              category
+              position
+            }
+          }
+        }
+        currentStage: stage {
+          id
+          category
+          position
         }
       }
       dateCreated: createdAt
       source: name
       tag: name
-      talentPool: talentPools {
+      talentPools {
         talentPool {
           id
           name
@@ -177,7 +194,7 @@ export const GET_HUB_CANDIDATES = gql`
       hireDate: createdAt
       startDate: name
       autoFitEnabled: name
-      status: lastName
+      status: createdAt
     }
   }
 `
@@ -190,9 +207,43 @@ export const GET_CANDIDATE_BY_ID = gql`
   query GET_CANDIDATE_BY_ID($where: CandidateWhereUniqueInput!) {
     findUniqueCandidate(where: $where) {
       id
+      firstName
+      lastName
       name
       email
       phone
+      tags: candidateTags {
+        tag {
+          id
+          name
+        }
+      }
+      source: referrer {
+        id
+        name
+      }
+      avatar {
+        path
+        filename
+      }
+      coverLetter {
+        path
+        filename
+      }
+      coverLetterText
+      cv {
+        path
+        filename
+      }
+      birthday
+      skills
+      mainLanguage
+      languages
+      educationLevel
+      salaryExpectation
+      socials
+      links
+      createdAt
     }
   }
 `
@@ -220,6 +271,14 @@ export const GET_ADD_CANDIDATE_DROPDOWNS = gql`
     jobs: findManyOffer {
       id
       name
+      firstStage: pipelineTemplate {
+        id
+        stages(orderBy: { position: asc }, take: 1) {
+          id
+          category
+          position
+        }
+      }
     }
     talentPools: findManyTalentPool {
       id
@@ -270,6 +329,134 @@ export const GET_HUB_POOLS = gql`
         }
       }
       createdAt: createdAt
+    }
+  }
+`
+
+export const GET_CANDIDATE_BY_ID_FILES = gql`
+  query GET_CANDIDATE_BY_ID_FILES($where: CandidateWhereUniqueInput!) {
+    findUniqueCandidate(where: $where) {
+      id
+      email
+      avatar {
+        path
+        filename
+      }
+      coverLetter {
+        path
+        filename
+      }
+      cv {
+        path
+        filename
+      }
+    }
+  }
+`
+
+export const GET_CANDIDATE_BY_ID_JOBS_TALENT_POOLS = gql`
+  query GET_CANDIDATE_BY_ID_JOBS_TALENT_POOLS($where: CandidateWhereUniqueInput!) {
+    findUniqueCandidate(where: $where) {
+      id
+      candidateJobs: offers(orderBy: { offer: { createdAt: desc } }) {
+        id
+        job: offer {
+          id
+          name
+          pipelineTemplate {
+            id
+            stages(orderBy: { position: asc }) {
+              id
+              category
+              position
+            }
+          }
+        }
+        currentStage: stage {
+          id
+          category
+          position
+        }
+      }
+      talentPools {
+        id
+        talentPool {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_AVAILABLE_CUSTOM_FIELDS = gql`
+  query GET_AVAILABLE_CUSTOM_FIELDS {
+    customFields: findManyCustomField {
+      id
+      companyId
+      key
+      defaultValue
+      settings
+      type
+    }
+  }
+`
+export const GET_CANDIDATE_BY_ID_VISIBLE_CUSTOM_FIELDS = gql`
+  query GET_CANDIDATE_BY_ID_VISIBLE_CUSTOM_FIELDS(
+    $where: CandidateWhereUniqueInput!
+    $cfs_visibility: CandidateCustomFieldWhereInput
+  ) {
+    candidateCFs: findUniqueCandidate(where: $where) {
+      id
+      candidateCustomFields(where: $cfs_visibility) {
+        customField {
+          id
+          key
+        }
+        value
+      }
+    }
+  }
+`
+
+export const get_candidate_by_id_visible_custom_fields_variables = (
+  candidateId: string | number | null | undefined,
+  customFieldsVisibility?: string[] | null
+) => {
+  const cId = parseInt(String(candidateId))
+
+  return {
+    where: {
+      id: cId,
+    },
+    cfs_visibility: {
+      customField: {
+        key: {
+          in:
+            customFieldsVisibility && customFieldsVisibility.length > 0
+              ? customFieldsVisibility
+              : [],
+        },
+      },
+    },
+  }
+}
+
+export const GET_CANDIDATE_BY_ID_QUICK_EVALUATIONS = gql`
+  query GET_CANDIDATE_BY_ID_QUICK_EVALUATIONS($where: CandidateWhereUniqueInput!) {
+    candidateQuickEvaluations: findUniqueCandidate(where: $where) {
+      id
+      evaluations {
+        id
+        isQuickEval
+        description
+        score
+        teamMember {
+          user {
+            name
+          }
+        }
+      }
     }
   }
 `

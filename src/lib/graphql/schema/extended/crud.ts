@@ -9,6 +9,7 @@ import * as User from './User'
 // import * as HiringRole from './HiringRole'
 // import * as Role from './Role'
 import * as Company from './Company'
+import * as CustomField from './CustomField'
 // import * as SubscriptionData from './SubscriptionData'
 // import * as CompanyMetadata from './CompanyMetadata'
 // import * as Department from './Department'
@@ -37,7 +38,7 @@ import * as TalentPool from './TalentPool'
 import * as Candidate from './Candidate'
 // import * as CandidateTag from './CandidateTag'
 // import * as CandidateCustomFields from './CandidateCustomFields'
-// import * as Evaluation from './Evaluation'
+import * as Evaluation from './Evaluation'
 // import * as EvaluationAnswer from './EvaluationAnswer'
 // import * as SharedCandidateLink from './SharedCandidateLink'
 // import * as Task from './Task'
@@ -72,6 +73,17 @@ export const Cruds: Record<
     queries: AutoCruds.Company.queries,
     mutations: AutoCruds.Company.mutations,
   },
+  CustomField: {
+    Object: AutoCruds.CustomField.Object,
+    queries: {
+      ...AutoCruds.CustomField.queries,
+      findMany: CustomField.findManyCustomFieldQueryObject,
+    },
+    mutations: {
+      ...AutoCruds.Candidate.mutations,
+      createOne: CustomField.createOneCustomFieldMutationObject,
+    },
+  },
   Candidate: {
     Object: Candidate.CandidateObject,
     queries: {
@@ -83,6 +95,7 @@ export const Cruds: Record<
     mutations: {
       ...AutoCruds.Candidate.mutations,
       createOne: Candidate.createOneCandidateMutationObject,
+      updateOne: Candidate.updateOneCandidateMutationObject,
     },
   },
   Offer: {
@@ -92,7 +105,10 @@ export const Cruds: Record<
       count: Offer.countOfferQueryObject,
       findMany: Offer.findManyOfferQueryObject,
     },
-    mutations: AutoCruds.Offer.mutations,
+    mutations: {
+      ...AutoCruds.Offer.mutations,
+      createOne: Offer.createOneOfferMutationObject,
+    },
   },
   TalentPool: {
     Object: AutoCruds.TalentPool.Object,
@@ -101,7 +117,10 @@ export const Cruds: Record<
       count: TalentPool.countTalentPoolQueryObject,
       findMany: TalentPool.findManyTalentPoolQueryObject,
     },
-    mutations: AutoCruds.TalentPool.mutations,
+    mutations: {
+      ...AutoCruds.TalentPool.mutations,
+      createOne: TalentPool.createOneTalentPoolMutationObject,
+    },
   },
   TagSource: {
     Object: AutoCruds.TagSource.Object,
@@ -118,6 +137,17 @@ export const Cruds: Record<
       findMany: AuditLog.findManyAuditLogQueryObject,
     },
     mutations: AutoCruds.AuditLog.mutations,
+  },
+  Evaluation: {
+    Object: AutoCruds.Evaluation.Object,
+    queries: {
+      ...AutoCruds.Evaluation.queries,
+      findMany: Evaluation.findManyEvaluationQueryObject,
+    },
+    mutations: {
+      ...AutoCruds.Evaluation.mutations,
+      createOne: Evaluation.createOneEvaluationMutationObject,
+    },
   },
 }
 

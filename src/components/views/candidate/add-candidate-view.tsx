@@ -8,20 +8,9 @@ import { omit } from 'lodash'
 import Loader from '@/components/ui/loader'
 import { ModalControlContext } from '@/hooks/contexts'
 import { ComboboxWithTagsProps } from '@/components/ui/combobox-with-tags'
-import BtnIconCombobox from '@/components/ui/btn-icon-combobox'
-import {
-  GET_ADD_CANDIDATE_DROPDOWNS,
-  GET_HUB_CANDIDATES,
-  GET_TAGSOURCES,
-} from '@/graphql-operations/queries'
-
-const optionsDefault = [
-  { value: 1, label: 'Durward Reynolds' },
-  { value: 2, label: 'Kenton Towne' },
-  { value: 3, label: 'Therese Wunsch' },
-  { value: 4, label: 'Benedict Kessler' },
-  { value: 5, label: 'Katelyn Rohan' },
-]
+import { BtnIconCombobox } from '@/components/ui/btn-icon-combobox'
+import { GET_ADD_CANDIDATE_DROPDOWNS } from '@/graphql-operations/queries'
+import { uploadFileHelper } from '@/components/file-upload/file-upload'
 
 const parseGQLData = (
   data: { id: number | string; name: string }[] | undefined,
@@ -38,7 +27,7 @@ const parseGQLData = (
   })
 }
 
-const AddCandidateView = () => {
+export const AddCandidateView = () => {
   const [_, setIsOpen] = useContext(ModalControlContext)
   const { data: dataDropdown, loading: loadingDropdown } = useQuery(GET_ADD_CANDIDATE_DROPDOWNS)
 
@@ -79,33 +68,42 @@ const AddCandidateView = () => {
           const files = ['avatar', 'cv', 'coverLetter']
 
           formDataToUpload.append('candidateId', res.data.createOneCandidate.id)
-          files.forEach((file) => {
-            const blob = formData[file] as Blob
-            if (blob) {
-              formDataToUpload.append('name', file)
-              formDataToUpload.append('file', blob)
-            }
-          })
 
-          try {
-            const response = await fetch('/api/candidate/upload-files', {
-              method: 'POST',
-              body: formDataToUpload,
+          return Promise.all(
+            files.map(async (key) => {
+              const blob = formData[key] as File
+              if (blob) {
+                return uploadFileHelper(blob, key, res.data.createOneCandidate.id)
+              }
+              return null
             })
-
-            console.log(response)
-
-            if (response.ok) {
+          )
+            .then((res) => {
               Alert({ type: 'success', message: 'Candidate created successfully' })
-            } else {
+            })
+            .catch((err) => {
               Alert({
                 type: 'warning',
                 message: 'Candidate created but files were not uploaded',
               })
-            }
-          } catch (error) {
-            console.error('Error uploading files:', error)
-          }
+            })
+
+          // try {
+          //   const response = await fetch('/api/candidate/upload-files', {
+          //     method: 'POST',
+          //     body: formDataToUpload,
+          //   })
+          //
+          //   console.log(response)
+          //
+          //   if (response.ok) {
+          //     Alert({ type: 'success', message: 'Candidate created successfully' })
+          //   } else {
+          //
+          //   }
+          // } catch (error) {
+          //   console.error('Error uploading files:', error)
+          // }
         }
       })
       .catch((err) => {
@@ -161,7 +159,7 @@ const AddCandidateView = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 p-2">
+    <form onSubmit={handleSubmit} className="mb-2 h-full max-h-full p-2">
       <div className="flex max-h-[65vh] flex-col gap-2 overflow-y-auto">
         <UploadAvatar
           id="avatar"
@@ -235,7 +233,7 @@ const AddCandidateView = () => {
           deleteFilePreview={deleteFilePreview}
         />
       </div>
-      <div className="">
+      <div>
         <Button className="w-full " color="primary" type="submit">
           {onSubmitLoading ? <Loader size="h-4 w-4" fullScreen={false} /> : 'Add candidate'}
         </Button>
@@ -243,5 +241,3 @@ const AddCandidateView = () => {
     </form>
   )
 }
-
-export default AddCandidateView

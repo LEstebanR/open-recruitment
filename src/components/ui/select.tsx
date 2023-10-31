@@ -10,7 +10,7 @@ export function Select({
   defaultSize = 'w-36 sm:w-48',
   label,
 }: {
-  selected: string | number
+  selected?: string | number
   list: { label: string; value: string | number; placeholder?: boolean }[]
   onChange?: (value: string) => void
   defaultSize?: string
@@ -24,11 +24,15 @@ export function Select({
         <>
           {label && (
             <Listbox.Label>
-              {typeof label === 'string' ? <span className="font-bold">{label}</span> : label}
+              {typeof label === 'string' ? (
+                <span className="mb-2 block text-sm font-semibold text-gray-900">{label}</span>
+              ) : (
+                label
+              )}
             </Listbox.Label>
           )}
           <div className={clsx('relative', defaultSize)}>
-            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:pr-10 sm:text-sm sm:leading-6">
+            <Listbox.Button className="relative min-h-[36px] w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 sm:pr-10 sm:text-sm sm:leading-6">
               <span className="block truncate">{selectedElement?.label}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 hidden items-center pr-2 sm:flex">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
